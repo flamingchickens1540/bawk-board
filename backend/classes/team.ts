@@ -20,9 +20,10 @@ export class Team {
         })
         return rankingPoints
     }
-    
+
     constructor(
         public readonly id:number, 
+        public readonly name:string,
         public readonly display_id:string = id.toString()
     ) {}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import app from '../Scoreboard.svelte'
-    import {redScore} from '../score.js';
-    import {blueScore} from '../score.js';
+    import {redScore} from '../../score.js';
+    import {blueScore} from '../../score.js';
 
     let score;
     let displayScore = score*2;
