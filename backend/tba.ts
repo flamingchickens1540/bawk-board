@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import crypto from "crypto"
-import { Team } from "./types";
+import { Team } from "./classes/team";
 
 function formatTeamNumber(teamNumber: number | string) {
     return "frc" + teamNumber
@@ -60,16 +60,33 @@ export class TbaClient {
         }
 
         await this.post(body, "info", "update")
+
+        await this.updateTeamList(teams)
+    }
+
+    public async updateTeamList(teams: Team[]) {
+        const body = teams.map(({ id }) => formatTeamNumber(id))
+        await this.post(body, "team_list", "update")
     }
 
     public async updateRankings(teams:Team[]) {
-        const rankings = teams.map(({id, rank}) => ({
-            
+        teams.sort((a, b) => a.rankingPoints - b.rankingPoints)
+        const rankings = teams.map((team, index) => ({
+            team_key: formatTeamNumber(team.id),
+            rank:index+1,
+            wins: team.matchWins,
+            losses: team.matchLosses,
+            ties: team.matchTies,
+            played: team.matchCount,
+            dqs:0,
+            rp: team.rankingPoints
         }))
+
         const body:RankingBody = {
             breakdowns: ["rp"],
             rankings
         }
-
+        await this.post(body, "rankings", "update")
     }
+    
 }
