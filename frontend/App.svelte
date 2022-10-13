@@ -1,29 +1,37 @@
 <script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
+
+  import Upper from './components/Upper.svelte'
+  import Lower from './components/Lower.svelte'
+  
+  var redScore = 0;
+  var blueScore = 0;
+
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank"> 
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank"> 
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
+  <div id="red_1">
+    <svelte:component this={Upper} alliance="red"/>
+    <svelte:component this={Lower} alliance="red"/>
   </div>
-  <h1>Vite + Svelte</h1>
+  <div id="red_1">
+    <svelte:component this={Upper} alliance="red"/>
+    <svelte:component this={Lower} alliance="red"/>
+  </div>
 
-  <div class="card">
-    <Counter />
+  <div id="blue_1">
+    <svelte:component this={Upper} alliance="blue"/>
+    <svelte:component this={Lower} alliance="blue"/>
+  </div>
+  <div id="blue_2">
+    <svelte:component this={Upper} alliance="blue"/>
+    <svelte:component this={Lower} alliance="blue"/>
   </div>
 
   <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
+    The total score for red is: {redScore}
+    The total score for blue is: {blueScore}
   </p>
 </main>
 
