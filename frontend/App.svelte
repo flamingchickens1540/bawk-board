@@ -9,21 +9,21 @@
 
 <main>
   <div id="red_1">
-    <svelte:component this={Upper} alliance="red"/>
-    <svelte:component this={Lower} alliance="red"/>
+    <svelte:component this={Upper} alliance="red" class="red"/>
+    <svelte:component this={Lower} alliance="red" class="red"/>
   </div>
   <div id="red_1">
-    <svelte:component this={Upper} alliance="red"/>
-    <svelte:component this={Lower} alliance="red"/>
+    <svelte:component this={Upper} alliance="red" class="red"/>
+    <svelte:component this={Lower} alliance="red" class="red"/>
   </div>
 
   <div id="blue_1">
-    <svelte:component this={Upper} alliance="blue"/>
-    <svelte:component this={Lower} alliance="blue"/>
+    <svelte:component this={Upper} alliance="blue" class="blue"/>
+    <svelte:component this={Lower} alliance="blue" class="blue"/>
   </div>
   <div id="blue_2">
-    <svelte:component this={Upper} alliance="blue"/>
-    <svelte:component this={Lower} alliance="blue"/>
+    <svelte:component this={Upper} alliance="blue" class="blue"/>
+    <svelte:component this={Lower} alliance="blue" class="blue"/>
   </div>
 
   <p>
@@ -33,4 +33,13 @@
 </main>
 
 <style>
+  main{
+    background-color: aliceblue;
+  }
+  .blue{
+    background-color: blue;
+  }
+  .red{
+    background-color: red;
+  }
 </style>
