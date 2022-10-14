@@ -1,5 +1,5 @@
 <script lang="ts">
-    import app from '../App.svelte'
+    import app from '../Scoreboard.svelte'
     import {redScore} from '../score.js';
     import {blueScore} from '../score.js';
 

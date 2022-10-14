@@ -1,25 +1,12 @@
-export class Team {
-    public rank:number = 0;
-    public rankingPoints:number = 0;
-    constructor(
-        public readonly id:number, 
-        public readonly display_id:string = id.toString()
-    ) {}
-
-    addMatchResults(match:Match) {
-        if (match.didTeamWin(this.id)) {
-            this.rankingPoints += match.winningScore + match.losingScore
-        }
-    }
-
-    getScore(match:Match) {
-        return match.getTeamScore(this.id);
-    }
-}
-
 export enum Alliance {
     RED,
-    BLUE
+    BLUE,
+    NONE
+}
+export enum MatchResult {
+    WIN,
+    LOSS,
+    DRAW
 }
 
 export class Match {
@@ -36,7 +23,13 @@ export class Match {
         readonly redScore:number, 
         readonly blueScore:number
     ){
-        this.winningAlliance = redScore > blueScore ? Alliance.RED : Alliance.BLUE
+        if (redScore > blueScore) {
+            this.winningAlliance = Alliance.RED
+        } else if (blueScore > redScore) {
+            this.winningAlliance = Alliance.BLUE
+        } else {
+            this.winningAlliance = Alliance.NONE
+        }
     }
 
     getTeamAlliance(team:number):Alliance {
@@ -47,8 +40,15 @@ export class Match {
         }
     }
     
-    didTeamWin(team:number):boolean {
-        return this.getTeamAlliance(team) == this.winningAlliance
+    getMatchResult(team:number):MatchResult {
+        switch (this.winningAlliance) {
+            case Alliance.NONE:
+                return MatchResult.DRAW
+            case this.getTeamAlliance(team):
+                return MatchResult.WIN
+            default:
+                return MatchResult.LOSS
+        }
     }
 
     getTeamScore(team:number):number {
@@ -61,6 +61,8 @@ export class Match {
                 return this.redScore
             case Alliance.BLUE:
                 return this.blueScore
+            default:
+                return 0
         }
     }
 }
