@@ -2,13 +2,19 @@
     import app from '../App.svelte'
     import {redScore} from '../score.js';
     import {blueScore} from '../score.js';
-    let score = 0;
+
+    let score;
     let displayScore = score*2;
     let alliance = "";
+
     if(alliance=="red"){
-        redScore = displayScore;
+        const unsubscribe = redScore.subscribe(value => {
+		score = value;
+	});
     }else if(alliance=="blue"){
-        blueScore = displayScore;
+        const unsubscribe = blueScore.subscribe(value => {
+		score = value;
+	});
     }
     
 </script>
@@ -17,10 +23,13 @@
     <input type="number" value={score} min=0 max=100>
 </label>
 
-<p>{displayScore}</p>
+<p>{displayScore}</p>   
 
 <style>
     #upperScore{
-        
+        background-color: orangered;
+    }
+    p{
+        text-decoration-color: orange;
     }
 </style>
