@@ -1,7 +1,12 @@
-import { Match, MatchResult } from "./match"
+import { getMatches } from ".."
+import Match, { MatchResult } from "./match"
 
-export class Team {
-    private matches:Match[]
+export default class Team {
+    private matchIDs:number[]
+    get matches() {
+        const matches = getMatches()
+        return this.matchIDs.map((id) => matches[id])
+    }
     get matchWins() { return this.matches.filter((match) => {match.getMatchResult(this.id) == MatchResult.WIN}).length}
     get matchLosses() { return this.matches.filter((match) => {match.getMatchResult(this.id) == MatchResult.LOSS}).length}
     get matchTies() { return this.matches.filter((match) => {match.getMatchResult(this.id) == MatchResult.DRAW}).length}

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import crypto from "crypto"
-import { Team } from "../classes/team";
+import Team from "../classes/team";
 import type { InfoBody, Ranking, RankingBody } from "./types";
 
 function formatTeamNumber(teamNumber: number | string) {

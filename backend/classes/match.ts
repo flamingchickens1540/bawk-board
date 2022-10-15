@@ -9,7 +9,7 @@ export enum MatchResult {
     DRAW
 }
 
-export class Match {
+export default class Match {
     readonly winningAlliance:Alliance;
     get winningScore() {
         return this.getAllianceScore(this.winningAlliance)
