@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Writable } from "svelte/store";
+  import type { TeamData } from "../../../common/types";
 	
-	export let team;
+	export let team:TeamData;
 	export let index: number;
 	export let teams: Writable<any[]>;
 </script>
@@ -70,15 +71,6 @@
 			background:darkred
 		}
 		
-		input::-webkit-outer-spin-button,
-		input::-webkit-inner-spin-button {
-			-webkit-appearance: none;
-			margin: 0;
-		}
 		
-		/* Firefox */
-		input[type=number] {
-			-moz-appearance: textfield;
-		}
 	</style>
 	

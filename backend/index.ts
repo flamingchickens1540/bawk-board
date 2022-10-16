@@ -1,7 +1,7 @@
 import express from "express"
 import bodyParser from "body-parser"
 import Team from "./classes/team"
-import Match from "./classes/match"
+import type Match from "./classes/match"
 import {DataFile, loadFile, loadMatches, loadTeams, storeTeams} from "./data"
 
 const app = express()

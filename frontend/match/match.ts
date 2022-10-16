@@ -1,5 +1,5 @@
 import '../assets/app.css'
-import App from './Scoreboard.svelte'
+import App from './Match.svelte'
 
 const app = new App({
   target: document.getElementById('app')
