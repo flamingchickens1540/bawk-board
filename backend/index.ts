@@ -12,15 +12,24 @@ let teams = loadTeams()
 const matches = loadMatches()
 
 
-const sendTeams = (req, res) => {
-    res.send(Object.values(teams).sort((a, b) => a.display_id.localeCompare(b.display_id)))
-}
-app.get("/api/teams", sendTeams)
+
+app.get("/api/teams", (req, res) => {
+    res.send(Object.values(teams))
+})
 app.post("/api/teams", (req, res) => {
     const newTeams:any[] = req.body["teams"].filter((a) => a.id)
     teams = newTeams.map((team) => new Team(team.id, team.name, team.display_id ?? team.id))
     storeTeams(teams)
-    sendTeams(req, res)
+    res.send(Object.values(teams))
+})
+
+app.get("/api/matches", (req, res) => {
+    res.send(matches)
+})
+
+app.get("/api/match", (req, res) => {
+    
+    res.send(matches)
 })
 app.listen(3000)
 

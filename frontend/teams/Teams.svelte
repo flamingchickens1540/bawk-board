@@ -1,12 +1,14 @@
 <script lang="ts">
     import {writable} from "svelte/store"
+    import type {TeamData} from "../../common/types"
     import Team from "./components/Team.svelte";
-    let teams:{id:string, display_id:string, name:string}[]
+    let teams:TeamData[]
     const teamsStore = writable(teams)
     
     async function getTeams() {
         const res = await fetch("//localhost:3000/api/teams")
-        $teamsStore = await res.json()
+        const data:TeamData[] = await res.json()
+        $teamsStore = data.sort((a, b) => a.display_id.localeCompare(b.display_id))
     }
     
     function addTeam() {
@@ -22,7 +24,8 @@
             },
             body: JSON.stringify({teams:$teamsStore})
         })
-        $teamsStore = await res.json();
+        const data:TeamData[] = await res.json()
+        $teamsStore = data.sort((a, b) => a.display_id.localeCompare(b.display_id))
     }
     let doneLoading = false;
     getTeams().then(() => doneLoading = true)

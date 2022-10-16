@@ -1,7 +1,8 @@
 import { getMatches } from ".."
+import { TeamData } from "../../common/types"
 import Match, { MatchResult } from "./match"
 
-export default class Team {
+export default class Team implements TeamData {
     private matchIDs:number[]
     get matches() {
         const matches = getMatches()

@@ -1,3 +1,5 @@
+import { MatchData } from "../../common/types";
+
 export enum Alliance {
     RED,
     BLUE,
@@ -9,7 +11,7 @@ export enum MatchResult {
     DRAW
 }
 
-export default class Match {
+export default class Match implements MatchData {
     readonly winningAlliance:Alliance;
     get winningScore() {
         return this.getAllianceScore(this.winningAlliance)
