@@ -16,6 +16,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "@types/express": "^4.17.14",
     "esbuild": "^0.15.10",
+    "sass": "^1.55.0",
     "svelte": "^3.51.0",
     "svelte-check": "^2.8.1",
     "svelte-preprocess": "^4.10.7",

@@ -11,13 +11,16 @@ app.use(bodyParser.json());
 let teams = loadTeams()
 const matches = loadMatches()
 
-app.get("/api/teams", (req, res) => {
-    res.send(Object.values(teams))
-})
+
+const sendTeams = (req, res) => {
+    res.send(Object.values(teams).sort((a, b) => a.display_id.localeCompare(b.display_id)))
+}
+app.get("/api/teams", sendTeams)
 app.post("/api/teams", (req, res) => {
-    const newTeams = req.body["teams"]
-    teams = newTeams.map((team) => new Team(team.id, team.name, team.display_id))
+    const newTeams:any[] = req.body["teams"].filter((a) => a.id)
+    teams = newTeams.map((team) => new Team(team.id, team.name, team.display_id ?? team.id))
     storeTeams(teams)
+    sendTeams(req, res)
 })
 app.listen(3000)
 
