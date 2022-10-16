@@ -40,12 +40,5 @@
 	td.label {
 		padding: 15px;
 	}
-	:global {
-		.red {
-			background-color: #aa0000;
-		}
-		.blue {
-			background-color: #0000aa;
-		}
-	}
+
 </style>

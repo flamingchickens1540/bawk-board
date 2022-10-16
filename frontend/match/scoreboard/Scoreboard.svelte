@@ -6,19 +6,8 @@
 </script>
 
 <script lang="ts">
-	import { blueScore, redScore } from "../../score";
 	import ScoringTower from "./ScoringTower.svelte";
 
-	function sum(values: string[]): number {
-		let sum = 0;
-		values.forEach((value) => {
-			let numericValue = parseInt(value);
-			if (!isNaN(numericValue)) {
-				sum += numericValue;
-			}
-		});
-		return sum;
-	}
 </script>
 
 <table>
