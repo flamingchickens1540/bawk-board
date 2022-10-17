@@ -12,9 +12,3 @@ export interface ClientToServerEvents {
     newMatch: (id:number) => void;
     teamRemove: (id:number) => void;
 }
-
-
-export interface SocketData {
-    name: string;
-    age: number;
-}

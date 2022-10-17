@@ -1,11 +1,10 @@
 import bodyParser from "body-parser"
-import type { TeamData } from "common/types"
 import express from "express"
 import { Server } from "socket.io"
-import type { ClientToServerEvents, ServerToClientEvents, SocketData } from "../common/ws_types"
+import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types"
 import Match from "./classes/match"
 import Team from "./classes/team"
-import { loadMatches, loadTeams, loadTeamsFromData, storeMatches, storeTeams, type TeamDict } from "./data"
+import { loadMatches, loadTeams, storeMatches } from "./data"
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +39,7 @@ export function getLatestMatch(): Match {
 }
 
 
-const ws = new Server<ClientToServerEvents, ServerToClientEvents, any, SocketData>(3001, {})
+const ws = new Server<ClientToServerEvents, ServerToClientEvents>(3001, {})
 
 ws.on("connection", (socket) => {
     socket.on("matchData", (data) => {
