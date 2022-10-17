@@ -17,4 +17,5 @@ export type MatchScoreBreakdown = {
     normalBunny:number
     upperBunny:number
     autoBonuses:number
+    foulPoints:number
 }

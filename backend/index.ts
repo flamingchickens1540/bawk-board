@@ -43,20 +43,23 @@ export function getLatestMatch(): Match {
 const ws = new Server<ClientToServerEvents, ServerToClientEvents, any, SocketData>(3001, {})
 
 ws.on("connection", (socket) => {
-    console.log("new connection")
-
     socket.on("matchData", (data) => {
+        console.log("ws:matchData", data)
         const latestMatch = getLatestMatch()
         if (latestMatch.id == data.id) {
             latestMatch.blueScoreBreakdown = data.blueScoreBreakdown ?? latestMatch.blueScoreBreakdown
             latestMatch.redScoreBreakdown = data.redScoreBreakdown ?? latestMatch.redScoreBreakdown
             latestMatch.blueTeams = data.blueTeams ?? latestMatch.blueTeams
             latestMatch.redTeams = data.redTeams ?? latestMatch.redTeams
+        } else {
+            console.warn("wrong ID")
         }
         socket.broadcast.emit("matchData", getLatestMatch())
+        storeMatches(matches)
     })
 
     socket.on("newMatch", (id) => {
+        console.log("ws:newMatch", id)
         const latestMatch = getLatestMatch() ?? {id:-1}
         if (latestMatch.id == id) {
             storeMatches(matches)

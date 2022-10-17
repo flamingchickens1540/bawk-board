@@ -1,5 +1,5 @@
 import { calculateScore } from "../../common/calculations";
-import { MatchData, MatchScoreBreakdown } from "../../common/types";
+import type { MatchData, MatchScoreBreakdown } from "../../common/types";
 
 export enum Alliance {
     RED,
@@ -84,5 +84,6 @@ const nullMatchData:MatchScoreBreakdown = {
     upper:0,
     normal:0,
     normalBunny:0,
-    autoBonuses:0
+    autoBonuses:0,
+    foulPoints:0
 }

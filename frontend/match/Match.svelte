@@ -2,7 +2,7 @@
 	import Scoreboard from "./scoreboard/Scoreboard.svelte";
 	import Teams from "./teams/Teams.svelte";
 
-    let matchNum = 0;
+    import {matchID} from "../store"
 </script>
 
 <main>
@@ -12,16 +12,14 @@
 	<Scoreboard />
 	<div id="sidebar-l">
         <label for="match_number">Match #</label>
-		<input id="match_number" bind:value={matchNum} type="number" />
+		<input id="match_number" bind:value={$matchID} type="number" />
         <br>
         <br>
 		<p>Teams</p>
 		<Teams />
-        
-        
 	</div>
 	<div id="sidebar-r">
-		<h2>Match {matchNum} Controls</h2>
+		<h2>Match {$matchID} Controls</h2>
 		<table>
 			<tr>
 				<button class="green">Start</button>
@@ -36,7 +34,7 @@
 		left: 0px;
 		right: 0px;
 		text-align: center;
-		background-color: #444;
+		// background-color: #444;
 		padding: 10px;
 	}
 

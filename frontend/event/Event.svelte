@@ -1,6 +1,5 @@
 <script lang="ts">
     import {teams, updateTeams} from "../store"
-    import type {TeamData} from "../../common/types"
     import Team from "./components/Team.svelte";
 
     function addTeam() {

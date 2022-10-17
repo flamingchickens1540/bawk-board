@@ -12,20 +12,58 @@ export const blueAlliance:Writable<number[]> = writable([])
 export const matchID:Writable<number> = writable(0)
 export const teams:Writable<TeamData[]> = writable([])
 
-fetch("//localhost:3000/api/teams").then(async (res) => {
-    teams.set(await res.json())
-})
-fetch("//localhost:3000/api/match").then(async (res) => {
-    matchID.set((await res.json() as MatchData).id)
-})
+const blockUpdates = writable(false)
 
+async function init() {
+    await fetch("//localhost:3000/api/teams").then(async (res) => {
+        teams.set(await res.json())
+    })
+    await fetch("//localhost:3000/api/match").then(async (res) => {
+        const data = await res.json() as MatchData
+        updateMatchData(data)
+    })
+}
 
+function updateMatchData(data:MatchData) {
+    blockUpdates.set(true)
+    
+    matchID.set(data.id)
+    redScore.set(data.redScoreBreakdown)
+    blueScore.set(data.blueScoreBreakdown)
+    redAlliance.set(data.redTeams)
+    blueAlliance.set(data.blueTeams)
 
+    blockUpdates.set(false)
+}
+
+function addMatchDataPublishers() {
+    redScore.subscribe((value) => {
+        if (get(blockUpdates)) return;
+        socket.emit("matchData", {id:get(matchID), redScoreBreakdown: value})
+    })
+    blueScore.subscribe((value) => {
+        if (get(blockUpdates)) return;
+        socket.emit("matchData", {id:get(matchID), blueScoreBreakdown: value})
+    })
+    redAlliance.subscribe((value) => {
+        if (get(blockUpdates)) return;
+        socket.emit("matchData", {id:get(matchID), redTeams: value})
+    })
+    blueAlliance.subscribe((value) => {
+        if (get(blockUpdates)) return;
+        socket.emit("matchData", {id:get(matchID), blueTeams: value})
+    })
+}
+
+init().then(addMatchDataPublishers)
 
 
 
 socket.on("teamData", (data) => {
     teams.set(data)
+})
+socket.on("matchData", (data) => {
+    updateMatchData(data)
 })
 
 
@@ -33,15 +71,4 @@ export function updateTeams() {
     socket.emit("teamData", get(teams))
 }
 
-redScore.subscribe((value) => {
-    socket.emit("matchData", {id:get(matchID), redScoreBreakdown: value})
-})
-blueScore.subscribe((value) => {
-    socket.emit("matchData", {id:get(matchID), blueScoreBreakdown: value})
-})
-redAlliance.subscribe((value) => {
-    socket.emit("matchData", {id:get(matchID), redTeams: value})
-})
-blueAlliance.subscribe((value) => {
-    socket.emit("matchData", {id:get(matchID), blueTeams: value})
-})
+

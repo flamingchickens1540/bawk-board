@@ -6,7 +6,7 @@ import Team from "./classes/team"
 import simpleGit from "simple-git"
 import { origin_url } from "../secrets"
 import type { MatchData, TeamData } from "common/types"
-
+import {CronJob} from "cron"
 
 
 export enum DataFile {
@@ -41,11 +41,6 @@ async function storeFile(file:DataFile, data:Object):Promise<void> {
     try {
         fs.writeFileSync(fileName, JSON.stringify(data, null, 2))
         await git.add(file)
-        await git.commit(new Date().toLocaleString(), {
-            "--no-verify":null
-        })
-        await git.push("origin", "main")
-        
     } catch (e){
         console.error("Could not save to", fileName, e)
     }
@@ -84,3 +79,14 @@ export function loadMatchesFromData(data:MatchData[]):Match[] {
 
 export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}
 export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES, matches)}
+
+
+new CronJob({
+    cronTime: "* * * * *",
+    onTick: async () => {
+        await git.commit(new Date().toLocaleString(), {"--no-verify":null})
+        await git.push("origin", "main")
+    },
+    start:true,
+    runOnInit: true
+})
