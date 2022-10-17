@@ -5,6 +5,8 @@ import Match from "./classes/match"
 import Team from "./classes/team"
 import simpleGit from "simple-git"
 import { origin_url } from "../secrets"
+import type { MatchData, TeamData } from "common/types"
+
 
 
 export enum DataFile {
@@ -12,7 +14,7 @@ export enum DataFile {
     MATCHES = "matches.json"
 }
 
-type TeamData = {[key:number]:Team}
+export type TeamDict = {[key:number]:Team}
 
 const git = simpleGit({
     baseDir: dataDir,
@@ -59,21 +61,26 @@ export function loadFile(file:DataFile):Object {
     }
 }
 
-export function loadTeams():TeamData {
-    const data = loadFile(DataFile.TEAMS)
-    Object.entries(data).forEach(([key, value]) => {
-        data[key] = Object.assign(new Team(-1, ""), value)
-    })
-    return data as TeamData
+export function loadTeams():Team[] {
+    const data = loadFile(DataFile.TEAMS) as TeamData[]
+    return loadTeamsFromData(data)
+}
+export function loadTeamsFromData(data:TeamData[]):Team[] {
+    return data.map((value) => Object.assign(new Team(-1, ""), value))
 }
 
 export function loadMatches():Match[] {
     const data = Object.values(loadFile(DataFile.MATCHES))
-    data.forEach((value, index) => {
-        data[index] = Object.assign(new Match([],[],-1,-1), value)
-    })
-    return data
+    if (data.length == 0) {
+        data.push(Match.new(1))
+    }
+    return loadMatchesFromData(data)
+
 }
 
-export const storeTeams = (teams:TeamData) => {storeFile(DataFile.TEAMS, teams)}
-export const storeMatches = (matches:Match[]) =>         {storeFile(DataFile.MATCHES, matches)}
+export function loadMatchesFromData(data:MatchData[]):Match[] {
+    return data.map((value) => Object.assign(Match.new(-1), value))
+}
+
+export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}
+export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES, matches)}

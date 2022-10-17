@@ -1,5 +1,5 @@
 import { getMatches } from ".."
-import { TeamData } from "../../common/types"
+import type { TeamData } from "../../common/types"
 import Match, { MatchResult } from "./match"
 
 export default class Team implements TeamData {
@@ -28,9 +28,9 @@ export default class Team implements TeamData {
     }
 
     constructor(
-        public readonly id:number, 
-        public readonly name:string,
-        public readonly display_id:string = id.toString()
+        public id:number, 
+        public name:string,
+        public display_id:string = id.toString()
     ) {}
 
     addMatchResults(match:Match) {

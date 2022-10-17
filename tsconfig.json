@@ -17,6 +17,6 @@
     "checkJs": true,
     "isolatedModules": true
   },
-  "include": ["frontend/**/*.d.ts", "frontend/**/*.ts", "frontend/**/*.js", "frontend/**/*.svelte", "frontend/store.ts"],
+  "include": ["frontend/**/*.d.ts", "**/*.ts", "frontend/**/*.js", "frontend/**/*.svelte", "frontend/store.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

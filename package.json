@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "backend:build": "node build.js",
-    "backend:dev": "npm run backend:build && node dist/backend.cjs",
+    "backend:dev": "npm run backend:build && node dist/backend.cjs --enable-source-maps",
     "frontend:dev": "vite",
     "frontend:build": "vite build",
     "frontend:preview": "vite preview",
@@ -25,9 +25,13 @@
     "vite": "^3.1.0"
   },
   "dependencies": {
+    "@syncedstore/core": "^0.4.1",
+    "@syncedstore/svelte": "^0.4.1",
     "axios": "^1.1.2",
     "express": "^4.18.2",
     "simple-git": "^3.14.1",
-    "socket.io": "^4.5.2"
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.3",
+    "yjs": "^13.5.41"
   }
 }

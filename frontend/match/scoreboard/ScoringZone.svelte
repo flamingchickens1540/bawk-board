@@ -2,12 +2,13 @@
 	import { Alliance } from "./Scoreboard.svelte";
 	import { redScore, blueScore } from "../../store.js";
 	import { writable, type Writable } from "svelte/store";
+    import type { MatchScoreBreakdown } from "common/types";
 
 	export let index: number;
 	export let isUpper: boolean;
 	export let alliance: Alliance;
 	
-	let allianceScores: Writable<number[]>;
+	let allianceScores: Writable<MatchScoreBreakdown>;
 
 	switch (alliance) {
 		case Alliance.RED:

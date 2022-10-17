@@ -1,35 +1,11 @@
 <script lang="ts">
-    import {writable} from "svelte/store"
+    import {teams, updateTeams} from "../store"
     import type {TeamData} from "../../common/types"
     import Team from "./components/Team.svelte";
-    let teams:TeamData[]
-    const teamsStore = writable(teams)
-    
-    async function getTeams() {
-        const res = await fetch("//localhost:3000/api/teams")
-        const data:TeamData[] = await res.json()
-        $teamsStore = data.sort((a, b) => a.display_id.localeCompare(b.display_id))
-    }
-    
+
     function addTeam() {
-        teamsStore.update((items) => [...items, {display_id:null, id:null, name:null}])
+        teams.update((items) => [...items, {display_id:null, id:null, name:null}])
     }
-    async function updateTeams() {
-        $teamsStore = $teamsStore.filter((team) => team.id)
-        const res = await fetch("//localhost:3000/api/teams", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({teams:$teamsStore})
-        })
-        const data:TeamData[] = await res.json()
-        $teamsStore = data.sort((a, b) => a.display_id.localeCompare(b.display_id))
-    }
-    let doneLoading = false;
-    getTeams().then(() => doneLoading = true)
-    
 </script>
 
 <main>
@@ -44,18 +20,16 @@
             </tr>
         </thead>
         <tbody>
-            {#if doneLoading}
-            {#each $teamsStore as team, i }
-            <svelte:component this={Team} teams={teamsStore} index={i} team={team}/>
+            {#each $teams as team, i }
+            <Team team={team}/>
             {/each}
-            {/if}
         </tbody>
     </table>
     <br>
     <table id=buttons>
         <tr>
             <button on:click={addTeam}>Add Team</button>
-            <td><button on:click={updateTeams}>Update</button></td>
+            <button on:click={updateTeams}>Save</button>
         </tr>
     </table>
 </main>
@@ -65,11 +39,6 @@
         &#teamlist {
                 border-collapse: collapse;
                 padding-bottom:10px
-        }
-        &#buttons {
-            td {
-                padding: 0px 10px;
-            }
         }
     }
 </style>
