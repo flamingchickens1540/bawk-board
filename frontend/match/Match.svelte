@@ -1,5 +1,5 @@
 <script>
-	import Scoreboard from "./scoreboard/Scoreboard.svelte";
+	import Scoreboard from "../scoring/components/ScoringTower.svelte";
 	import Teams from "./teams/Teams.svelte";
 
     import {matchID} from "../store"
@@ -9,8 +9,9 @@
 	<div id="header">
 		<p>Bunnybots Scoreboard</p>
 	</div>
+	<h2>Scoring</h2>
 	<Scoreboard />
-	<div id="sidebar-l">
+	<div class="sidebar-l">
         <label for="match_number">Match #</label>
 		<input id="match_number" bind:value={$matchID} type="number" />
         <br>
@@ -18,7 +19,7 @@
 		<p>Teams</p>
 		<Teams />
 	</div>
-	<div id="sidebar-r">
+	<div class="sidebar-r">
 		<h2>Match {$matchID} Controls</h2>
 		<table>
 			<tr>
@@ -38,22 +39,6 @@
 		padding: 10px;
 	}
 
-	#sidebar-r {
-		position: absolute;
-		right: 0px;
-		top: 0px;
-		padding: 40px;
-		bottom: 0px;
-		background-color: #303030;
-	}
-	#sidebar-l {
-		position: absolute;
-		left: 0px;
-		top: 0px;
-		padding: 20px;
-		bottom: 0px;
-		background-color: #303030;
-	}
 	input {
 		width: 20px;
 	}

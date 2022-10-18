@@ -18,12 +18,11 @@
 	import ScoringRow from "./ScoringRow.svelte";
 </script>
 
-<h2>Tower</h2>
 <table>
 	<thead>
 		<tr>
-			<th></th>
 			<th class=red>Red: {calculateScore($redScore)}</th>
+			<th></th>
 			<th class=blue>Blue: {calculateScore($blueScore)}</th>
 		</tr>
 	</thead>
@@ -43,6 +42,7 @@
         padding:5px;
 		background-color: #444444;
         font-size:20px;
+		width:100%;
 	}
     th {
         text-align:center;

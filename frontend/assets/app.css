@@ -95,6 +95,27 @@ input[type=number] {
 }
 
 
+
+
+
+
+.sidebar-r {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  padding: 40px;
+  bottom: 0px;
+  background-color: #303030;
+}
+.sidebar-l {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding: 40px;
+  bottom: 0px;
+  background-color: #303030;
+}
+
 .red {
   background-color: #aa0000;
 }
