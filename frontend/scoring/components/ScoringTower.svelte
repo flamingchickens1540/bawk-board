@@ -28,10 +28,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<ScoringRow {alwaysWrite} title=Lower attribute=normal/>
-		<ScoringRow {alwaysWrite} title=Upper attribute=upper/>
-		<ScoringRow {alwaysWrite} title="Lower Bunny" attribute=normalBunny/>
-		<ScoringRow {alwaysWrite} title="Upper Bunny" attribute=upperBunny/>
+		<ScoringRow {alwaysWrite} title="Lower Tubes" attribute=normal/>
+		<ScoringRow {alwaysWrite} title="Upper Tubes" attribute=upper/>
+		<ScoringRow {alwaysWrite} title="Lower Bunny Tubes" attribute=normalBunny/>
+		<ScoringRow {alwaysWrite} title="Upper Bunny Tubes" attribute=upperBunny/>
 		<ScoringRow {alwaysWrite} title="Hybrid Tubes" attribute=autoBonuses/>
 		<ScoringRow {alwaysWrite} title="Fouls" attribute=foulPoints/>
 	</tbody>
