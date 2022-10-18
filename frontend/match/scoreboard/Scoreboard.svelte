@@ -13,6 +13,8 @@
 </script>
 
 <script lang="ts">
+	import { calculateScore } from "../../../common/calculations";
+	import { redScore, blueScore } from "../../store";
 	import ScoringRow from "./ScoringRow.svelte";
 </script>
 
@@ -21,8 +23,8 @@
 	<thead>
 		<tr>
 			<th></th>
-			<th class=red>Red</th>
-			<th class=blue>Blue</th>
+			<th class=red>Red: {calculateScore($redScore)}</th>
+			<th class=blue>Blue: {calculateScore($blueScore)}</th>
 		</tr>
 	</thead>
 	<tbody>

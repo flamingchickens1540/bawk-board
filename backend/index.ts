@@ -1,5 +1,6 @@
 import bodyParser from "body-parser"
 import express from "express"
+import { auth_secret } from "secrets"
 import { Server } from "socket.io"
 import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types"
 import Match from "./classes/match"
@@ -27,6 +28,7 @@ app.get("/api/matches", (req, res) => {
 app.get("/api/match", (req, res) => {
     res.send(getLatestMatch())
 })
+
 app.listen(3000)
 
 
@@ -41,9 +43,18 @@ export function getLatestMatch(): Match {
 
 const ws = new Server<ClientToServerEvents, ServerToClientEvents>(3001, {})
 
+
+
 ws.on("connection", (socket) => {
+    if (socket.handshake.auth.key != auth_secret) {
+        socket.emit("reAuth")
+        return;
+    }
+    socket.use((event, next) => {
+        console.log("ws:"+event[0], event[1])
+        next();
+    })
     socket.on("matchData", (data) => {
-        console.log("ws:matchData", data)
         const latestMatch = getLatestMatch()
         if (latestMatch.id == data.id) {
             latestMatch.blueScoreBreakdown = data.blueScoreBreakdown ?? latestMatch.blueScoreBreakdown
@@ -58,7 +69,6 @@ ws.on("connection", (socket) => {
     })
 
     socket.on("newMatch", (id) => {
-        console.log("ws:newMatch", id)
         const latestMatch = getLatestMatch() ?? {id:-1}
         if (latestMatch.id == id) {
             storeMatches(matches)
@@ -68,7 +78,6 @@ ws.on("connection", (socket) => {
     })
 
     socket.on("teamData", (data) => {
-        console.log("ws:teamData", data)
         data.forEach((value) => {
             if (value.id == null) {
                 return;
@@ -85,7 +94,6 @@ ws.on("connection", (socket) => {
         socket.broadcast.emit("teamData", teams)
     })
     socket.on("teamRemove", (id) => {
-        console.log("ws:teamRemove", id)
         teams = teams.filter((item) => item.id != id)
         ws.emit("teamData", teams)
     })

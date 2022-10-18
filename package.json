@@ -34,6 +34,7 @@
     "simple-git": "^3.14.1",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.3",
+    "typescript-cookie": "^1.0.4",
     "yjs": "^13.5.41"
   }
 }

@@ -2,8 +2,13 @@ import {writable, get, type Writable} from 'svelte/store'
 import type {MatchData, MatchScoreBreakdown, TeamData} from "../common/types"
 import type {ServerToClientEvents, ClientToServerEvents} from "../common/ws_types"
 import {io, type Socket} from "socket.io-client"
+import { getCookie } from 'typescript-cookie'
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001/")
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001/", {
+    auth: {
+        key: getCookie("auth")
+    }
+})
 
 export const redScore:Writable<MatchScoreBreakdown> = writable();
 export const blueScore:Writable<MatchScoreBreakdown> = writable();
@@ -66,6 +71,9 @@ socket.on("matchData", (data) => {
     updateMatchData(data)
 })
 
+socket.on("reAuth", () => {
+    window.location.assign("/auth.html")
+})
 
 export function updateTeams() {
     socket.emit("teamData", get(teams))

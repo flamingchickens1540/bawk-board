@@ -4,6 +4,7 @@ export interface ServerToClientEvents {
     matchData: (data:MatchData) => void;
     newMatch: (data:MatchData) => void;
     teamData: (data:TeamData[]) => void;
+    reAuth: () => void;
 }
 
 export interface ClientToServerEvents {

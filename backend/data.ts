@@ -36,11 +36,9 @@ setupGit()
 
 
 async function storeFile(file:DataFile, data:Object):Promise<void> {
-    
     const fileName = path.join(dataDir, file)
     try {
         fs.writeFileSync(fileName, JSON.stringify(data, null, 2))
-        await git.add(file)
     } catch (e){
         console.error("Could not save to", fileName, e)
     }
@@ -84,6 +82,9 @@ export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES
 new CronJob({
     cronTime: "* * * * *",
     onTick: async () => {
+        for (const file of Object.values(DataFile)) {
+            await git.add(file)
+        }
         await git.commit(new Date().toLocaleString(), {"--no-verify":null})
         await git.push("origin", "main")
     },
