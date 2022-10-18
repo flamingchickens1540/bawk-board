@@ -6,12 +6,13 @@
 
     export let attribute: keyof MatchScoreBreakdown
     export let title:string
+    export let alwaysWrite:boolean=false
 </script>
 
 <tr>
-    <td class=red><ScoringZone attribute={attribute} alliance={Alliance.RED}/></td>
+    <td class=red><ScoringZone alwaysWrite={alwaysWrite} attribute={attribute} alliance={Alliance.RED}/></td>
     <td>{title}</td>
-    <td class=blue ><ScoringZone attribute={attribute} alliance={Alliance.BLUE}/></td>
+    <td class=blue ><ScoringZone alwaysWrite={alwaysWrite} attribute={attribute} alliance={Alliance.BLUE}/></td>
 </tr>
 
 <style>

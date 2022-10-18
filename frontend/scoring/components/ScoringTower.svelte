@@ -16,6 +16,7 @@
 	import { calculateScore } from "../../../common/calculations";
 	import { redScore, blueScore } from "../../store";
 	import ScoringRow from "./ScoringRow.svelte";
+	export let alwaysWrite:boolean
 </script>
 
 <table>
@@ -27,12 +28,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		<ScoringRow title=Lower attribute=normal/>
-		<ScoringRow title=Upper attribute=upper/>
-		<ScoringRow title="Lower Bunny" attribute=normalBunny/>
-		<ScoringRow title="Upper Bunny" attribute=upperBunny/>
-		<ScoringRow title="Hybrid Tubes" attribute=autoBonuses/>
-		<ScoringRow title="Fouls" attribute=foulPoints/>
+		<ScoringRow {alwaysWrite} title=Lower attribute=normal/>
+		<ScoringRow {alwaysWrite} title=Upper attribute=upper/>
+		<ScoringRow {alwaysWrite} title="Lower Bunny" attribute=normalBunny/>
+		<ScoringRow {alwaysWrite} title="Upper Bunny" attribute=upperBunny/>
+		<ScoringRow {alwaysWrite} title="Hybrid Tubes" attribute=autoBonuses/>
+		<ScoringRow {alwaysWrite} title="Fouls" attribute=foulPoints/>
 	</tbody>
 </table>
 

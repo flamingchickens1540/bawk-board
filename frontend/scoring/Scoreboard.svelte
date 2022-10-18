@@ -6,7 +6,7 @@ import ScoringTower, { Alliance } from "./components/ScoringTower.svelte";
 <main>
     <h1>Scoring</h1>
     <div class=vcenter>
-        <ScoringTower/>
+        <ScoringTower alwaysWrite={false}/>
     </div>
 	<AllianceList style="red sidebar-l" alliance={Alliance.RED}/>
     <AllianceList style="blue sidebar-r" alliance={Alliance.BLUE}/>

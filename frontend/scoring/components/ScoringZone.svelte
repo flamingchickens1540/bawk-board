@@ -6,8 +6,9 @@
 	
 	export let attribute: keyof MatchScoreBreakdown;
 	export let alliance: Alliance;
+	export let alwaysWrite:boolean = false;
 	let value:number
-	let shouldUpdate = writable(false)
+	let shouldUpdate = writable(alwaysWrite)
 	let allianceScores: Writable<MatchScoreBreakdown>;
 
 	switch (alliance) {
@@ -18,7 +19,7 @@
 			allianceScores = blueScore;
 			break;
 		default:
-			console.warn(alliance)
+			console.error(alliance)
 	}
 
 	function updateScore() {
@@ -32,7 +33,7 @@
 </script>
 
 <div class="inputgroup">
-	{#if alliance == Alliance.BLUE}
+	{#if alliance == Alliance.BLUE && !alwaysWrite}
 		<input type="checkbox" class="checkbox-l" title="Doing" bind:checked={$shouldUpdate}/>
 	{/if}
 	<div class="inputs">
@@ -40,7 +41,7 @@
 		<input type="number" title="Count" disabled={!$shouldUpdate} on:change={updateScore} bind:value={value}/>
 		<button on:click={() => {value--; updateScore()}} disabled={!$shouldUpdate}>-</button>
 	</div>
-	{#if alliance == Alliance.RED}
+	{#if alliance == Alliance.RED &&!alwaysWrite}
 		<input type="checkbox" class="checkbox-r" title="Doing" bind:checked={$shouldUpdate}/>
 	{/if}
 </div>

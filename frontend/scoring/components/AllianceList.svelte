@@ -1,5 +1,5 @@
 <script lang=ts>
-	import { blueAlliance, redAlliance } from "../../store";
+	import { blueAlliance, prettyTeamNumber, redAlliance } from "../../store";
 	import { Alliance } from "./ScoringTower.svelte";
 
 	export let alliance: Alliance;
@@ -12,10 +12,9 @@
 <div class={style}>
 	<table>
 		<th><h2>{headerName}</h2></th>
-		<tr><td>{$teams[0] ?? ""}</td></tr>
-		<tr><td>{$teams[1] ?? ""}</td></tr>
-		<tr><td>{$teams[2] ?? ""}</td></tr>
-		<tr><td>{$teams[3] ?? ""}</td></tr>
+		{#each $teams as team} 
+      <tr><td>{prettyTeamNumber(team)}</td></tr>
+    {/each}
 	</table>
 </div>
 

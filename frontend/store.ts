@@ -52,17 +52,22 @@ function addMatchDataPublishers() {
     })
     redAlliance.subscribe((value) => {
         if (get(blockUpdates)) return;
-        socket.emit("matchData", {id:get(matchID), redTeams: value})
+        socket.emit("matchData", {id:get(matchID), redTeams: value.filter(Number)})
     })
     blueAlliance.subscribe((value) => {
         if (get(blockUpdates)) return;
-        socket.emit("matchData", {id:get(matchID), blueTeams: value})
+        socket.emit("matchData", {id:get(matchID), blueTeams: value.filter(Number)})
     })
 }
 
-init().then(addMatchDataPublishers)
+export const isDoneLoading = init().then(addMatchDataPublishers)
 
-
+export function prettyTeamNumber(number:number) {
+    return (get(teams).find((team) => team.id == number) ?? {display_id:""}).display_id
+}
+export function realTeamNumber(prettyNumber:string) {
+    return (get(teams).find((team) => team.display_id == prettyNumber) ?? {id:0}).id
+}
 
 socket.on("teamData", (data) => {
     teams.set(data)

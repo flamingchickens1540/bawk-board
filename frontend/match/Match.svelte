@@ -10,7 +10,7 @@
 		<p>Bunnybots Scoreboard</p>
 	</div>
 	<h2>Scoring</h2>
-	<Scoreboard />
+	<Scoreboard alwaysWrite={true}/>
 	<div class="sidebar-l">
         <label for="match_number">Match #</label>
 		<input id="match_number" bind:value={$matchID} type="number" />
