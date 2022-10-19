@@ -3,6 +3,7 @@ import type {MatchData, MatchScoreBreakdown, TeamData} from "../common/types"
 import type {ServerToClientEvents, ClientToServerEvents} from "../common/ws_types"
 import {io, type Socket} from "socket.io-client"
 import { getCookie } from 'typescript-cookie'
+import type { TowerName, Tower } from './types'
 
 export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001/", {
     auth: {
@@ -16,6 +17,7 @@ export const redAlliance:Writable<number[]> = writable([])
 export const blueAlliance:Writable<number[]> = writable([])
 export const matchID:Writable<number> = writable(0)
 export const teams:Writable<TeamData[]> = writable([])
+
 
 const blockUpdates = writable(false)
 
@@ -85,3 +87,7 @@ export function updateTeams() {
 }
 
 
+export const towers:{[key in TowerName]:Tower} = {
+    near: {name:"Near Tower", index:0},
+    far:  {name:"Far Tower", index:1}
+}

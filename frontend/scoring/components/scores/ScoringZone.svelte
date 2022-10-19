@@ -18,7 +18,7 @@
 			break;
 	}
 	let hasBunny: Writable<boolean> = writable();
-	let tubeCount: Writable<number> = writable();
+	let tubeCount: Writable<number> = writable(0);
 	isDoneLoading.then(() => {
 		if ($allianceScores.zones[index] == null) {
 			$allianceScores.zones[index] = new MatchScoreZone(isUpper, $hasBunny, $tubeCount)
@@ -33,16 +33,29 @@
 		function updateScore() {
 			$allianceScores.zones[index].tubeCount = $tubeCount
 		}
+		allianceScores.subscribe((value) => {
+			hasBunny.set(value.zones[index].hasBunny)
+			tubeCount.set(value.zones[index].tubeCount)
+		})
 	})
 </script>
 
 
 <td><input type="checkbox" title="Bunny" bind:checked={$hasBunny} /></td>
-<td><input type="number" title="Tubes" bind:value={$tubeCount} min="0" max="100" /></td>
+<td>
+	<div class=inputgroup>
+		<button on:click={() => $tubeCount++}>+</button>
+		<input type="number" title="Tubes" bind:value={$tubeCount} min="0" max="100" />
+		<button on:click={() => $tubeCount--}>-</button>
+	</div>
+</td>
 
 <style>
 	input[type="number"] {
 		width: 60px;
+		height:35px;
+		font-size:20px;
+		text-align:center;
 	}
 	input[type="checkbox"] {
 		height: 100%;

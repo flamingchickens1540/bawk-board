@@ -32,4 +32,8 @@
 	td {
 		padding: 10px 0px;
 	}
+    table {
+        width:100%;
+        height:100%
+    }
 </style>
