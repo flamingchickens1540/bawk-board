@@ -5,6 +5,7 @@ export interface ServerToClientEvents {
     newMatch: (data:MatchData) => void;
     teamData: (data:TeamData[]) => void;
     reAuth: () => void;
+    matchStart: (data:MatchData) => void;
 }
 
 export interface ClientToServerEvents {
@@ -12,4 +13,5 @@ export interface ClientToServerEvents {
     teamData: (data:TeamData[]) => void;
     newMatch: (id:number) => void;
     teamRemove: (id:number) => void;
+    matchStart: (id:number) => void;
 }

@@ -1,5 +1,5 @@
 <script lang=ts>
-    import { teams } from "../../store";
+    import { teams } from "../../../store";
     import TeamPair from "./TeamPair.svelte";
 
 </script>

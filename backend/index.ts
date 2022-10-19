@@ -1,4 +1,6 @@
 import bodyParser from "body-parser"
+import { Timer } from "common/timer"
+import { MatchState } from "common/types"
 import express from "express"
 import { auth_secret } from "secrets"
 import { Server } from "socket.io"
@@ -14,7 +16,7 @@ app.use(bodyParser.json());
 let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
 
-
+const matchTimer = new Timer()
 
 app.get("/api/teams", (req, res) => {
     res.send(Object.values(teams))
@@ -51,7 +53,8 @@ ws.on("connection", (socket) => {
         return;
     }
     socket.use((event, next) => {
-        console.log("ws:"+event[0], event[1])
+        console.log("ws:"+event[0])
+        Object.entries(event[1]).forEach(([key, value]) => {console.log("|", key+":", value)})
         next();
     })
     socket.on("matchData", (data) => {
@@ -96,6 +99,12 @@ ws.on("connection", (socket) => {
     socket.on("teamRemove", (id) => {
         teams = teams.filter((item) => item.id != id)
         ws.emit("teamData", teams)
+    })
+
+    socket.on("matchStart", (id) => {
+        const latestMatch = getLatestMatch()
+        latestMatch.matchState = MatchState.IN_PROGRESS
+        socket.broadcast.emit("matchStart", getLatestMatch())
     })
 })
 

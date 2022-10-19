@@ -1,6 +1,6 @@
 <script lang=ts>
 	import { blueAlliance, prettyTeamNumber, redAlliance } from "../../store";
-	import { Alliance } from "./ScoringTower.svelte";
+	import { Alliance } from "../../../common/types";
 
 	export let alliance: Alliance;
 	export let style: string;

@@ -1,8 +1,14 @@
 <script>
-	import Scoreboard from "../scoring/components/ScoringTower.svelte";
-	import Teams from "./teams/Teams.svelte";
+	import Teams from "./components/teams/Teams.svelte";
 
-    import {matchID} from "../store"
+    import {matchID, socket} from "../store"
+
+	function startMatch() {
+		socket.emit("matchStart", $matchID)
+	}
+	function stopMatch() {
+
+	}
 </script>
 
 <main>
@@ -10,7 +16,6 @@
 		<p>Bunnybots Scoreboard</p>
 	</div>
 	<h2>Scoring</h2>
-	<Scoreboard alwaysWrite={true}/>
 	<div class="sidebar-l">
         <label for="match_number">Match #</label>
 		<input id="match_number" bind:value={$matchID} type="number" />
@@ -23,7 +28,7 @@
 		<h2>Match {$matchID} Controls</h2>
 		<table>
 			<tr>
-				<button class="green">Start</button>
+				<button on:click={startMatch} class="green">Start</button>
 				<button class="red">Stop</button>
 			</tr>
 		</table>

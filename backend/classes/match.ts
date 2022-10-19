@@ -1,18 +1,11 @@
 import { calculateScore } from "../../common/calculations";
-import type { MatchData, MatchScoreBreakdown } from "../../common/types";
+import { Alliance, MatchResult, MatchState, type MatchData, type MatchScoreBreakdown } from "../../common/types";
 
-export enum Alliance {
-    RED,
-    BLUE,
-    NONE
-}
-export enum MatchResult {
-    WIN,
-    LOSS,
-    DRAW
-}
+
 
 export default class Match implements MatchData {
+    public matchState = MatchState.PENDING
+    
     get winningAlliance() {
         if (this.redScore > this.blueScore) {
             return Alliance.RED
@@ -80,10 +73,7 @@ export default class Match implements MatchData {
 }
 
 const nullMatchData:MatchScoreBreakdown = {
-    upperBunny:0,
-    upper:0,
-    normal:0,
-    normalBunny:0,
+    zones:[],
     autoBonuses:0,
     foulPoints:0
 }

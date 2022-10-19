@@ -1,6 +1,6 @@
 import { getMatches } from ".."
-import type { TeamData } from "../../common/types"
-import Match, { MatchResult } from "./match"
+import { MatchResult, type TeamData } from "../../common/types"
+import type Match from "./match"
 
 export default class Team implements TeamData {
     private matchIDs:number[]

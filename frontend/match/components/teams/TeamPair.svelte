@@ -1,6 +1,5 @@
 <script lang=ts>
-  import { Alliance } from "../../scoring/components/ScoringTower.svelte";
-    import { redAlliance, blueAlliance} from "../../store";
+  import { Alliance } from "../../../../common/types";
   import Team from "./Team.svelte";
 
     export let index:number;
