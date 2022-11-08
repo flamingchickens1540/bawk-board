@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { TeamData } from "../../../common/types";
-	import { socket } from "../../store";
+	import { socket } from "../../socket";
 	export let team: TeamData;
 </script>
 

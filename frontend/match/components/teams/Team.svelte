@@ -4,10 +4,10 @@
 	import {
 		redAlliance,
 		blueAlliance,
-		teams,
 		isDoneLoading,
 		prettyTeamNumber,
 		realTeamNumber,
+		blockSubscribers,
 	} from "../../../store";
 
 	export let alliance_name: Alliance;
@@ -24,7 +24,9 @@
 			console.error(alliance);
 	}
 	isDoneLoading.then(() => {
-		team.set(prettyTeamNumber($alliance[index]));
+		blockSubscribers(() => {
+			team.set(prettyTeamNumber($alliance[index]));
+		})
 	});
 
 	let team = writable("");

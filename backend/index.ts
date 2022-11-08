@@ -1,39 +1,26 @@
-import bodyParser from "body-parser"
-import { Timer } from "common/timer"
+import { NotifyTimer } from "common/timer"
 import { MatchState } from "common/types"
-import express from "express"
 import { auth_secret } from "secrets"
 import { Server } from "socket.io"
 import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types"
 import Match from "./classes/match"
 import Team from "./classes/team"
-import { loadMatches, loadTeams, storeMatches } from "./data"
+import { loadMatches, loadTeams, storeMatches, storeTeams } from "./data"
+import { startHttpServer } from './router';
+import { updateEventInfo } from "./tba"
 
-const app = express()
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
 
 let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
 
-const matchTimer = new Timer()
+let matchTimer:NotifyTimer;
 
-app.get("/api/teams", (req, res) => {
-    res.send(Object.values(teams))
-})
+startHttpServer()
 
-
-app.get("/api/matches", (req, res) => {
-    res.send(matches)
-})
-
-app.get("/api/match", (req, res) => {
-    res.send(getLatestMatch())
-})
-
-app.listen(3000)
-
-
+export function getTeams():Team[] {
+    return teams
+}
 export function getMatches(): Match[] {
     return matches
 }
@@ -53,9 +40,13 @@ ws.on("connection", (socket) => {
         return;
     }
     socket.use((event, next) => {
-        console.log("ws:"+event[0])
-        Object.entries(event[1]).forEach(([key, value]) => {console.log("|", key+":", value)})
-        next();
+        try {
+            console.log(new Date().toLocaleTimeString(), "ws:"+event[0])
+            Object.entries(event[1]).forEach(([key, value]) => {console.log("|", key+":", value)})
+        } catch (e) {
+        } finally {
+            next();
+        }
     })
     socket.on("matchData", (data) => {
         const latestMatch = getLatestMatch()
@@ -86,14 +77,18 @@ ws.on("connection", (socket) => {
                 return;
             }
             const teamIndex = teams.findIndex((team) => team.id == value.id)
+            const display_id = value.display_id || value.id.toString()
+            console.log(value, display_id, teamIndex)
             if (teamIndex == -1) {
-                teams.push(new Team(value.id, value.name, value.display_id))
+                teams.push(new Team(value.id, value.name, display_id))
             } else {
                 teams[teamIndex].id = value.id
-                teams[teamIndex].display_id = value.display_id ?? value.id.toString()
+                teams[teamIndex].display_id = display_id
                 teams[teamIndex].name = value.name
             }
         })
+        storeTeams(teams)
+        updateEventInfo(teams)
         socket.broadcast.emit("teamData", teams)
     })
     socket.on("teamRemove", (id) => {
@@ -103,8 +98,19 @@ ws.on("connection", (socket) => {
 
     socket.on("matchStart", (id) => {
         const latestMatch = getLatestMatch()
-        latestMatch.matchState = MatchState.IN_PROGRESS
-        socket.broadcast.emit("matchStart", getLatestMatch())
+        matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getLatestMatch()), endMatch)
+        matchTimer.start()
+        latestMatch.start(matchTimer.startTime)
+        
+        ws.emit("matchStart", getLatestMatch())
+    })
+    socket.on("matchAbort", (id) => {
+        endMatch()
     })
 })
+
+function endMatch() {
+    ws.emit("matchEnd", getLatestMatch())
+    getLatestMatch().end()
+}
 

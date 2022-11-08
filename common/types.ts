@@ -1,10 +1,11 @@
 export type MatchData = {
     id:number
-    redTeams?:number[]
-    blueTeams?:number[]
-    redScoreBreakdown?:MatchScoreBreakdown
-    blueScoreBreakdown?:MatchScoreBreakdown
-    matchState?: MatchState
+    redTeams:number[]
+    blueTeams:number[]
+    redScoreBreakdown:MatchScoreBreakdown
+    blueScoreBreakdown:MatchScoreBreakdown
+    matchState: MatchState
+    matchStartTime:number
 };
 export type TeamData = {
     id:number,
@@ -14,7 +15,7 @@ export type TeamData = {
 
 export type MatchScoreBreakdown = {
     zones: MatchScoreZone[]
-    autoBonuses:number
+    autoTubes:number
     foulPoints:number
 }
 export class MatchScoreZone {
@@ -29,6 +30,9 @@ export class MatchScoreZone {
     }
     get points() {
         return this.multiplier*this.tubeCount
+    }
+    static from(data:MatchScoreZone) {
+        return new MatchScoreZone(data.isUpper, data.hasBunny, data.tubeCount)
     }
 }
 export enum Alliance {

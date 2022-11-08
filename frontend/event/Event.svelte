@@ -1,5 +1,6 @@
 <script lang="ts">
-    import {teams, updateTeams} from "../store"
+    import {teams} from "../store"
+    import {updateTeams} from "../socket"
     import Team from "./components/Team.svelte";
 
     function addTeam() {

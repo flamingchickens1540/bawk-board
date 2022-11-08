@@ -1,13 +1,25 @@
 const dataDir = "./data"
+import type { MatchData, TeamData } from "common/types"
+import { CronJob } from "cron"
 import fs from "fs"
 import path from "path"
+import process from "process"
+import simpleGit from "simple-git"
+import { getMatches, getTeams } from "."
+import { origin_url } from "../secrets"
 import Match from "./classes/match"
 import Team from "./classes/team"
-import simpleGit from "simple-git"
-import { origin_url } from "../secrets"
-import type { MatchData, TeamData } from "common/types"
-import {CronJob} from "cron"
 
+
+process.on("exit", (code) => {
+    console.warn("Erroring, saving files")
+    try {
+        storeTeams(getTeams())
+        storeMatches(getMatches())
+    } catch (e) {
+        console.error("could not save files")
+    }
+})
 
 export enum DataFile {
     TEAMS = "teams.json",
@@ -82,11 +94,15 @@ export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES
 new CronJob({
     cronTime: "* * * * *",
     onTick: async () => {
-        for (const file of Object.values(DataFile)) {
-            await git.add(file)
+        try {
+            for (const file of Object.values(DataFile)) {
+                await git.add(file)
+            }
+            await git.commit(new Date().toLocaleString(), {"--no-verify":null})
+            await git.push("origin", "main")
+        } catch (e) {
+            console.error(e)
         }
-        await git.commit(new Date().toLocaleString(), {"--no-verify":null})
-        await git.push("origin", "main")
     },
     start:true,
     runOnInit: true

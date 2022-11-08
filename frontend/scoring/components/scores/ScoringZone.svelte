@@ -45,18 +45,13 @@
 <td>
 	<div class=inputgroup>
 		<button on:click={() => $tubeCount++}>+</button>
-		<input type="number" title="Tubes" bind:value={$tubeCount} min="0" max="100" />
+		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min="0" max="100" />
 		<button on:click={() => $tubeCount--}>-</button>
 	</div>
 </td>
 
 <style>
-	input[type="number"] {
-		width: 60px;
-		height:35px;
-		font-size:20px;
-		text-align:center;
-	}
+
 	input[type="checkbox"] {
 		height: 100%;
 		transform: scale(1.5);

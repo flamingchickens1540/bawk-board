@@ -5,7 +5,9 @@ import { Alliance, MatchResult, MatchState, type MatchData, type MatchScoreBreak
 
 export default class Match implements MatchData {
     public matchState = MatchState.PENDING
-    
+    public matchStartTime:number = 0
+
+
     get winningAlliance() {
         if (this.redScore > this.blueScore) {
             return Alliance.RED
@@ -67,6 +69,14 @@ export default class Match implements MatchData {
         }
     }
 
+    start(startTime:number) {
+        this.matchState = MatchState.IN_PROGRESS
+        this.matchStartTime = startTime
+    }
+    end() {
+        this.matchState = MatchState.COMPLETED
+    }
+
     static new(id:number):Match {
         return new Match(id, [],[],nullMatchData,nullMatchData)
     }
@@ -74,6 +84,6 @@ export default class Match implements MatchData {
 
 const nullMatchData:MatchScoreBreakdown = {
     zones:[],
-    autoBonuses:0,
+    autoTubes:0,
     foulPoints:0
 }

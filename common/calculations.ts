@@ -1,4 +1,4 @@
-import type { MatchScoreBreakdown } from "./types";
+import { MatchScoreZone, type MatchScoreBreakdown } from "./types";
 
 export function calculateScore(breakdown:MatchScoreBreakdown) {
     if (breakdown == null) {
@@ -6,7 +6,7 @@ export function calculateScore(breakdown:MatchScoreBreakdown) {
     }
     let zoneSum:number = 0
     breakdown.zones.forEach((zone) => {
-        zoneSum += zone.points
+        zoneSum += MatchScoreZone.from(zone).points
     })
-    return zoneSum+breakdown.autoBonuses*10+breakdown.foulPoints
+    return zoneSum+breakdown.autoTubes*10+breakdown.foulPoints
 }
