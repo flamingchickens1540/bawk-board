@@ -103,6 +103,7 @@ ws.on("connection", (socket) => {
         latestMatch.start(matchTimer.startTime)
         
         ws.emit("matchStart", getLatestMatch())
+        ws.emit("matchData", getLatestMatch())
     })
     socket.on("matchAbort", (id) => {
         endMatch()
@@ -112,5 +113,6 @@ ws.on("connection", (socket) => {
 function endMatch() {
     ws.emit("matchEnd", getLatestMatch())
     getLatestMatch().end()
+    ws.emit("matchData", getLatestMatch())
 }
 

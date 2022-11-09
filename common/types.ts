@@ -49,5 +49,5 @@ export enum MatchResult {
 export enum MatchState {
     PENDING,
     IN_PROGRESS,
-    COMPLETED
+    COMPLETED,
 }

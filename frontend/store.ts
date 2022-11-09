@@ -4,7 +4,7 @@ import type { TowerName, Tower } from './types'
 import { addMatchDataPublishers } from './socket'
 
 
-export const redScore:Writable<MatchScoreBreakdown> = writable();
+export const  redScore:Writable<MatchScoreBreakdown> = writable();
 export const blueScore:Writable<MatchScoreBreakdown> = writable();
 export const redAlliance:Writable<number[]> = writable([])
 export const blueAlliance:Writable<number[]> = writable([])
