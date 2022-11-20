@@ -13,6 +13,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --red: #ED1C24;
+  --blue:#0066b3;
 }
 
 a {
@@ -117,10 +120,10 @@ input[type=number] {
 }
 
 .red {
-  background-color: #ED1C24;
+  background-color: var(--red);
 }
 .blue {
-  background-color: #0066b3;
+  background-color: var(--blue);
 }
 .green {
   background-color: #16BE3C;

@@ -1,14 +1,13 @@
 <script lang="ts">
 	import Teams from "./components/teams/Teams.svelte";
 
-    import {isDoneLoading, matchID, matchStartTime, matchState} from "../store"
+    import {isDoneLoading, matchID, matchStartTime, matchState, timer} from "../store"
 	import { socket } from "../socket";
 	import { SimpleTimer } from "../../common/timer";
 	import match_start from "../assets/audio/match_start.wav"
 	import match_teleop from "../assets/audio/match_teleop.wav"
 	import match_end from "../assets/audio/match_end.wav"
   import { MatchState } from "../../common/types";
-	const timer = new SimpleTimer()
 	
 
 	setInterval(() => document.getElementById("match-time").innerText = timer.elapsedTimeFormatted, 100)
@@ -25,7 +24,6 @@
 	})
 	socket.on("matchStart", (data) => {
 		new Audio(match_start).play()
-		timer.startWithTime(data.matchStartTime)
 		setButtonStop()
 	})
 	socket.on("matchEnd", (data) => {

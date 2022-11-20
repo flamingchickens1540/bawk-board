@@ -29,8 +29,11 @@
 <div id="grid" transition:showBanners>
     <div class="banner-container-red"><img alt=redbanner src={red_banner} class="banner" /></div>
     <div class="banner-container-blue"><img alt=bluebanner src={blue_banner} class="banner" /></div>
+
+
     <h1 class="total label-red wide">{calculateScore($redScore)}</h1>
     <h1 class="teams label-red wide">{$redAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
+
     <h2 class="hybrid label-red">Hybrid</h2>
     <h2 class="teleop label-red">Teleop</h2>
     <h2 class="penalty label-red">Blue Penalty</h2>
@@ -39,8 +42,10 @@
     <h2 class="teleop value-red">{getTeleopScore($redScore)}</h2>
     <h2 class="penalty value-red">{getFoulPoints($redScore)}</h2>
     
+    
     <h1 class="total label-blue wide">{calculateScore($blueScore)}</h1>
-    <h1 class="teams label-blue wide">{$redAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
+    <h1 class="teams label-blue wide">{$blueAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
+
     <h2 class="hybrid label-blue">Hybrid</h2>
     <h2 class="teleop label-blue">Teleop</h2>
     <h2 class="penalty label-blue">Red Penalty</h2>
@@ -48,8 +53,6 @@
     <h2 class="hybrid value-blue">{getHybridScore($blueScore)}</h2>
     <h2 class="teleop value-blue">{getTeleopScore($blueScore)}</h2>
     <h2 class="penalty value-blue">{getFoulPoints($blueScore)}</h2>
-    
-    
 </div>    
 {/if}
 <style lang="scss">

@@ -28,14 +28,24 @@ export class SimpleTimer {
     }
     get elapsedTimeMS() {return Date.now() - this.realStartTime}
     get elapsedTimeFormatted() {
-        const date = new Date(Date.now() - this.realStartTime)
+        const date = new Date(this.elapsedTimeMS)
         return `${date.getMinutes()}:${date.getSeconds().toString().padStart(2, "0")}`
     }
-    get elapsedTime() {return Math.floor(this.elapsedTimeMS/1000)}
+    get elapsedTime() {return Math.ceil(this.elapsedTimeMS/1000)}
     get stage():Period {
         if      (transitions.HYBRID.contains(this.elapsedTimeMS/1000)) return Period.HYBRID
         else if (transitions.TELEOP.contains(this.elapsedTimeMS/1000)) return Period.TELEOP
         else return Period.POST;
+    }
+    get remainingTimeMS() {
+        return (transitions[this.stage] ?? {end:this.elapsedTime}).end*1000 - this.elapsedTimeMS
+    }
+    get remainingTimePercent() {
+        return ((this.remainingTimeMS)/(transitions[this.stage].end*1000))
+    }
+    get remainingTimeFormatted() {
+        const date = new Date(this.remainingTimeMS)
+        return `${date.getMinutes()}:${date.getSeconds().toString().padStart(2, "0")}`
     }
     public start() {
         this.startTime = Date.now()
@@ -49,7 +59,7 @@ export class SimpleTimer {
 }
 
 class Range {
-    constructor (private start:number, private end:number) {}
+    constructor (readonly start:number, readonly end:number) {}
     contains(value:number) {
         return value < this.end && value >= this.start;
     }

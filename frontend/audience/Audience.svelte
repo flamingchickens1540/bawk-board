@@ -4,7 +4,15 @@
     import Match from "./components/Match.svelte";
     import { matchState } from "../store";
     import { MatchState } from "../../common/types";
-    let element = Scores;
+    let element;
+    console.log(window.location.search.replace("?", ""))
+    switch(window.location.search.replace("?", "").trim()) {
+        case "scores":
+            element = Scores;
+            break;
+        default:
+            element = Match
+    }
     // matchState.subscribe((value) => {
     //     switch (value) {
     //         case MatchState.PENDING: element=Match; break
