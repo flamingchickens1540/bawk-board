@@ -1,12 +1,22 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [svelte()],
-  root: '.',
+  plugins: [svelte({configFile:"../svelte.config.js"})],
+  root: './frontend',
+  logLevel: "warn",
   publicDir:false,
   build: {
-    outDir: './dist/frontend',
+    rollupOptions: {
+      input: [
+        "./frontend/index.html",
+        "./frontend/scoring/index.html",
+        "./frontend/match/index.html",
+        "./frontend/event/index.html",
+        "./frontend/auth/index.html",
+        "./frontend/audience/index.html"
+      ]
+    },
+    outDir: '../dist/frontend',
   }
 })

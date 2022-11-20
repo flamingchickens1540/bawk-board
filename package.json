@@ -7,7 +7,7 @@
     "backend:build": "node build.js",
     "backend:dev": "npm run backend:build && node dist/backend.cjs --enable-source-maps",
     "frontend:dev": "vite",
-    "frontend:build": "vite build",
+    "frontend:build": "vite build --emptyOutDir",
     "frontend:preview": "vite preview",
     "frontend:check": "svelte-check --tsconfig ./tsconfig.json"
   },
@@ -15,7 +15,9 @@
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
     "@tsconfig/svelte": "^3.0.0",
     "@types/express": "^4.17.14",
+    "@types/glob": "^8.0.0",
     "esbuild": "^0.15.10",
+    "glob": "^8.0.3",
     "sass": "^1.55.0",
     "svelte": "^3.51.0",
     "svelte-check": "^2.8.1",

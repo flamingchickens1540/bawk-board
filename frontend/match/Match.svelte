@@ -84,7 +84,6 @@
 		left: 0px;
 		right: 0px;
 		text-align: center;
-		// background-color: #444;
 		padding: 10px;
 	}
 
