@@ -15,8 +15,8 @@
 	export let style: string;
 	let headerName = alliance == Alliance.RED ? "Red" : "Blue";
 
-	let teams: Writable<number[]>;
-	let allianceScores: Writable<MatchScoreBreakdown>;
+	export let teams: Writable<number[]>;
+	export let allianceScores: Writable<MatchScoreBreakdown>;
 
 	switch (alliance) {
 		case Alliance.RED:
