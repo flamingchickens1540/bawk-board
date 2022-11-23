@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "backend:build": "node build.js",
-    "backend:dev": "npm run backend:build && node dist/backend.cjs --enable-source-maps",
+    "backend:dev": "npm run backend:build && node --trace-warnings -r source-map-support/register dist/backend.cjs",
     "frontend:dev": "vite",
     "frontend:build": "vite build --emptyOutDir",
     "frontend:preview": "vite preview",
@@ -19,6 +19,7 @@
     "esbuild": "^0.15.10",
     "glob": "^8.0.3",
     "sass": "^1.55.0",
+    "source-map-support": "^0.5.21",
     "svelte": "^3.51.0",
     "svelte-check": "^2.8.1",
     "svelte-preprocess": "^4.10.7",
