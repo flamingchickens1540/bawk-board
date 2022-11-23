@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PlayoffAlliance } from "../../../common/alliances";
 	import type { TeamData } from "../../../common/types";
 	import { socket } from "../../socket";
 	export let team: TeamData;
@@ -18,6 +19,15 @@
 	</td>
 	<td class="namewidth">
 		<input type="string" bind:value={team.name} />
+	</td>
+	<td class="namewidth">
+		<select bind:value={team.playoffAlliance}>
+			<option value={PlayoffAlliance.NONE}>None</option>
+			<option value={PlayoffAlliance.ALLIANCE_1}>Alliance 1</option>
+			<option value={PlayoffAlliance.ALLIANCE_2}>Alliance 2</option>
+			<option value={PlayoffAlliance.ALLIANCE_3}>Alliance 3</option>
+			<option value={PlayoffAlliance.ALLIANCE_4}>Alliance 4</option>
+		</select>
 	</td>
 </tr>
 

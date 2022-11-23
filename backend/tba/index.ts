@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import type Match from "backend/classes/match";
 import crypto from "crypto"
 import { tba_secret, tba_secret_id } from "secrets";
@@ -38,12 +38,18 @@ interface Endpoints{
 async function post<E extends keyof Endpoints>(endpoint:E, body:Endpoints[E]) {
     const path = `/api/trusted/v1/event/${eventCode}/${endpoint}`
     const signature = crypto.createHash('md5').update(tba_secret + path + JSON.stringify(body)).digest('hex')
-    const response = await http_client.post(path, body, {
-        headers: {
-            'X-TBA-Auth-Sig': signature
-        }
-    })
-    console.log(response.status, response.statusText, path, body)
+    let response;
+    try {
+        response = await http_client.post(path, body, {
+            headers: {
+                'X-TBA-Auth-Sig': signature
+            }
+        })
+        console.log(response.status, response.statusText, path, body)
+    } catch (e) {
+        console.error("Request to", path, "failed.", e.response.status, e.response.statusText, e.response.data)    
+    }
+    
 }
 
 export async function updateEventInfo(teams: Team[]) {

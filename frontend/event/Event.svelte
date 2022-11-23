@@ -2,9 +2,10 @@
     import {teams} from "../store"
     import {updateTeams} from "../socket"
     import Team from "./components/Team.svelte";
+  import { PlayoffAlliance } from "../../common/alliances";
 
     function addTeam() {
-        teams.update((items) => [...items, {display_id:null, id:null, name:null}])
+        teams.update((items) => [...items, {display_id:null, id:null, name:null, playoffAlliance:PlayoffAlliance.NONE}])
     }
 </script>
 
@@ -17,6 +18,7 @@
                 <th title="The team number (1540)">Number</th>
                 <th title="The team number to display (1540C)">Display</th>
                 <th title="The team name (the Flaming Chickens)">Name</th>
+                <th title="The playoff alliance">Alliance</th>
             </tr>
         </thead>
         <tbody>

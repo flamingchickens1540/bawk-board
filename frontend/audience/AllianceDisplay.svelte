@@ -1,7 +1,6 @@
 <script type="ts">
     import { prettyTeamNumber } from "../store";
     import { teams } from "../store"
-    import {  } from "frontend/scoring/components/AllianceList.svelte"; 
     //TODO: get list of alliances and teams in each alliance
     //TODO: display them dynamically
     //See Ryan's design for reference

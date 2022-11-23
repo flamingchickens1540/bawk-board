@@ -1,10 +1,11 @@
 {
-  "name": "frontend",
+  "name": "bawk-board",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "backend:build": "node build.js",
+    "dev": "(trap 'kill 0' SIGINT; npm run backend:dev & npm run frontend:dev)",
     "backend:dev": "npm run backend:build && node --trace-warnings -r source-map-support/register dist/backend.cjs",
     "frontend:dev": "vite",
     "frontend:build": "vite build --emptyOutDir",

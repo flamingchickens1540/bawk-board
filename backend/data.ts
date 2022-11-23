@@ -1,5 +1,5 @@
 const dataDir = "./data"
-import type { MatchData, TeamData } from "common/types"
+import type { EventData, MatchData, TeamData } from "common/types"
 import { CronJob } from "cron"
 import fs from "fs"
 import path from "path"
@@ -23,7 +23,8 @@ process.on("exit", (code) => {
 
 export enum DataFile {
     TEAMS = "teams.json",
-    MATCHES = "matches.json"
+    MATCHES = "matches.json",
+    EVENT = "event.json"
 }
 
 export type TeamDict = {[key:number]:Team}
@@ -44,7 +45,9 @@ async function setupGit() {
         await git.addRemote("origin", origin_url)
     }
 }
-setupGit()
+if (origin_url.length > 0) {
+    setupGit()
+}
 
 
 async function storeFile(file:DataFile, data:Object):Promise<void> {
@@ -61,7 +64,7 @@ export function loadFile(file:DataFile):Object {
     if (fs.existsSync(fileName)) {
         return JSON.parse(fs.readFileSync(fileName, "utf-8"))
     } else {
-        fs.writeFileSync(fileName, "{}")
+        fs.writeFileSync(fileName, "[]")
         return {}
     }
 }
@@ -82,6 +85,9 @@ export function loadMatches():Match[] {
     return loadMatchesFromData(data)
 
 }
+export function loadEventData():EventData {
+    return loadFile(DataFile.EVENT) as EventData;
+}
 
 export function loadMatchesFromData(data:MatchData[]):Match[] {
     return data.map((value) => Object.assign(Match.new(-1), value))
@@ -89,11 +95,15 @@ export function loadMatchesFromData(data:MatchData[]):Match[] {
 
 export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}
 export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES, matches)}
+export const storeEventData = (data:EventData) => {storeFile(DataFile.EVENT, data)}
 
 
 new CronJob({
     cronTime: "* * * * *",
     onTick: async () => {
+        if (origin_url.length == 0) {
+            return;
+        }
         try {
             for (const file of Object.values(DataFile)) {
                 await git.add(file)

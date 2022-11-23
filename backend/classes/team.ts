@@ -1,9 +1,12 @@
+import { PlayoffAlliance } from "common/alliances"
 import { getMatches } from ".."
 import { MatchResult, type TeamData } from "../../common/types"
 import type Match from "./match"
 
 export default class Team implements TeamData {
     private matchIDs:number[]
+    playoffAlliance:PlayoffAlliance = PlayoffAlliance.NONE
+
     get matches() {
         const matches = getMatches()
         return this.matchIDs.map((id) => matches[id])
@@ -34,7 +37,7 @@ export default class Team implements TeamData {
     ) {}
 
     addMatchResults(match:Match) {
-        this.matches.push(match)
+        this.matchIDs.push(match.id)
     }
 
     getScore(match:Match) {

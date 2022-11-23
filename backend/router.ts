@@ -1,7 +1,7 @@
 import express from "express"
 import bodyParser from 'body-parser';
 import cors from "cors"
-import { getLatestMatch, getTeams, getMatches } from ".";
+import { getCurrentMatch, getTeams, getMatches } from ".";
 
 
 const app = express()
@@ -19,7 +19,7 @@ app.get("/api/matches", (req, res) => {
 })
 
 app.get("/api/match", (req, res) => {
-    res.send(getLatestMatch())
+    res.send(getCurrentMatch())
 })
 
 export function startHttpServer() {

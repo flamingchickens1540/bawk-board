@@ -5,7 +5,7 @@ import { Server } from "socket.io"
 import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types"
 import Match from "./classes/match"
 import Team from "./classes/team"
-import { loadMatches, loadTeams, storeMatches, storeTeams } from "./data"
+import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
 import { startHttpServer } from './router';
 import { updateEventInfo } from "./tba"
 
@@ -13,7 +13,7 @@ import { updateEventInfo } from "./tba"
 
 let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
-
+let currentMatchID=loadEventData().currentMatchID ?? 0
 let matchTimer:NotifyTimer;
 
 startHttpServer()
@@ -25,8 +25,8 @@ export function getMatches(): Match[] {
     return matches
 }
 
-export function getLatestMatch(): Match {
-    return matches[matches.length - 1]
+export function getCurrentMatch(): Match {
+    return matches[currentMatchID]
 }
 
 
@@ -49,7 +49,7 @@ ws.on("connection", (socket) => {
         }
     })
     socket.on("matchData", (data) => {
-        const latestMatch = getLatestMatch()
+        const latestMatch = getCurrentMatch()
         if (latestMatch.id == data.id) {
             latestMatch.blueScoreBreakdown = data.blueScoreBreakdown ?? latestMatch.blueScoreBreakdown
             latestMatch.redScoreBreakdown = data.redScoreBreakdown ?? latestMatch.redScoreBreakdown
@@ -58,17 +58,18 @@ ws.on("connection", (socket) => {
         } else {
             console.warn("wrong ID")
         }
-        socket.broadcast.emit("matchData", getLatestMatch())
+        socket.broadcast.emit("matchData", getCurrentMatch())
         storeMatches(matches)
     })
 
-    socket.on("newMatch", (id) => {
-        const latestMatch = getLatestMatch() ?? {id:-1}
-        if (latestMatch.id == id) {
-            storeMatches(matches)
-            matches.push(Match.new(id+1))
-            ws.emit("newMatch", getLatestMatch())
+    socket.on("loadMatch", (id) => {
+        currentMatchID = id
+        storeEventData({currentMatchID})
+        storeMatches(matches)
+        if (id >= matches.length) {
+            matches.push(Match.new(id))
         }
+        ws.emit("matchData", getCurrentMatch())
     })
 
     socket.on("teamData", (data) => {
@@ -81,10 +82,12 @@ ws.on("connection", (socket) => {
             console.log(value, display_id, teamIndex)
             if (teamIndex == -1) {
                 teams.push(new Team(value.id, value.name, display_id))
+                teams[-1].playoffAlliance = value.playoffAlliance
             } else {
                 teams[teamIndex].id = value.id
                 teams[teamIndex].display_id = display_id
                 teams[teamIndex].name = value.name
+                teams[teamIndex].playoffAlliance = value.playoffAlliance
             }
         })
         storeTeams(teams)
@@ -97,13 +100,13 @@ ws.on("connection", (socket) => {
     })
 
     socket.on("matchStart", (id) => {
-        const latestMatch = getLatestMatch()
-        matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getLatestMatch()), endMatch)
+        const latestMatch = getCurrentMatch()
+        matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getCurrentMatch()), endMatch)
         matchTimer.start()
         latestMatch.start(matchTimer.startTime)
         
-        ws.emit("matchStart", getLatestMatch())
-        ws.emit("matchData", getLatestMatch())
+        ws.emit("matchStart", getCurrentMatch())
+        ws.emit("matchData", getCurrentMatch())
     })
     socket.on("matchAbort", (id) => {
         endMatch()
@@ -111,8 +114,8 @@ ws.on("connection", (socket) => {
 })
 
 function endMatch() {
-    ws.emit("matchEnd", getLatestMatch())
-    getLatestMatch().end()
-    ws.emit("matchData", getLatestMatch())
+    ws.emit("matchEnd", getCurrentMatch())
+    getCurrentMatch().end()
+    ws.emit("matchData", getCurrentMatch())
 }
 

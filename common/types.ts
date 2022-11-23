@@ -1,3 +1,5 @@
+import type { PlayoffAlliance } from "./alliances";
+
 export type MatchData = {
     id:number
     redTeams:number[]
@@ -8,10 +10,14 @@ export type MatchData = {
     matchStartTime:number
 };
 export type TeamData = {
+    playoffAlliance:PlayoffAlliance
     id:number,
     display_id:string,
     name:string
 };
+export type EventData = {
+    currentMatchID:number
+}
 
 export type MatchScoreBreakdown = {
     zones: MatchScoreZone[]
