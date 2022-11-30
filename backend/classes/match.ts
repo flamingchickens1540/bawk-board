@@ -73,8 +73,8 @@ export default class Match implements MatchData {
         this.matchState = MatchState.IN_PROGRESS
         this.matchStartTime = startTime
     }
-    end() {
-        this.matchState = MatchState.COMPLETED
+    end(state:MatchState) {
+        this.matchState = state
     }
 
     static new(id:number):Match {

@@ -13,7 +13,7 @@ export const matchID:Writable<number> = writable(0)
 export const teams:Writable<TeamData[]> = writable([])
 export const matchState:Writable<MatchState> = writable(MatchState.PENDING)
 export const matchStartTime:Writable<number> = writable(0)
-
+export const matches:Writable<MatchData[]> = writable([])
 export const timer:SimpleTimer = new SimpleTimer();
 
 export const areUpdatesBlocked = writable(false)
@@ -27,6 +27,10 @@ async function init() {
     await fetch("//localhost:3000/api/match").then(async (res) => {
         const data = await res.json() as MatchData
         updateMatchData(data)
+    })
+    await fetch("//localhost:3000/api/matches").then(async (res) => {
+        const data = await res.json() as MatchData[]
+        matches.set(data)
     })
 }
 
@@ -48,6 +52,7 @@ export function updateMatchData(data:MatchData) {
     matchState.set(data.matchState)
     matchStartTime.set(data.matchStartTime)
     timer.startWithTime(data.matchStartTime)
+    
     console.log("unblocking")
     areUpdatesBlocked.set(false)
 }

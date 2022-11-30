@@ -28,8 +28,11 @@
 			team.set(prettyTeamNumber($alliance[index]));
 		})
 	});
-
+	
 	let team = writable("");
+	alliance.subscribe((value) => blockSubscribers(() => {
+		team.set(prettyTeamNumber(value[index]));
+	}))
 
 	team.subscribe((value) => {
 		const teamNumber = realTeamNumber(value);

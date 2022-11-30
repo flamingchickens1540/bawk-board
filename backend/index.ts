@@ -26,7 +26,7 @@ export function getMatches(): Match[] {
 }
 
 export function getCurrentMatch(): Match {
-    return matches[currentMatchID]
+    return  matches.find((match) => match.id == currentMatchID)
 }
 
 
@@ -71,7 +71,8 @@ ws.on("connection", (socket) => {
         currentMatchID = id
         storeEventData({currentMatchID})
         storeMatches(matches)
-        if (id >= matches.length) {
+        const matchIndex = matches.findIndex((match) => match.id == id)
+        if (matchIndex == -1) {
             matches.push(Match.new(id))
         }
         ws.emit("matchData", getCurrentMatch())
@@ -106,7 +107,7 @@ ws.on("connection", (socket) => {
 
     socket.on("matchStart", (id) => {
         const latestMatch = getCurrentMatch()
-        matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getCurrentMatch()), endMatch)
+        matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getCurrentMatch()), () => endMatch(MatchState.COMPLETED))
         matchTimer.start()
         latestMatch.start(matchTimer.startTime)
         
@@ -114,13 +115,14 @@ ws.on("connection", (socket) => {
         ws.emit("matchData", getCurrentMatch())
     })
     socket.on("matchAbort", (id) => {
-        endMatch()
+        getCurrentMatch().matchStartTime = 0
+        endMatch(MatchState.PENDING)
     })
 })
 
-function endMatch() {
+function endMatch(state:MatchState) {
     ws.emit("matchEnd", getCurrentMatch())
-    getCurrentMatch().end()
+    getCurrentMatch().end(state)
     ws.emit("matchData", getCurrentMatch())
 }
 
