@@ -6,7 +6,7 @@ import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_ty
 import Match from "./classes/match"
 import Team from "./classes/team"
 import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
-import { startHttpServer } from './router';
+import { startHttpServer, getHttpServer } from './router';
 import { updateEventInfo } from "./tba"
 
 
@@ -30,7 +30,12 @@ export function getCurrentMatch(): Match {
 }
 
 
-const ws = new Server<ClientToServerEvents, ServerToClientEvents>(3001, {})
+const ws = new Server<ClientToServerEvents, ServerToClientEvents>(getHttpServer(), {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+      }
+})
 
 
 

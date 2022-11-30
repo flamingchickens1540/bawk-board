@@ -1,10 +1,13 @@
 import express from "express"
+import { createServer } from "http";
 import bodyParser from 'body-parser';
 import cors from "cors"
 import { getCurrentMatch, getTeams, getMatches } from ".";
 
 
 const app = express()
+const httpServer = createServer(app);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
@@ -23,6 +26,9 @@ app.get("/api/match", (req, res) => {
 })
 
 export function startHttpServer() {
-    app.listen(3000)
+    httpServer.listen(3000)
 }
 
+export function getHttpServer() {
+    return httpServer
+}

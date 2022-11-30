@@ -7,7 +7,7 @@ import { areUpdatesBlocked, redScore, blueScore, redAlliance, blueAlliance, matc
 import { get } from "svelte/store";
 
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3001/", {
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3000/", {
     auth: {
         key: getCookie("auth")
     }
