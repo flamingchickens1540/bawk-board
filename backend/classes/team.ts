@@ -5,7 +5,7 @@ import type Match from "./match"
 
 export default class Team implements TeamData {
     private matchIDs:number[]
-    playoffAlliance:PlayoffAlliance = PlayoffAlliance.NONE
+    
 
     get matches() {
         const matches = getMatches()
@@ -33,7 +33,8 @@ export default class Team implements TeamData {
     constructor(
         public id:number, 
         public name:string,
-        public display_id:string = id.toString()
+        public display_id:string = id.toString(),
+        public playoffAlliance:PlayoffAlliance = PlayoffAlliance.NONE
     ) {}
 
     addMatchResults(match:Match) {

@@ -87,8 +87,7 @@ ws.on("connection", (socket) => {
             const display_id = value.display_id || value.id.toString()
             console.log(value, display_id, teamIndex)
             if (teamIndex == -1) {
-                teams.push(new Team(value.id, value.name, display_id))
-                teams[-1].playoffAlliance = value.playoffAlliance
+                teams.push(new Team(value.id, value.name, display_id, value.playoffAlliance))
             } else {
                 teams[teamIndex].id = value.id
                 teams[teamIndex].display_id = display_id
