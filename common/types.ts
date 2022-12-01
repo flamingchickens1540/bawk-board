@@ -1,7 +1,9 @@
 import type { PlayoffAlliance } from "./alliances";
 
+export type CompLevel = "qm" | "qf" | "sf" | "f"
+export type MatchID = `${CompLevel}${number}`
 export type MatchData = {
-    id:number
+    id: MatchID
     redTeams:number[]
     blueTeams:number[]
     redScoreBreakdown:MatchScoreBreakdown
@@ -16,7 +18,7 @@ export type TeamData = {
     name:string
 };
 export type EventData = {
-    currentMatchID:number
+    currentMatchID:MatchID
 }
 
 export type MatchScoreBreakdown = {

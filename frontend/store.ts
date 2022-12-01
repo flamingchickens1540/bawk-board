@@ -1,5 +1,5 @@
 import {writable, get, type Writable} from 'svelte/store'
-import {MatchState, type MatchData, type MatchScoreBreakdown, type TeamData} from "../common/types"
+import { MatchState, type MatchData, type MatchScoreBreakdown, type TeamData, type MatchID } from '../common/types';
 import type { TowerName, Tower } from './types'
 import { addMatchDataPublishers } from './socket'
 import { SimpleTimer } from '../common/timer';
@@ -9,7 +9,7 @@ export const  redScore:Writable<MatchScoreBreakdown> = writable();
 export const blueScore:Writable<MatchScoreBreakdown> = writable();
 export const redAlliance:Writable<number[]> = writable([])
 export const blueAlliance:Writable<number[]> = writable([])
-export const matchID:Writable<number> = writable(0)
+export const matchID:Writable<MatchID> = writable("qm0")
 export const teams:Writable<TeamData[]> = writable([])
 export const matchState:Writable<MatchState> = writable(MatchState.PENDING)
 export const matchStartTime:Writable<number> = writable(0)
@@ -52,7 +52,6 @@ export function updateMatchData(data:MatchData) {
     matchState.set(data.matchState)
     matchStartTime.set(data.matchStartTime)
     timer.startWithTime(data.matchStartTime)
-    
     console.log("unblocking")
     areUpdatesBlocked.set(false)
 }

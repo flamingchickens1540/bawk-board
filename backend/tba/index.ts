@@ -5,6 +5,7 @@ import { tba_secret, tba_secret_id } from "secrets";
 import type Team from "../classes/team";
 import type { TbaEventInfo, TbaMatch, TbaRanking, TbaRankings, TbaTeamNumber } from './types';
 import { TbaAlliance } from './types';
+import { decodeMatchID } from '../../common/calculations';
 
 
 const baseUrl = "https://www.thebluealliance.com"
@@ -96,10 +97,11 @@ export async function updateRankings(teams:Team[]) {
 }
 
 async function updateMatches(matches:Match[]) {
+    
     const data:TbaMatch[] = matches.map((match) => ({
-        comp_level: "qf",
+        comp_level: decodeMatchID(match.id).level,
         set_number:0,
-        match_number: match.id,
+        match_number: decodeMatchID(match.id).id,
         alliances: {
             red: new TbaAlliance(match.redTeams.map((team) => getTBATeamNumber(team)), match.redScore),
             blue: new TbaAlliance(match.blueTeams.map((team) => getTBATeamNumber(team)), match.blueScore)

@@ -13,7 +13,7 @@ import { updateEventInfo } from "./tba"
 
 let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
-let currentMatchID=loadEventData().currentMatchID ?? 0
+let currentMatchID=loadEventData().currentMatchID ?? "qm1"
 let matchTimer:NotifyTimer;
 
 startHttpServer()
@@ -74,6 +74,7 @@ ws.on("connection", (socket) => {
         const matchIndex = matches.findIndex((match) => match.id == id)
         if (matchIndex == -1) {
             matches.push(Match.new(id))
+            ws.emit("newMatch", matches)
         }
         ws.emit("matchData", getCurrentMatch())
     })

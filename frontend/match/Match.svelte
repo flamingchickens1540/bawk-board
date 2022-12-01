@@ -1,24 +1,31 @@
 <script lang="ts">
 	import Teams from "./components/teams/Teams.svelte";
 	
-	import {isDoneLoading, matches, matchID, matchStartTime, matchState, timer} from "../store"
+	import {isDoneLoading, matches, matchID, matchStartTime, matchState, timer, redScore, blueScore} from "../store"
 	import { socket } from "../socket";
 	import { SimpleTimer } from "../../common/timer";
 	import match_start from "../assets/audio/match_start.wav"
 	import match_teleop from "../assets/audio/match_teleop.wav"
 	import match_end from "../assets/audio/match_end.wav"
 	import { MatchState, type MatchData } from "../../common/types";
+  import { calculateScore, decodeMatchID, getFoulPoints, getHybridScore, getTeleopScore } from "../../common/calculations";
+  import { onMount } from "svelte";
+  import ScoreSummary from "./components/ScoreSummary.svelte";
+  import { writable } from "svelte/store";
 	
-	
-	setInterval(() => document.getElementById("match-time").innerText = $matchState == MatchState.COMPLETED ? "Complete" : timer.elapsedTimeFormatted, 100)
+
+	onMount(() => {
 	isDoneLoading.then(() => {
+		setInterval(() => document.getElementById("match-time").innerText = $matchState == MatchState.COMPLETED ? "Complete" : timer.remainingTimeFormatted, 100)
 		if ($matchState == MatchState.IN_PROGRESS) {
 			setButtonStop()
 			timer.startWithTime($matchStartTime)
 		} else {
 			setButtonStart()
 		}
+
 	})
+})
 	socket.on("matchTeleop", () => {
 		new Audio(match_teleop).play()
 	})
@@ -44,13 +51,18 @@
 	function getColorClass(match:MatchData, i:number) {
 		if (match.matchState == MatchState.COMPLETED) {
 			return getColorValue(100,200,100,i%2==0?0.5:0.3)
-		}
+		} 
 	}
 	function getBackgroundColor(i:number) {
 			return getColorValue(100,100,100,i%2==0?0.5:0.3)
 	}
 	function getColorValue(r:number, g:number, b:number, alpha:number) {
 		return `rgba(${r},${g},${b},${alpha})`
+	}
+
+	function newMatch() {
+		const decodedID = decodeMatchID($matchID)
+		loadMatch(decodedID.level+(decodedID.id+1))
 	}
 	
 	function setButtonStart() {
@@ -84,12 +96,17 @@
 				<button disabled={match.id == $matchID} class="loadButton" on:click={() => loadMatch(match.id)}>Load</button>
 			</div>
 			{/each}
+			<button id=new-match class="green" on:click={newMatch}>New</button>
 		</div>
 	</div>
+	<ScoreSummary/>
 	<div class="sidebar-r">
 		<h2>Match {$matchID} Controls</h2>
 		<div class=row>
 			<button id=match-control class="green">Start</button>
+		</div>
+		<div class=row>
+			<button id=commit disabled={$matches[$matchID] != MatchState.COMPLETED} class="green">Commit</button>
 		</div>
 		<h3 id=match-time>0:00</h3>
 		<br>
@@ -97,6 +114,7 @@
 		<p>Teams</p>
 		<Teams />
 	</div>
+	
 </main>
 
 <style lang="scss">

@@ -80,7 +80,7 @@ export function loadTeamsFromData(data:TeamData[]):Team[] {
 export function loadMatches():Match[] {
     const data = Object.values(loadFile(DataFile.MATCHES))
     if (data.length == 0) {
-        data.push(Match.new(1))
+        data.push(Match.new("qm1"))
     }
     return loadMatchesFromData(data)
 
@@ -90,7 +90,7 @@ export function loadEventData():EventData {
 }
 
 export function loadMatchesFromData(data:MatchData[]):Match[] {
-    return data.map((value) => Object.assign(Match.new(-1), value))
+    return data.map((value) => Object.assign(Match.new("qm0"), value))
 }
 
 export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}

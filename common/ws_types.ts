@@ -1,9 +1,11 @@
-import type { MatchData, TeamData } from "./types";
+import type { MatchData, MatchID, TeamData } from "./types";
 
 export interface ServerToClientEvents {
     matchData: (data:MatchData) => void;
     loadMatch: (data:MatchData) => void;
+    newMatch: (data:MatchData[]) => void;
     teamData: (data:TeamData[]) => void;
+    
     reAuth: () => void;
     matchStart: (data:MatchData) => void;
     matchTeleop: (data:MatchData) => void;
@@ -13,8 +15,8 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
     matchData: (data:Partial<MatchData>) => void;
     teamData: (data:TeamData[]) => void;
-    loadMatch: (id:number) => void;
+    loadMatch: (id:MatchID) => void;
     teamRemove: (id:number) => void;
-    matchStart: (id:number) => void;
-    matchAbort: (id:number) => void;
+    matchStart: (id:MatchID) => void;
+    matchAbort: (id:MatchID) => void;
 }

@@ -1,4 +1,4 @@
-import { MatchScoreZone, type MatchScoreBreakdown } from "./types";
+import { MatchScoreZone, type CompLevel, type MatchID, type MatchScoreBreakdown } from "./types";
 
 export function calculateScore(breakdown:MatchScoreBreakdown) {
     if (breakdown == null) {
@@ -16,3 +16,12 @@ export const getTeleopScore = (breakdown:MatchScoreBreakdown) => {
     return zoneSum;
 }
 export const getFoulPoints = (breakdown:MatchScoreBreakdown) => breakdown.foulPoints
+
+export const decodeMatchID = (id:MatchID) => {
+    const parsed = id.match(/(\w{1,2})(\d{1,2})/)
+    console.log(parsed)
+    return {
+        level:parsed[1] as CompLevel,
+        id:parseInt(parsed[2])
+    }
+}

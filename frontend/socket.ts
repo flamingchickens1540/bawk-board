@@ -3,7 +3,7 @@ import type {MatchData, MatchScoreBreakdown, TeamData} from "../common/types"
 import type {ServerToClientEvents, ClientToServerEvents} from "../common/ws_types"
 import {io, type Socket} from "socket.io-client"
 import { getCookie } from 'typescript-cookie'
-import { areUpdatesBlocked, redScore, blueScore, redAlliance, blueAlliance, matchID, teams, updateMatchData, timer } from './store';
+import { areUpdatesBlocked, redScore, blueScore, redAlliance, blueAlliance, matchID, teams, updateMatchData, timer, blockSubscribers, matches } from './store';
 import { get } from "svelte/store";
 
 
@@ -43,9 +43,16 @@ socket.on("matchData", (data) => {
     updateMatchData(data)
 })
 
+socket.on("newMatch", (data) => {
+    blockSubscribers(() => {
+        matches.set(data)
+    })
+})
+
 socket.on("matchStart", (data) => {
     timer.startWithTime(data.matchStartTime)
 })
+socket.on("matchEnd", updateMatchData)
 
 socket.on("reAuth", () => {
     window.location.assign("/auth.html")

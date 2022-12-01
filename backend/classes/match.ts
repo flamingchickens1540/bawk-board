@@ -1,5 +1,5 @@
 import { calculateScore } from "../../common/calculations";
-import { Alliance, MatchResult, MatchState, type MatchData, type MatchScoreBreakdown } from "../../common/types";
+import { Alliance, MatchResult, MatchState, type MatchData, type MatchID, type MatchScoreBreakdown } from "../../common/types";
 
 
 
@@ -28,7 +28,7 @@ export default class Match implements MatchData {
     get blueScore() {return calculateScore(this.blueScoreBreakdown)}
 
     constructor(
-        public id:number,
+        public id:MatchID,
         public redTeams:number[], 
         public blueTeams:number[], 
         public redScoreBreakdown:MatchScoreBreakdown, 
@@ -77,7 +77,7 @@ export default class Match implements MatchData {
         this.matchState = state
     }
 
-    static new(id:number):Match {
+    static new(id:MatchID):Match {
         return new Match(id, [],[],nullMatchData,nullMatchData)
     }
 }

@@ -4,7 +4,7 @@ import { MatchResult, type TeamData } from "../../common/types"
 import type Match from "./match"
 
 export default class Team implements TeamData {
-    private matchIDs:number[]
+    private matchIDs:string[]
     
 
     get matches() {
