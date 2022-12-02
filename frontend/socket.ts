@@ -8,7 +8,7 @@ import { get, readable, type Readable } from "svelte/store";
 
 
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3000/", {
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:8008/", {
     auth: {
         key: getCookie("auth")
     }
