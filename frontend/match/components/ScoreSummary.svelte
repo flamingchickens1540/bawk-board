@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { calculateScore, getFoulPoints, getHybridScore, getTeleopScore } from "../../../common/calculations";
-    import {redScore, blueScore} from "../../store"
+  import { MatchState } from "../../../common/types";
+    import { calculateScore, getFoulPoints, getHybridScore, getTeleopScore } from "../../../common/calculations";
+    import {redScore, blueScore, matches, matchID} from "../../store"
     const defaultData = {
         zones:[],
         autoTubes:0,
@@ -41,26 +42,28 @@
     </tbody>
 </table>
 
-<style>
-    tr:nth-child(odd) > *:nth-child(2){
-        background-color: hsl(358, 55%, 30%)
-    }
-    tr:nth-child(even) > *:nth-child(2){
-        background-color: hsl(358, 55%, 35%)
-    }
-    tr:nth-child(odd) > *:nth-child(3){
-        background-color: hsl(206, 55%, 30%)
-    }
-    tr:nth-child(even) > *:nth-child(3){
-        background-color: hsl(206, 55%, 35%)
-    }
-    tr:nth-child(odd) > *:nth-child(1){
-        background-color: hsl(206, 0%, 30%)
-    }
-    tr:nth-child(even) > *:nth-child(1){
-        background-color: hsl(206, 0%, 35%)
-    }
 
+<style lang="scss">
+    tr {
+        > *:nth-child(2){
+            background-color: hsl(358, 55%, 35%)
+        }
+        > *:nth-child(3){
+            background-color: hsl(206, 55%, 35%)
+        }
+        > *:nth-child(1){
+            background-color: hsl(206, 0%, 35%)
+        }
+        tbody > &:nth-last-child(1) {
+            font-weight:900;
+        }
+        &:nth-child(odd) {
+            filter:brightness(0.85)
+        }
+        thead > &:nth-child(1) {
+            filter:brightness(0.75)
+        }
+    }
     td, th {
         padding: 15px 30px;
         font-size:25px;

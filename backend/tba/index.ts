@@ -96,7 +96,7 @@ export async function updateRankings(teams:Team[]) {
     await post("rankings/update", body)
 }
 
-async function updateMatches(matches:Match[]) {
+export async function updateMatches(matches:Match[]) {
     
     const data:TbaMatch[] = matches.map((match) => ({
         comp_level: decodeMatchID(match.id).level,

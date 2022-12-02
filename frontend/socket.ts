@@ -4,7 +4,8 @@ import type {ServerToClientEvents, ClientToServerEvents} from "../common/ws_type
 import {io, type Socket} from "socket.io-client"
 import { getCookie } from 'typescript-cookie'
 import { areUpdatesBlocked, redScore, blueScore, redAlliance, blueAlliance, matchID, teams, updateMatchData, timer, blockSubscribers, matches } from './store';
-import { get } from "svelte/store";
+import { get, readable, type Readable } from "svelte/store";
+
 
 
 export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3000/", {
@@ -43,11 +44,7 @@ socket.on("matchData", (data) => {
     updateMatchData(data)
 })
 
-socket.on("newMatch", (data) => {
-    blockSubscribers(() => {
-        matches.set(data)
-    })
-})
+
 
 socket.on("matchStart", (data) => {
     timer.startWithTime(data.matchStartTime)

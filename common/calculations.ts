@@ -19,7 +19,6 @@ export const getFoulPoints = (breakdown:MatchScoreBreakdown) => breakdown.foulPo
 
 export const decodeMatchID = (id:MatchID) => {
     const parsed = id.match(/(\w{1,2})(\d{1,2})/)
-    console.log(parsed)
     return {
         level:parsed[1] as CompLevel,
         id:parseInt(parsed[2])

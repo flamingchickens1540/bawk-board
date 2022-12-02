@@ -2,6 +2,7 @@ export class NotifyTimer {
     private readonly timer:SimpleTimer = new SimpleTimer()
     private ranTeleopCB:boolean = false;
     private ranEndCB:boolean = false;
+    private callbackCaller:NodeJS.Timer;
     get startTime() {return this.timer.startTime}
     constructor(private readonly teleop_cb:(timer:NotifyTimer) => void, private readonly end_cb:(timer:NotifyTimer) => void) {
     }
@@ -17,7 +18,12 @@ export class NotifyTimer {
     
     public start() {
         this.timer.start()
-        setInterval(() => this.runCallbacks(), 100)
+        this.callbackCaller = setInterval(() => this.runCallbacks(), 100)
+    }
+
+    public cancel() {
+        this.timer.reset()
+        clearInterval(this.callbackCaller)
     }
 }
 

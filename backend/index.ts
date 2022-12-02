@@ -7,7 +7,7 @@ import Match from "./classes/match"
 import Team from "./classes/team"
 import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
 import { startHttpServer, getHttpServer } from './router';
-import { updateEventInfo } from "./tba"
+import { updateEventInfo, updateMatches } from "./tba"
 
 
 
@@ -105,18 +105,24 @@ ws.on("connection", (socket) => {
         ws.emit("teamData", teams)
     })
 
-    socket.on("matchStart", (id) => {
+    socket.on("matchStart", () => {
         const latestMatch = getCurrentMatch()
         matchTimer = new NotifyTimer(() => ws.emit("matchTeleop", getCurrentMatch()), () => endMatch(MatchState.COMPLETED))
         matchTimer.start()
         latestMatch.start(matchTimer.startTime)
-        
         ws.emit("matchStart", getCurrentMatch())
         ws.emit("matchData", getCurrentMatch())
     })
-    socket.on("matchAbort", (id) => {
+    socket.on("matchAbort", () => {
         getCurrentMatch().matchStartTime = 0
         endMatch(MatchState.PENDING)
+        matchTimer.cancel()
+    })
+    socket.on("matchCommit", () => {
+        getCurrentMatch().matchState = MatchState.POSTED
+        
+        ws.emit("matchData", getCurrentMatch())
+        updateMatches(matches)
     })
 })
 

@@ -1,31 +1,30 @@
 <script lang="ts">
 	import Teams from "./components/teams/Teams.svelte";
 	
-	import {isDoneLoading, matches, matchID, matchStartTime, matchState, timer, redScore, blueScore} from "../store"
-	import { socket } from "../socket";
-	import { SimpleTimer } from "../../common/timer";
-	import match_start from "../assets/audio/match_start.wav"
-	import match_teleop from "../assets/audio/match_teleop.wav"
-	import match_end from "../assets/audio/match_end.wav"
+	import { onMount } from "svelte";
+	import { decodeMatchID } from "../../common/calculations";
 	import { MatchState, type MatchData } from "../../common/types";
-  import { calculateScore, decodeMatchID, getFoulPoints, getHybridScore, getTeleopScore } from "../../common/calculations";
-  import { onMount } from "svelte";
-  import ScoreSummary from "./components/ScoreSummary.svelte";
-  import { writable } from "svelte/store";
+	import match_end from "../assets/audio/match_end.wav";
+	import match_start from "../assets/audio/match_start.wav";
+	import match_teleop from "../assets/audio/match_teleop.wav";
+	import { socket } from "../socket";
+	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer } from "../store";
+	import ScoreSummary from "./components/ScoreSummary.svelte";
 	
-
+	
 	onMount(() => {
-	isDoneLoading.then(() => {
-		setInterval(() => document.getElementById("match-time").innerText = $matchState == MatchState.COMPLETED ? "Complete" : timer.remainingTimeFormatted, 100)
-		if ($matchState == MatchState.IN_PROGRESS) {
-			setButtonStop()
-			timer.startWithTime($matchStartTime)
-		} else {
-			setButtonStart()
-		}
-
+		isDoneLoading.then(() => {
+			console.log($matchState)
+			setInterval(() => document.getElementById("match-time").innerText = $matchState == MatchState.COMPLETED ? "Complete" : timer.remainingTimeFormatted, 100)
+			if ($matchState == MatchState.IN_PROGRESS) {
+				setButtonStop()
+				timer.startWithTime($matchStartTime)
+			} else {
+				setButtonStart()
+			}
+			
+		})
 	})
-})
 	socket.on("matchTeleop", () => {
 		new Audio(match_teleop).play()
 	})
@@ -39,27 +38,33 @@
 		setButtonStart()
 	})
 	function startMatch() {
-		socket.emit("matchStart", $matchID)
+		socket.emit("matchStart")
 	}
 	function abortMatch() {
-		socket.emit("matchAbort", $matchID)
+		socket.emit("matchAbort")
 	}
 	function loadMatch(id) {
 		socket.emit("loadMatch", id)
 	}
+	function commitMatch() {
+		socket.emit("matchCommit")
+	}
 	
 	function getColorClass(match:MatchData, i:number) {
-		if (match.matchState == MatchState.COMPLETED) {
-			return getColorValue(100,200,100,i%2==0?0.5:0.3)
+		switch (match.matchState) {
+			case MatchState.POSTED: return getColorValue(100,200,100,i%2==0?0.5:0.3)
+			case MatchState.COMPLETED: return getColorValue(100,100,200,i%2==0?0.5:0.3)
+			case MatchState.IN_PROGRESS: return getColorValue(200,200,100,i%2==0?0.5:0.3)
+			case MatchState.PENDING: return getColorValue(200,100,100,i%2==0?0.5:0.3)
 		} 
 	}
 	function getBackgroundColor(i:number) {
-			return getColorValue(100,100,100,i%2==0?0.5:0.3)
+		return getColorValue(100,100,100,i%2==0?0.5:0.3)
 	}
 	function getColorValue(r:number, g:number, b:number, alpha:number) {
 		return `rgba(${r},${g},${b},${alpha})`
 	}
-
+	
 	function newMatch() {
 		const decodedID = decodeMatchID($matchID)
 		loadMatch(decodedID.level+(decodedID.id+1))
@@ -92,21 +97,19 @@
 				<svg height="16px" width=16px class="statusicon">
 					<circle cx="8" cy="08" r="8"  stroke-width="0" fill="{getColorClass(match, i)}" />
 				</svg> 
-				<span>Match {match.id}</span>
+				<span>Match {match.id.toUpperCase()}</span>
 				<button disabled={match.id == $matchID} class="loadButton" on:click={() => loadMatch(match.id)}>Load</button>
 			</div>
 			{/each}
-			<button id=new-match class="green" on:click={newMatch}>New</button>
+			<button id=new-match class="green" on:click={newMatch}>Next</button>
 		</div>
 	</div>
 	<ScoreSummary/>
+	<button id=commit disabled={$matchState != MatchState.COMPLETED} on:click={commitMatch} class="green">Commit</button>
 	<div class="sidebar-r">
-		<h2>Match {$matchID} Controls</h2>
+		<h2>Match {$matchID.toUpperCase()} Controls</h2>
 		<div class=row>
-			<button id=match-control class="green">Start</button>
-		</div>
-		<div class=row>
-			<button id=commit disabled={$matches[$matchID] != MatchState.COMPLETED} class="green">Commit</button>
+			<button id=match-control class="green" disabled={$matchState == MatchState.POSTED}>Start</button>
 		</div>
 		<h3 id=match-time>0:00</h3>
 		<br>
@@ -159,7 +162,18 @@
 		text-align: center;
 		padding: 10px;
 	}
-	
+	#new-match {
+		margin-top:20px;
+		
+	}
+	button {
+		margin:10px 0px;
+		color:white
+	}
+	button:disabled{
+		filter:brightness(0.5);
+		cursor:default
+	}
 	input {
 		width: 20px;
 	}

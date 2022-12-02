@@ -1,7 +1,7 @@
-import {writable, get, type Writable} from 'svelte/store'
-import { MatchState, type MatchData, type MatchScoreBreakdown, type TeamData, type MatchID } from '../common/types';
+import {writable, get, type Writable, readable, type Readable} from 'svelte/store'
+import type { MatchState,  MatchData,  MatchScoreBreakdown,  TeamData,  MatchID } from '../common/types';
 import type { TowerName, Tower } from './types'
-import { addMatchDataPublishers } from './socket'
+import { addMatchDataPublishers, socket } from './socket'
 import { SimpleTimer } from '../common/timer';
 
 
@@ -11,13 +11,51 @@ export const redAlliance:Writable<number[]> = writable([])
 export const blueAlliance:Writable<number[]> = writable([])
 export const matchID:Writable<MatchID> = writable("qm0")
 export const teams:Writable<TeamData[]> = writable([])
-export const matchState:Writable<MatchState> = writable(MatchState.PENDING)
-export const matchStartTime:Writable<number> = writable(0)
-export const matches:Writable<MatchData[]> = writable([])
+
 export const timer:SimpleTimer = new SimpleTimer();
 
 export const areUpdatesBlocked = writable(false)
 
+const matchResponse:Promise<any> = fetch("//localhost:3000/api/match").then((res) => res.json())
+export const matches:Readable<MatchData[]> = readable([], (set) => {
+    const matchesData = writable([])
+    matchesData.subscribe(set)
+    fetch("//localhost:3000/api/matches").then(async (res) => {
+        const data = await res.json()
+        matchesData.set(data)
+    })
+    const newMatchCallbackWrapper = (data:MatchData[]) => matchesData.set(data)
+    const matchDataCallbackWrapper = (data:MatchData) => {
+        const index = get(matchesData).findIndex((item) => {item.id == data.id})
+        if (index >= 0) {
+            matchesData.update((value) => {
+                value[index] = data
+                return value;
+            })
+        }
+    }
+    socket.on("newMatch", newMatchCallbackWrapper)
+    socket.on("matchData", matchDataCallbackWrapper)
+    return () => socket.off("newMatch", newMatchCallbackWrapper)
+})
+
+export const matchState:Readable<MatchState> = readable(undefined, (set) => {
+    matchResponse.then(async (data:MatchData) => {
+        set(data.matchState)
+    })
+    const callbackWrapper = (data:MatchData) => set(data.matchState)
+    socket.on("matchData", callbackWrapper)
+    return () => socket.off("matchData", callbackWrapper)
+})
+
+export const matchStartTime:Readable<number> = readable(0, (set) => {
+    matchResponse.then(async (data:MatchData) => {
+        set(data.matchStartTime)
+    })
+    const callbackWrapper = (data) => set(data.matchStartTime)
+    socket.on("matchData", callbackWrapper)
+    return () => socket.off("matchData", callbackWrapper)
+})
 
 
 async function init() {
@@ -28,10 +66,7 @@ async function init() {
         const data = await res.json() as MatchData
         updateMatchData(data)
     })
-    await fetch("//localhost:3000/api/matches").then(async (res) => {
-        const data = await res.json() as MatchData[]
-        matches.set(data)
-    })
+    await matchResponse
 }
 
 
@@ -49,8 +84,6 @@ export function updateMatchData(data:MatchData) {
     blueScore.set(data.blueScoreBreakdown)
     redAlliance.set(data.redTeams)
     blueAlliance.set(data.blueTeams)
-    matchState.set(data.matchState)
-    matchStartTime.set(data.matchStartTime)
     timer.startWithTime(data.matchStartTime)
     console.log("unblocking")
     areUpdatesBlocked.set(false)

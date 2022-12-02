@@ -4,7 +4,7 @@
     setInterval(() => {
         document.getElementById("match-time").innerText = timer.remainingTimeFormatted
         document.getElementById("progress-bar").style.width = ((timer.remainingTimePercent)*100)+"%"
-    }, 100)
+    }, 10)
 </script>
 
 <div class="grid">
@@ -46,6 +46,7 @@
             background-color:#777777;
             height:100%;
             border-radius: 0 9px 9px 0;
+			// transition:0.1s;
         }
 	}
 

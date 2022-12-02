@@ -17,6 +17,7 @@ export interface ClientToServerEvents {
     teamData: (data:TeamData[]) => void;
     loadMatch: (id:MatchID) => void;
     teamRemove: (id:number) => void;
-    matchStart: (id:MatchID) => void;
-    matchAbort: (id:MatchID) => void;
+    matchStart: () => void;
+    matchAbort: () => void;
+    matchCommit: () => void;
 }
