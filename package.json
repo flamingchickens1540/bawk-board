@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prebackend:build": "cp -n secrets.example.js secrets.js;exit 0",
+    "prebackend:dev": "mkdir data;cp -n example-data/*.json data;exit 0",
     "backend:build": "node build.js",
     "dev": "(trap 'kill 0' SIGINT; npm run backend:dev & npm run frontend:dev)",
     "backend:dev": "npm run backend:build && node --trace-warnings -r source-map-support/register dist/backend.cjs",
@@ -11,6 +13,7 @@
     "frontend:build": "vite build --emptyOutDir",
     "frontend:preview": "vite preview",
     "frontend:check": "svelte-check --tsconfig ./tsconfig.json"
+    
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
