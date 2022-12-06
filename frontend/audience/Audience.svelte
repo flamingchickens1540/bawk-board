@@ -5,7 +5,7 @@
     import Win from "./components/Win.svelte";
     import { matchState } from "../store";
     import { MatchState } from "../../common/types";
-    let element;
+    let element: typeof Match;
     matchState.subscribe((value) => {
         switch (value) {
             case MatchState.PENDING: element=Match; break

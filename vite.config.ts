@@ -14,7 +14,8 @@ export default defineConfig({
         "./frontend/match/index.html",
         "./frontend/event/index.html",
         "./frontend/auth/index.html",
-        "./frontend/audience/index.html"
+        "./frontend/audience/index.html",
+        "./frontend/alliancedisplay/index.html"
       ]
     },
     outDir: '../dist/frontend',

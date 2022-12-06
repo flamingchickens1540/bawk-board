@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { teams } from "../store"
-    import type { TeamData } from "../../common/types";
     import type Team from "../../backend/classes/team";
     import { getTeams } from "../../backend/index"
     
@@ -30,7 +28,7 @@
         for(let i = 0; i<alliances.length;i+=2){
             teamsList.push(alliances[i].concat[i+1]);
         }
-        return teamsList.sort((a,b)=>a.rankingPoints-b.rankingPoints);
+        return teamsList.sort((a,b) => a.rankingPoints - b.rankingPoints);
     }
     export const teamsList: Team[] = mergeSortTeams(alliances);
 

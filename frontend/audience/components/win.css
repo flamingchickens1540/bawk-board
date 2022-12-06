@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+.win_message {
+  text-align:center;
+  padding:10px;
+  font-family: 'Poppins';
+  font-weight:600;
+  font-size:80px;
+  position:absolute;
+  top: 600px;
+  width:100%;
+}
+.banner {
+    background-color: none;
+    top:0px;
+    left:1px;
+    position:absolute;
+    width:100%;
+}
+html, body
+{
+  height: 100%;
+  width: 100%;
+  margin:0;
+  padding:0;
+}
