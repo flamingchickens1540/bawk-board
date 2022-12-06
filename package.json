@@ -12,7 +12,8 @@
     "frontend:dev": "vite",
     "frontend:build": "vite build --emptyOutDir",
     "frontend:preview": "vite preview",
-    "frontend:check": "svelte-check --tsconfig ./tsconfig.json"
+    "frontend:check": "svelte-check --tsconfig ./tsconfig.json",
+    "prod": "npm run frontend:build && npm run backend:dev"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
