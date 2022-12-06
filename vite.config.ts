@@ -10,13 +10,14 @@ export default defineConfig({
     rollupOptions: {
       input: [
         "./frontend/index.html",
-        "./frontend/scoring/index.html",
-        "./frontend/match/index.html",
-        "./frontend/event/index.html",
-        "./frontend/auth/index.html",
+        "./frontend/alliance/index.html",
         "./frontend/audience/index.html",
-        "./frontend/alliancedisplay/index.html"
-      ]
+        "./frontend/auth/index.html",
+        "./frontend/event/index.html",
+        "./frontend/match/index.html",
+        "./frontend/scoring/index.html"
+      ],
+      
     },
     outDir: '../dist/frontend',
   }

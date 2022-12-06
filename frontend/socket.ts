@@ -1,14 +1,14 @@
 
-import type {MatchData, MatchScoreBreakdown, TeamData} from "../common/types"
-import type {ServerToClientEvents, ClientToServerEvents} from "../common/ws_types"
-import {io, type Socket} from "socket.io-client"
-import { getCookie } from 'typescript-cookie'
-import { areUpdatesBlocked, redScore, blueScore, redAlliance, blueAlliance, matchID, teams, updateMatchData, timer, blockSubscribers, matches } from './store';
-import { get, readable, type Readable } from "svelte/store";
+import { io, type Socket } from "socket.io-client";
+import { get } from "svelte/store";
+import { getCookie } from 'typescript-cookie';
+import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types";
+import { port } from "../secrets";
+import { areUpdatesBlocked, blueAlliance, blueScore, matchID, redAlliance, redScore, teams, timer, updateMatchData } from './store';
 
 
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:8008/", {
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io(`http://localhost:${port}/`, {
     auth: {
         key: getCookie("auth")
     }
@@ -52,7 +52,7 @@ socket.on("matchStart", (data) => {
 socket.on("matchEnd", updateMatchData)
 
 socket.on("reAuth", () => {
-    window.location.assign("/auth.html")
+    window.location.assign("/auth/")
 })
 
 export function updateTeams() {

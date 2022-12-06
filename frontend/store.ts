@@ -16,11 +16,11 @@ export const timer:SimpleTimer = new SimpleTimer();
 
 export const areUpdatesBlocked = writable(false)
 
-const matchResponse:Promise<any> = fetch("//localhost:8008/api/match").then((res) => res.json())
+const matchResponse:Promise<any> = fetch("/api/match").then((res) => res.json())
 export const matches:Readable<MatchData[]> = readable([], (set) => {
     const matchesData = writable([])
     matchesData.subscribe(set)
-    fetch("//localhost:8008/api/matches").then(async (res) => {
+    fetch("/api/matches").then(async (res) => {
         const data = await res.json()
         matchesData.set(data)
     })
@@ -59,10 +59,10 @@ export const matchStartTime:Readable<number> = readable(0, (set) => {
 
 
 async function init() {
-    await fetch("//localhost:8008/api/teams").then(async (res) => {
+    await fetch("/api/teams").then(async (res) => {
         teams.set(await res.json())
     })
-    await fetch("//localhost:8008/api/match").then(async (res) => {
+    await fetch("/api/match").then(async (res) => {
         const data = await res.json() as MatchData
         updateMatchData(data)
     })
