@@ -24,7 +24,7 @@
     <div><img src={logo} alt=logo id="logo" style="width:351px;height:auto;" class="center" /></div>
 </div>
 {#if ready}
-<div id="grid" transition:showBanners>
+<div id="grid" in:showBanners>
         <div class="banner-container-red"></div>
         <div class="banner-container-blue"></div>
         
