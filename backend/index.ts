@@ -62,6 +62,8 @@ ws.on("connection", (socket) => {
             latestMatch.redTeams = data.redTeams ?? latestMatch.redTeams
         } else {
             console.warn("wrong ID")
+            socket.emit("matchData", getCurrentMatch())
+            return
         }
         socket.broadcast.emit("matchData", getCurrentMatch())
         storeMatches(matches)
