@@ -8,7 +8,7 @@ import { areUpdatesBlocked, blueAlliance, blueScore, matchID, redAlliance, redSc
 
 
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io(`http://localhost:${port}/`, {
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io(window.location.origin, {
     auth: {
         key: getCookie("auth")
     }
