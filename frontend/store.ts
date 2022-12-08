@@ -70,7 +70,7 @@ async function init() {
 }
 
 
-export function blockSubscribers(callback: ()=>void):void {
+export function blockSubscribers(callback: ()=> void): void {
     areUpdatesBlocked.set(true)
     callback()
     areUpdatesBlocked.set(false)

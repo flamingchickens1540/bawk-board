@@ -8,7 +8,7 @@
     
     
     function showBanners(element:HTMLElement) {
-        console.log("SHOW BANNERs")
+        console.log("SHOW BANNERS")
         return {
             duration:3000,
             delay:1000,

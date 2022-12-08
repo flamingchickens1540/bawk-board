@@ -38,7 +38,7 @@
 		height: 100vh;
 	}
 	.progress-bar-container {
-		background-color: #bfbfbf;
+		background-color: grey;
 		grid-column: redTeams/span 3;
 		grid-row: progressBar;
         .progress-bar {
@@ -79,11 +79,14 @@
 	}
 	.match-info {
 		@include infoBox(timer);
-		background-color: gray;
+		background-color: grey;
         position:relative;
         
         p {
             font-size:75px; 
         }
+	}
+	.grid{
+		background-color: #3ab540;
 	}
 </style>

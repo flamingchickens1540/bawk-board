@@ -3,14 +3,11 @@
   import { writable, type Writable } from "svelte/store";
   import { teams } from "../store";
 
-
     let alliances:Writable<TeamData[][]> = writable([])
     fetch("/api/alliances").then(async (data) => {
         $alliances = await data.json();
     })
-    //TODO: Setup and test AllianceDisplay routing
-    
-
+    //TODO: Debug alliance-display issue: api/alliances typeError
     
 </script>
 
@@ -31,10 +28,10 @@
 <div id="team-rankings">
     <div>
         {#each $teams as team} 
+            <h1>Team</h1>
             <div class="rounded-box">
-                <h3>{team.name}</h3>
+                <h3>{team.display_id} {team.name}</h3>
             </div>
-            
         {/each}
     </div>
 </div>
@@ -43,7 +40,18 @@
 <style>
 .rounded-box{
     border-radius: 25px;
-    background: #73AD21;
+    background: red;
     padding: 20px;
+    width: 285%;
+}
+
+#team-rankings{
+    position: absolute;
+    right:25%;
+}
+
+#alliance-display{
+    position: absolute;
+    left:25%;
 }
 </style>

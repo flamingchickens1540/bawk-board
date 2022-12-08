@@ -1,8 +1,5 @@
 <script>
-
+    import WooHoo from "./WooHoo.svelte"
 </script>
 
-<header></header>
-<div>
-    
-</div>
+<WooHoo></WooHoo>
