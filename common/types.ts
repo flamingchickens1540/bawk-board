@@ -14,8 +14,13 @@ export type MatchData = {
 export type TeamData = {
     playoffAlliance:PlayoffAlliance
     id:number,
+    matchIDs:MatchID[]
     display_id:string,
-    name:string
+    name:string,
+    matchWins:number;
+    matchLosses:number;
+    matchTies:number;
+    rankingPoints:number;
 };
 export type EventData = {
     currentMatchID:MatchID

@@ -15,6 +15,7 @@ export default defineConfig({
         "./frontend/auth/index.html",
         "./frontend/event/index.html",
         "./frontend/match/index.html",
+        "./frontend/rankings/index.html",
         "./frontend/scoring/index.html"
       ],
       

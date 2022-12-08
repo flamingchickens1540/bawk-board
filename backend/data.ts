@@ -5,7 +5,7 @@ import fs from "fs"
 import path from "path"
 import process from "process"
 import simpleGit from "simple-git"
-import { getMatches, getTeams } from "."
+import { getCurrentMatchID, getMatches, getTeams } from "."
 import { origin_url } from "../secrets"
 import Match from "./classes/match"
 import Team from "./classes/team"
@@ -74,7 +74,7 @@ export function loadTeams():Team[] {
     return loadTeamsFromData(data)
 }
 export function loadTeamsFromData(data:TeamData[]):Team[] {
-    return data.map((value) => Object.assign(new Team(-1, ""), value))
+    return data.map((value) => Team.createFrom(value))
 }
 
 export function loadMatches():Match[] {
@@ -117,3 +117,5 @@ new CronJob({
     start:true,
     runOnInit: true
 })
+
+setInterval(() => {storeTeams(getTeams()); storeMatches(getMatches()); storeEventData({currentMatchID: getCurrentMatchID()})}, 5000)

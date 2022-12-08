@@ -3,7 +3,7 @@ import { Alliance, MatchResult, MatchState, type MatchData, type MatchID, type M
 
 
 
-export default class Match implements MatchData {
+export default class Match implements MatchData{
     public matchState = MatchState.PENDING
     public matchStartTime:number = 0
 
@@ -80,6 +80,26 @@ export default class Match implements MatchData {
     static new(id:MatchID):Match {
         return new Match(id, [],[],nullMatchData,nullMatchData)
     }
+
+    toJSON() {
+        const proto = Object.getPrototypeOf(this);
+        const jsonObj: any = Object.assign({}, this);
+      
+        Object.entries(Object.getOwnPropertyDescriptors(proto))
+          .filter(([key, descriptor]) => typeof descriptor.get === 'function')
+          .map(([key, descriptor]) => {
+            if (descriptor && key[0] !== '_') {
+              try {
+                const val = (this as any)[key];
+                jsonObj[key] = val;
+              } catch (error) {
+                console.error(`Error calling getter ${key}`, error);
+              }
+            }
+          });
+      
+        return jsonObj;
+      }
 }
 
 const nullMatchData:MatchScoreBreakdown = {

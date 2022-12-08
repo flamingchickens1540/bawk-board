@@ -24,7 +24,9 @@ export function getTeams():Team[] {
 export function getMatches(): Match[] {
     return matches
 }
-
+export function getCurrentMatchID() {
+    return currentMatchID
+}
 export function getCurrentMatch(): Match {
     return  matches.find((match) => match.id == currentMatchID)
 }
@@ -121,10 +123,15 @@ ws.on("connection", (socket) => {
         matchTimer.cancel()
     })
     socket.on("matchCommit", () => {
-        getCurrentMatch().matchState = MatchState.POSTED
+        const currentMatch = getCurrentMatch();
+        currentMatch.matchState = MatchState.POSTED
         
-        ws.emit("matchData", getCurrentMatch())
+        ws.emit("matchData", currentMatch)
+        teams.forEach((team) => team.addMatchResults(currentMatch))
         updateMatches(matches)
+        storeTeams(teams)
+        storeMatches(matches)
+        ws.emit("teamData", teams)
     })
 })
 
