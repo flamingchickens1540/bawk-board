@@ -38,7 +38,7 @@
 		height: 100vh;
 	}
 	.progress-bar-container {
-		background-color: grey;
+		background-color: #bfbfbf;
 		grid-column: redTeams/span 3;
 		grid-row: progressBar;
         .progress-bar {
@@ -87,6 +87,6 @@
         }
 	}
 	.grid{
-		background-color: #3ab540;
+		background-color: #00ff00;
 	}
 </style>

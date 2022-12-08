@@ -6,20 +6,29 @@
 <script lang="ts">
     
     import {confetti} from '@neoconfetti/svelte';
-    import { calculateScore } from '../../../common/calculations';
-    import {redScore, blueScore} from "../../store"
+    import { Alliance } from '../../../common/types';
+    import {winningAlliance} from "../../store"
 
     let displayWinner = "";
-    if (calculateScore($redScore) > calculateScore($blueScore)){
-        displayWinner = "Blue Alliance has Won the Match";
-    } else if (calculateScore($redScore) < calculateScore($blueScore)){
-        displayWinner = "Red Alliance has Won the Match"
-    } else {
-        displayWinner = "It's a Tie"
+    let colors = []
+    switch ($winningAlliance) {
+        case Alliance.RED: 
+            displayWinner = "Red Alliance has Won the Match";
+            colors = ['var(--red)']
+            break;
+        case Alliance.BLUE:
+            displayWinner = "Blue Alliance has Won the Match";
+            colors = ['var(--blue)'];
+            break;
+        case Alliance.NONE:
+            displayWinner = "It's a Tie"
+            colors = ['var(--red)', 'var(--blue)'];
+            break;
     }
+
 </script>
 
-<div use:confetti={{particleCount: 200, force: 0.3, particleSize: 20, particleShape:'rectangles', duration: 5000, colors: ['var(--blue)', 'var(--red)', '#1227e3', '#e32012']}}>
+<div use:confetti={{particleCount: 500, force: 0.3, particleSize: 20, particleShape:'mix', duration: 5000, colors}}>
     <div class="wind_box">
         <h1 class="win_message">{displayWinner}</h1>
     </div>
@@ -35,7 +44,7 @@
         top: 0;
         left: 0;
         right: 0;   
-        position: ;
+        position: sticky;
         float: left;
         margin-left: 0;
         margin-right: 0;
@@ -50,20 +59,6 @@
         position:absolute;
         top: 600px;
         width:100%;
-    }
-    .banner {
-        background-color: none;
-        top:0px;
-        left:1px;
-        position:absolute;
-        width:100%;
-    }
-    html, body
-    {
-        height: 100%;
-        width: 100%;
-        margin:0;
-        padding:0;
     }
     
 </style>

@@ -2,10 +2,10 @@
     import {teams} from "../store"
     import {updateTeams} from "../socket"
     import Team from "./components/Team.svelte";
-  import { PlayoffAlliance } from "../../common/alliances";
+    import { PlayoffAlliance } from "../../common/alliances";
 
     function addTeam() {
-        teams.update((items) => [...items, {display_id:null, id:null, name:null, playoffAlliance:PlayoffAlliance.NONE}])
+        teams.update((items) => [...items, {display_id:null, id:null, name:null, playoffAlliance:PlayoffAlliance.NONE, matchIDs: [], matchLosses:0, matchTies:0, matchWins:0, rankingPoints:0}])
     }
 </script>
 

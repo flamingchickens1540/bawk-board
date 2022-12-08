@@ -3,12 +3,12 @@ import { io, type Socket } from "socket.io-client";
 import { get } from "svelte/store";
 import { getCookie } from 'typescript-cookie';
 import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types";
-import { port } from "../secrets";
+import { backend_url, port } from "../secrets";
 import { areUpdatesBlocked, blueAlliance, blueScore, matchID, redAlliance, redScore, teams, timer, updateMatchData } from './store';
 
 
 
-export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io(window.location.origin, {
+export const socket:Socket<ServerToClientEvents, ClientToServerEvents> = io(backend_url || window.location.origin, {
     auth: {
         key: getCookie("auth")
     }

@@ -1,0 +1,12 @@
+<div id=greenscreen>
+</div>
+<style>
+    #greenscreen {
+        position:absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        background-color: #00ff00;
+    }
+</style>

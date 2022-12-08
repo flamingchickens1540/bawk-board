@@ -1,5 +1,4 @@
 import type { PlayoffAlliance } from "./alliances";
-import { winningAlliance } from '../frontend/store';
 
 export type CompLevel = "qm" | "qf" | "sf" | "f"
 export type MatchID = `${CompLevel}${number}`

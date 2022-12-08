@@ -31,6 +31,9 @@
 		hasBunny.subscribe((value) => $allianceScores.zones[index].hasBunny = value);
 		$allianceScores.zones[index].isUpper = isUpper
 		function updateScore() {
+			if ($tubeCount < 0) {
+				$tubeCount = 0;
+			}
 			$allianceScores.zones[index].tubeCount = $tubeCount
 		}
 		allianceScores.subscribe((value) => {
@@ -45,7 +48,7 @@
 <td>
 	<div class=inputgroup>
 		<button on:click={() => $tubeCount++}>+</button>
-		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min="0" max="100" />
+		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min=0 max="100" />
 		<button on:click={() => $tubeCount--}>-</button>
 	</div>
 </td>

@@ -7,6 +7,7 @@ export default defineConfig({
   logLevel: "warn",
   publicDir:false,
   build: {
+    minify:false,
     rollupOptions: {
       input: [
         "./frontend/index.html",

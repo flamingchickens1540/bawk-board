@@ -3,15 +3,20 @@
     import { onMount } from "svelte";
     import {redAlliance, blueAlliance, redScore, blueScore, prettyTeamNumber} from "../../store"
     import {getHybridScore, getTeleopScore, getFoulPoints, calculateScore} from "../../../common/calculations"
-    let ready = false;
-    onMount(() => ready = true);
+    let ready = 0;
+    onMount(() => ready++);
+    if ($redScore != null) {
+        ready++
+    } else {
+        redScore.subscribe(() => ready++)
+    }
     
     
     function showBanners(element:HTMLElement) {
         console.log("SHOW BANNERS")
         return {
             duration:3000,
-            delay:1000,
+            delay:500,
             css: (t) => `clip-path:inset(0 0 ${(1-t.toFixed(5))*100}% 0)`,
         }
     }
@@ -23,7 +28,7 @@
 <div class="image-container">
     <div><img src={logo} alt=logo id="logo" style="width:351px;height:auto;" class="center" /></div>
 </div>
-{#if ready}
+{#if ready >= 2}
 <div id="grid" in:showBanners>
         <div class="banner-container-red"></div>
         <div class="banner-container-blue"></div>

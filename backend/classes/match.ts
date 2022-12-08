@@ -105,7 +105,8 @@ export default class Match implements MatchData{
         match.id = data.id;
         match.redTeams = data.redTeams;
         match.blueTeams=data.blueTeams;
-        match.redScoreBreakdown = data.blueScoreBreakdown;
+        match.redScoreBreakdown = data.redScoreBreakdown;
+        match.blueScoreBreakdown = data.blueScoreBreakdown;
         match.matchState = data.matchState;
         match.matchStartTime = data.matchStartTime;
         return match
