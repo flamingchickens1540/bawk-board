@@ -162,12 +162,7 @@
             &-red{@include bannerContainer(redLabels); background-color:var(--red)}
             &-blue{@include bannerContainer(blueLabels); background-color:var(--blue)}
         }
-        .banner {
-            top: 0;
-            left:0;
-            position: absolute;
-            width: 100%;
-        }
+        
         #logo {
             z-index: 3;
         }

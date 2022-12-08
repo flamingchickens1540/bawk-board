@@ -90,7 +90,7 @@ export function loadEventData():EventData {
 }
 
 export function loadMatchesFromData(data:MatchData[]):Match[] {
-    return data.map((value) => Object.assign(Match.new("qm0"), value))
+    return data.map((value) => Match.createFrom(value))
 }
 
 export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}

@@ -100,6 +100,16 @@ export default class Match implements MatchData{
       
         return jsonObj;
       }
+      static createFrom(data:MatchData):Match {
+        const match = new Match("qf0",[],[],null,null)
+        match.id = data.id;
+        match.redTeams = data.redTeams;
+        match.blueTeams=data.blueTeams;
+        match.redScoreBreakdown = data.blueScoreBreakdown;
+        match.matchState = data.matchState;
+        match.matchStartTime = data.matchStartTime;
+        return match
+    }
 }
 
 const nullMatchData:MatchScoreBreakdown = {

@@ -148,9 +148,6 @@
 			margin-bottom:auto;
 		}
 	}
-	tr {
-		margin-bottom:50px;
-	}
 	.row {
 		display:grid;
 		grid-auto-flow: row;
@@ -174,7 +171,7 @@
 		filter:brightness(0.5);
 		cursor:default
 	}
-	input {
-		width: 20px;
-	}
+	// input {
+	// 	width: 20px;
+	// }
 </style>

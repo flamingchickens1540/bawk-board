@@ -3,23 +3,20 @@
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <script lang="ts" src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">
         import {confetti} from '@neoconfetti/svelte';
-        import { writable, type Writable } from 'svelte/store';
+  import { calculateScore } from '../../../common/calculations';
+        import {redScore, blueScore} from "../../store"
         import { Alliance } from "../../../common/types";
-        import Scores from "./Scores.svelte"
+        
 
 
-        let winner:Writable<Alliance> = writable();
-        fetch('/api/match').then(async (data) => {
-            $winner = await data.json()[];
-        });
+        
         let displayWinner = "";
-        switch($winner){
-            case Alliance.BLUE:
+        if (calculateScore($redScore) > calculateScore($blueScore)){
                 displayWinner = "Blue";
-            case Alliance.RED:
+        } else if (calculateScore($redScore) < calculateScore($blueScore)){
                 displayWinner = "Red"
-
-                
+        } else {
+            displayWinner = "Tie"
         }
     </script>
 
