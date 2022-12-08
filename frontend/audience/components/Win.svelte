@@ -11,17 +11,17 @@
 
     let displayWinner = "";
     if (calculateScore($redScore) > calculateScore($blueScore)){
-        displayWinner = "Blue";
+        displayWinner = "Blue Alliance has Won the Match";
     } else if (calculateScore($redScore) < calculateScore($blueScore)){
-        displayWinner = "Red"
+        displayWinner = "Red Alliance has Won the Match"
     } else {
-        displayWinner = "Tie"
+        displayWinner = "It's a Tie"
     }
 </script>
 
 <div use:confetti={{particleCount: 200, force: 0.3, particleSize: 20, particleShape:'rectangles', duration: 5000, colors: ['var(--blue)', 'var(--red)', '#1227e3', '#e32012']}}>
     <div class="wind_box">
-        <h1 class="win_message">{displayWinner} Alliance has won the match!</h1>
+        <h1 class="win_message">{displayWinner}</h1>
     </div>
     
     
@@ -29,14 +29,13 @@
 
 <style lang="scss">
     .win_message{
-        
         text-align:center;
         margin:0;
         width:auto;
         top: 0;
         left: 0;
         right: 0;   
-        position: fixed;
+        position: ;
         float: left;
         margin-left: 0;
         margin-right: 0;
