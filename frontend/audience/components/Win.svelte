@@ -1,6 +1,6 @@
 <svelte:head>
-<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-<script lang="ts" src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <script lang="ts" src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </svelte:head>
 
 <script lang="ts">

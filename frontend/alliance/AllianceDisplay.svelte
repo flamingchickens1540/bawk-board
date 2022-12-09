@@ -55,7 +55,7 @@
         display: flex;
         border-radius: 5px;
         padding: 20%;
-        border-radius:  25px;
+        border-radius: 25px;
         background-color: #f7dc99;
         width: 20%;
         height: 10%;
