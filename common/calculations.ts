@@ -1,4 +1,4 @@
-import { MatchScoreZone, type CompLevel, type MatchID, type MatchScoreBreakdown } from "./types";
+import { MatchScoreZone, type CompLevel, type MatchID, type MatchScoreBreakdown } from './types';
 
 export function calculateScore(breakdown:MatchScoreBreakdown) {
     if (breakdown == null) {
@@ -23,4 +23,15 @@ export const decodeMatchID = (id:MatchID) => {
         level:parsed[1] as CompLevel,
         id:parseInt(parsed[2])
     }
+}
+
+export const prettyMatchID = (id:MatchID) => {
+    const decoded = decodeMatchID(id)
+    const text:{[key in CompLevel]:string}= {
+        qm: "Quals",
+        qf:"Quarter-Finals",
+        sf:"Semi-Finals",
+        f:"Finals"
+    }
+    return text[decoded.level]+" "+decoded.id
 }

@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { prettyMatchID } from "../../../common/calculations";
   import { onDestroy } from "svelte";
-  import { prettyTeamNumber, blueAlliance, redAlliance, timer } from "../../store";
+  import { prettyTeamNumber, blueAlliance, redAlliance, timer, matchID } from "../../store";
 
     const test = setInterval(() => {
         document.getElementById("match-time").innerText = timer.remainingTimeFormatted
@@ -16,6 +17,7 @@
 	<div class="progress-bar-container">
 		<div class=progress-bar id=progress-bar></div>
 	</div>
+	<div class=match-number>{prettyMatchID($matchID)}</div>
 	<div class="alliance-info-red"><p>{$redAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</p></div>
 	<div class="alliance-info-blue"><p>{$blueAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</p></div>
 	<div class="match-info"><p id=match-time>0:00</p></div>
@@ -37,11 +39,14 @@
 			[blueTeams] 40vw;
 		grid-template-rows:
 			[progressBar] 3vh
-			85vh
+			
+			80vh
+			[topInfo] 5vh
 			[info] 12vh;
 		width: 100vw;
 		height: 100vh;
 	}
+	
 	.progress-bar-container {
 		background-color: #bfbfbf;
 		grid-column: redTeams/span 3;
@@ -60,13 +65,26 @@
 		grid-row: info;
 		grid-column: $column;
         border: solid black;
-        border-width:10px 5px;
+        border-width:10px;
         & p {
             line-height:$info-height;
             margin:0;
             word-spacing: 35px;
             font-size:45px;
         }
+	}
+	.match-number {
+		border: solid black;
+        border-width:10px 10px 0px 10px;
+		grid-row:topInfo;
+		grid-column:timer;
+		text-align:center;
+		line-height:5vh;
+		font-size:3.2vh;
+		background-color: grey;
+		
+		text-transform: capitalize;
+		
 	}
 
 	.alliance-info {
@@ -75,18 +93,21 @@
 			@include infoBox(redTeams);
             background-color: var(--red);
             font-weight:600;
+			border-right-width:0px;
+			
 		}
 		&-blue {
 			@include infoBox(blueTeams);
             background-color: var(--blue);
             font-weight:600;
+			border-left-width:0px;
 		}
 	}
 	.match-info {
 		@include infoBox(timer);
 		background-color: grey;
         position:relative;
-        
+        border-top-width: 0px;
         p {
             font-size:75px; 
         }
