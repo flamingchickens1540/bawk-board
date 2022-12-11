@@ -11,7 +11,7 @@
         switch (value) {
             case MatchState.PENDING: element=Match; break
             case MatchState.IN_PROGRESS: element=Match; break
-            case MatchState.COMPLETED: element=GreenScreen; break
+            case MatchState.COMPLETED: element=Win; break
             case MatchState.POSTED: 
                 element=Scores;
                 // setTimeout(() => element=Scores, 5000)
@@ -22,5 +22,4 @@
     })
     console.log(matchState)
 </script>
-
 <svelte:component this={element}></svelte:component>
