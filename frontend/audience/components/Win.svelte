@@ -9,16 +9,16 @@
   import { fade } from 'svelte/transition';
     import { Alliance } from '../../../common/types';
     import {winningAlliance} from "../../store"
-
+    import woosh from "../../assets/audio/woosh.wav"
     let displayWinner = "";
     let colors = []
     switch ($winningAlliance) {
         case Alliance.RED: 
-            displayWinner = "Red Alliance has Won the Match";
+            displayWinner = "Red Alliance";
             colors = ['var(--red)']
             break;
         case Alliance.BLUE:
-            displayWinner = "Blue Alliance has Won the Match";
+            displayWinner = "Blue Alliance";
             colors = ['var(--blue)'];
             break;
         case Alliance.NONE:
@@ -26,7 +26,7 @@
             colors = ['var(--red)', 'var(--blue)'];
             break;
     }
-
+    new Audio(woosh).play()
 </script>
 
 <div use:confetti={{particleCount: 500, force: 0.5, particleSize: 20, particleShape:'mix', duration: 5000, colors, stageWidth:window.outerWidth, stageHeight:window.outerHeight}}>
@@ -55,7 +55,7 @@
         color:#676767;
         font-family: 'Poppins';
         font-weight:600;
-        font-size:80px;
+        font-size:100px;
         position:absolute;
         top:0;
         line-height:90vh;
