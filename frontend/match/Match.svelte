@@ -3,13 +3,14 @@
 	
 	import { onMount } from "svelte";
 	import { decodeMatchID } from "../../common/calculations";
-	import { MatchState, type MatchData } from "../../common/types";
+	import { AudienceScreenLayout, MatchState, type MatchData } from "../../common/types";
 	import match_end from "../assets/audio/match_end.wav";
 	import match_start from "../assets/audio/match_start.wav";
 	import match_teleop from "../assets/audio/match_teleop.wav";
 	import { socket } from "../socket";
-	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer } from "../store";
+	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer, audienceScreen } from "../store";
 	import ScoreSummary from "./components/ScoreSummary.svelte";
+  import AudienceControl from "./components/AudienceControl.svelte";
 	
 	
 	onMount(() => {
@@ -49,7 +50,8 @@
 	function commitMatch() {
 		socket.emit("matchCommit")
 	}
-	
+
+
 	function getColorClass(match:MatchData, i:number) {
 		switch (match.matchState) {
 			case MatchState.POSTED: return getColorValue(100,200,100,i%2==0?0.5:0.3)
@@ -112,6 +114,8 @@
 			<button id=match-control class="green" disabled={$matchState == MatchState.POSTED}>Start</button>
 		</div>
 		<h3 id=match-time>0:00</h3>
+		<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl>
+		<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl>
 		<br>
 		<br>
 		<p>Teams</p>
@@ -163,14 +167,7 @@
 		margin-top:20px;
 		
 	}
-	button {
-		margin:10px 0px;
-		color:white
-	}
-	button:disabled{
-		filter:brightness(0.5);
-		cursor:default
-	}
+
 	// input {
 	// 	width: 20px;
 	// }

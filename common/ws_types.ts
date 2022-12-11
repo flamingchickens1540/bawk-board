@@ -1,4 +1,5 @@
-import type { MatchData, MatchID, TeamData } from "./types";
+import type { Server, Socket } from "socket.io";
+import type { AudienceScreen, MatchData, MatchID, TeamData } from "./types";
 
 export interface ServerToClientEvents {
     matchData: (data:MatchData) => void;
@@ -10,6 +11,7 @@ export interface ServerToClientEvents {
     matchStart: (data:MatchData) => void;
     matchTeleop: (data:MatchData) => void;
     matchEnd: (data:MatchData) => void;
+    showScreen: (screen:AudienceScreen) => void;
 }
 
 export interface ClientToServerEvents {
@@ -20,4 +22,8 @@ export interface ClientToServerEvents {
     matchStart: () => void;
     matchAbort: () => void;
     matchCommit: () => void;
+    showScreen: (screen:AudienceScreen) => void;
 }
+
+export type ThisSocket = Socket<ClientToServerEvents, ServerToClientEvents>;
+export type ThisServer = Server<ClientToServerEvents, ServerToClientEvents>;

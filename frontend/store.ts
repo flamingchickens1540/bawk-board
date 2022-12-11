@@ -4,6 +4,7 @@ import type { TowerName, Tower } from './types'
 import { addMatchDataPublishers, socket } from './socket'
 import { SimpleTimer } from '../common/timer';
 import { backend_url } from '../secrets';
+import type { AudienceScreen } from '../common/types';
 
 
 export const  redScore:Writable<MatchScoreBreakdown> = writable();
@@ -47,6 +48,12 @@ export const matchState:Readable<MatchState> = readable(undefined, (set) => {
     const callbackWrapper = (data:MatchData) => set(data.matchState)
     socket.on("matchData", callbackWrapper)
     return () => socket.off("matchData", callbackWrapper)
+})
+
+export const audienceScreen:Readable<AudienceScreen> = readable(undefined, (set) => {
+    const callbackWrapper = (data:AudienceScreen) => set(data)
+    socket.on("showScreen", callbackWrapper)
+    return () => socket.off("showScreen", callbackWrapper)
 })
 
 export const matchStartTime:Readable<number> = readable(0, (set) => {

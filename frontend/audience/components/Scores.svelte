@@ -1,22 +1,23 @@
 <script lang="ts">
     import logo from "../../assets/logo.png"
     import { onMount } from "svelte";
-    import {redAlliance, blueAlliance, redScore, blueScore, prettyTeamNumber} from "../../store"
+    import {prettyTeamNumber, audienceScreen} from "../../store"
     import {getHybridScore, getTeleopScore, getFoulPoints, calculateScore} from "../../../common/calculations"
+  import { backend_url } from "../../../secrets";
+  import type { MatchData } from "common/types";
     let ready = 0;
     onMount(() => ready++);
-    if ($redScore != null) {
+    let matchData:MatchData
+    fetch(backend_url+"/api/match/"+$audienceScreen.match).then(async (data) => {
+        matchData = await data.json()
         ready++
-    } else {
-        redScore.subscribe(() => ready++)
-    }
-    
+    })
     
     function showBanners(element:HTMLElement) {
         console.log("SHOW BANNERS")
         return {
             duration:3000,
-            delay:500,
+            delay:0,
             css: (t) => `clip-path:inset(0 0 ${(1-t.toFixed(5))*100}% 0)`,
         }
     }
@@ -34,28 +35,28 @@
         <div class="banner-container-blue"></div>
         
         
-        <h1 class="total label-red wide">{calculateScore($redScore)}</h1>
-        <h1 class="teams label-red wide">{$redAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
+        <h1 class="total label-red wide">{calculateScore(matchData.redScoreBreakdown)}</h1>
+        <h1 class="teams label-red wide">{matchData.redTeams.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
         
         <h2 class="hybrid label-red">Hybrid</h2>
         <h2 class="teleop label-red">Teleop</h2>
         <h2 class="penalty label-red">Blue Penalty</h2>
         
-        <h2 class="hybrid value-red">{getHybridScore($redScore)}</h2>
-        <h2 class="teleop value-red">{getTeleopScore($redScore)}</h2>
-        <h2 class="penalty value-red">{getFoulPoints($redScore)}</h2>
+        <h2 class="hybrid value-red">{getHybridScore(matchData.redScoreBreakdown)}</h2>
+        <h2 class="teleop value-red">{getTeleopScore(matchData.redScoreBreakdown)}</h2>
+        <h2 class="penalty value-red">{getFoulPoints(matchData.redScoreBreakdown)}</h2>
         
         
-        <h1 class="total label-blue wide">{calculateScore($blueScore)}</h1>
-        <h1 class="teams label-blue wide">{$blueAlliance.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
+        <h1 class="total label-blue wide">{calculateScore(matchData.blueScoreBreakdown)}</h1>
+        <h1 class="teams label-blue wide">{matchData.blueTeams.map((team) => prettyTeamNumber(team)).join(" ")}</h1>
         
         <h2 class="hybrid label-blue">Hybrid</h2>
         <h2 class="teleop label-blue">Teleop</h2>
         <h2 class="penalty label-blue">Red Penalty</h2>
         
-        <h2 class="hybrid value-blue">{getHybridScore($blueScore)}</h2>
-        <h2 class="teleop value-blue">{getTeleopScore($blueScore)}</h2>
-        <h2 class="penalty value-blue">{getFoulPoints($blueScore)}</h2>
+        <h2 class="hybrid value-blue">{getHybridScore(matchData.blueScoreBreakdown)}</h2>
+        <h2 class="teleop value-blue">{getTeleopScore(matchData.blueScoreBreakdown)}</h2>
+        <h2 class="penalty value-blue">{getFoulPoints(matchData.blueScoreBreakdown)}</h2>
     </div>    
     {/if}
     <style lang="scss">

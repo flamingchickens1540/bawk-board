@@ -139,3 +139,12 @@ input[type="number"].number-input {
   font-size:20px;
   text-align:center;
 }
+
+button {
+  margin:10px 0px;
+  color:white
+}
+button:disabled{
+  filter:brightness(0.5);
+  cursor:default
+}

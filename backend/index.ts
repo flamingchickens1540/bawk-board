@@ -1,13 +1,16 @@
 import { NotifyTimer } from "common/timer"
-import { MatchState } from "common/types"
+import { MatchState, type MatchID } from "common/types"
 import { auth_secret } from "secrets"
 import { Server } from "socket.io"
-import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types"
+import type { ClientToServerEvents, ServerToClientEvents, ThisServer, ThisSocket } from "../common/ws_types"
 import Match from "./classes/match"
 import Team from "./classes/team"
 import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
 import { startHttpServer, getHttpServer } from './router';
 import { updateEventInfo, updateMatches } from "./tba"
+import { type AudienceScreen, AudienceScreenLayout } from '../common/types';
+import type { Socket } from "socket.io-client"
+import type { DefaultEventsMap } from "socket.io/dist/typed-events"
 
 
 
@@ -15,7 +18,10 @@ let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
 let currentMatchID=loadEventData().currentMatchID ?? "qm1"
 let matchTimer:NotifyTimer;
-
+let currentScreen:AudienceScreen = {
+    layout: AudienceScreenLayout.BLANK,
+    match: currentMatchID
+}
 startHttpServer()
 
 export function getTeams():Team[] {
@@ -28,7 +34,10 @@ export function getCurrentMatchID() {
     return currentMatchID
 }
 export function getCurrentMatch(): Match {
-    return  matches.find((match) => match.id == currentMatchID)
+    return findMatch(currentMatchID)
+}
+export function findMatch(id:MatchID): Match {
+    return matches.find((match) => match.id == id)
 }
 
 
@@ -132,8 +141,24 @@ ws.on("connection", (socket) => {
         storeTeams(teams)
         storeMatches(matches)
         ws.emit("teamData", teams)
+        const match = currentMatchID
+        updateAudienceScreen({layout:AudienceScreenLayout.WIN, match})
+        setTimeout(() => updateAudienceScreen({layout:AudienceScreenLayout.WIN, match}), 7000)
     })
+
+    socket.on("showScreen", (screen) => {
+        updateAudienceScreen(screen)
+    })
+
+    updateAudienceScreen(currentScreen, socket)
 })
+
+function updateAudienceScreen(screen:AudienceScreen, socket:ThisSocket|ThisServer = ws) {
+    currentScreen = screen
+    socket.emit("showScreen", currentScreen)
+}
+
+
 
 function endMatch(state:MatchState) {
     ws.emit("matchEnd", getCurrentMatch())

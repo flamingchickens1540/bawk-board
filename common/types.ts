@@ -66,3 +66,15 @@ export enum MatchState {
     COMPLETED,
     POSTED
 }
+
+export enum AudienceScreenLayout {
+    MATCH="MATCH",
+    BLANK="BLANK",
+    WIN="WIN",
+    SCORES="SCORES"
+}
+
+export type AudienceScreen = {
+    layout:AudienceScreenLayout,
+    match:MatchID
+}

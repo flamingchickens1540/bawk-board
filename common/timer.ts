@@ -47,7 +47,7 @@ export class SimpleTimer {
         return (transitions[this.stage] ?? {end:this.elapsedTime}).end*1000 - this.elapsedTimeMS
     }
     get remainingTimePercent() {
-        return ((this.remainingTimeMS)/(transitions[this.stage].end*1000))
+        return ((this.remainingTimeMS)/((transitions[this.stage] ?? {end:this.elapsedTime}).end*1000))
     }
     get remainingTimeFormatted() {
         const date = new Date(this.remainingTimeMS)

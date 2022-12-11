@@ -1,10 +1,15 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
   import { prettyTeamNumber, blueAlliance, redAlliance, timer } from "../../store";
 
-    setInterval(() => {
+    const test = setInterval(() => {
         document.getElementById("match-time").innerText = timer.remainingTimeFormatted
         document.getElementById("progress-bar").style.width = ((timer.remainingTimePercent)*100)+"%"
     }, 10)
+	
+	onDestroy(() => {
+		clearInterval(test)
+	})
 </script>
 
 <div class="grid">
