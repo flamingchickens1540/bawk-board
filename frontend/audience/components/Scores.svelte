@@ -5,8 +5,10 @@
     import {getHybridScore, getTeleopScore, getFoulPoints, calculateScore} from "../../../common/calculations"
   import { backend_url } from "../../../secrets";
   import type { MatchData } from "common/types";
+  import { fade } from "svelte/transition";
     let ready = 0;
-    onMount(() => ready++);
+    let startTime = 0;
+    onMount(() => {ready++; startTime = Date.now()});
     let matchData:MatchData
     fetch(backend_url+"/api/match/"+$audienceScreen.match).then(async (data) => {
         matchData = await data.json()
@@ -17,7 +19,7 @@
         console.log("SHOW BANNERS")
         return {
             duration:3000,
-            delay:0,
+            delay:startTime+1500-Date.now(),
             css: (t) => `clip-path:inset(0 0 ${(1-t.toFixed(5))*100}% 0)`,
         }
     }
@@ -25,7 +27,7 @@
 </script>
 
 
-
+<main in:fade={{delay:0, duration:1000}}>
 <div class="image-container">
     <div><img src={logo} alt=logo id="logo" style="width:351px;height:auto;" class="center" /></div>
 </div>
@@ -59,6 +61,7 @@
         <h2 class="penalty value-blue">{getFoulPoints(matchData.blueScoreBreakdown)}</h2>
     </div>    
     {/if}
+</main>
     <style lang="scss">
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
         .center {

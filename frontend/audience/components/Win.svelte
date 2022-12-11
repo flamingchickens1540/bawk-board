@@ -6,6 +6,7 @@
 <script lang="ts">
     
     import {confetti} from '@neoconfetti/svelte';
+  import { fade } from 'svelte/transition';
     import { Alliance } from '../../../common/types';
     import {winningAlliance} from "../../store"
 
@@ -28,37 +29,42 @@
 
 </script>
 
-<div use:confetti={{particleCount: 500, force: 0.3, particleSize: 20, particleShape:'mix', duration: 5000, colors}}>
-    <div class="wind_box">
-        <h1 class="win_message">{displayWinner}</h1>
-    </div>
+<div use:confetti={{particleCount: 500, force: 0.5, particleSize: 20, particleShape:'mix', duration: 5000, colors, stageWidth:window.outerWidth, stageHeight:window.outerHeight}}>
     
-    
+</div>
+<div in:fade={{delay:1000, duration:1000}} class="wind_box">
+    <h1 class="win_message">{displayWinner}</h1>
 </div>
 
 <style lang="scss">
-    .win_message{
-        text-align:center;
-        margin:0;
-        width:auto;
-        top: 0;
-        left: 0;
-        right: 0;   
-        position: sticky;
-        float: left;
-        margin-left: 0;
-        margin-right: 0;
-    }
+    // .win_message{
+    //     text-align:center;
+    //     margin:0;
+    //     width:auto;
+    //     top: 0;
+    //     left: 0;
+    //     right: 0;   
+    //     position: sticky;
+    //     float: left;
+    //     margin-left: 0;
+    //     margin-right: 0;
+    // }
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
     .win_message {
         text-align:center;
-        padding:10px;
+        color:#676767;
         font-family: 'Poppins';
         font-weight:600;
         font-size:80px;
         position:absolute;
-        top: 600px;
-        width:100%;
+        top:0;
+        line-height:90vh;
+        bottom:0;
+        left:0;
+        right:0;
+        overflow:hidden;
+        vertical-align: middle;
+        
     }
     
 </style>

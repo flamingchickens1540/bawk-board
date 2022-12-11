@@ -49,9 +49,14 @@ export default class Team implements TeamData {
         return team
     }
 
-    addMatchResults(match:Match) {
+    processMatchResults(match:Match) {
         if (match.redTeams.includes(this.id) || match.blueTeams.includes(this.id) ) {
             this.matchIDs.push(match.id)
+        } else {
+            const index = this.matchIDs.indexOf(match.id)
+            if (index != -1) {
+                this.matchIDs.splice(index, 1)
+            }
         }
     }
 

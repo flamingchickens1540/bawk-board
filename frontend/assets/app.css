@@ -128,6 +128,9 @@ input[type=number] {
 .green {
   background-color: #16BE3C;
 }
+.yellow {
+  background-color: #beb316;
+}
 .center {
   margin-left:auto;
   margin-right:auto;

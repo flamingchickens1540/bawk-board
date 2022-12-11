@@ -11,6 +11,7 @@
 	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer, audienceScreen } from "../store";
 	import ScoreSummary from "./components/ScoreSummary.svelte";
   import AudienceControl from "./components/AudienceControl.svelte";
+  import CommitButton from "./components/CommitButton.svelte";
 	
 	
 	onMount(() => {
@@ -47,9 +48,7 @@
 	function loadMatch(id) {
 		socket.emit("loadMatch", id)
 	}
-	function commitMatch() {
-		socket.emit("matchCommit")
-	}
+	
 
 
 	function getColorClass(match:MatchData, i:number) {
@@ -107,7 +106,7 @@
 		</div>
 	</div>
 	<ScoreSummary/>
-	<button id=commit disabled={$matchState != MatchState.COMPLETED} on:click={commitMatch} class="green">Commit</button>
+	<CommitButton/>
 	<div class="sidebar-r">
 		<h2>Match {$matchID.toUpperCase()} Controls</h2>
 		<div class=row>
@@ -116,6 +115,7 @@
 		<h3 id=match-time>0:00</h3>
 		<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl>
 		<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl>
+		<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>
 		<br>
 		<br>
 		<p>Teams</p>

@@ -136,14 +136,14 @@ ws.on("connection", (socket) => {
         currentMatch.matchState = MatchState.POSTED
         
         ws.emit("matchData", currentMatch)
-        teams.forEach((team) => team.addMatchResults(currentMatch))
+        teams.forEach((team) => team.processMatchResults(currentMatch))
         updateMatches(matches)
         storeTeams(teams)
         storeMatches(matches)
         ws.emit("teamData", teams)
         const match = currentMatchID
         updateAudienceScreen({layout:AudienceScreenLayout.WIN, match})
-        setTimeout(() => updateAudienceScreen({layout:AudienceScreenLayout.WIN, match}), 7000)
+        setTimeout(() => updateAudienceScreen({layout:AudienceScreenLayout.SCORES, match}), 7000)
     })
 
     socket.on("showScreen", (screen) => {

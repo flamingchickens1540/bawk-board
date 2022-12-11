@@ -5,6 +5,7 @@
     import GreenScreen from "./components/GreenScreen.svelte";
     import { audienceScreen, matchID } from "../store";
     import { AudienceScreenLayout, type MatchID } from "../../common/types";
+  import { fade } from "svelte/transition";
     let element: typeof Match;
     let previousMatchID:MatchID;
     audienceScreen.subscribe((value) => {
@@ -26,9 +27,10 @@
             case AudienceScreenLayout.WIN: element=Win; break
             case AudienceScreenLayout.SCORES: element=Scores; break
             default:
-                element = null
+                element = Win
         }
     }
 </script>
-
+<div in:fade>
 <svelte:component this={element}></svelte:component>
+</div>
