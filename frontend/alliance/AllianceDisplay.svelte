@@ -16,16 +16,17 @@
     {#each $alliances as alliance, i}
         {#if i+1 % 2 != 0}
             <div id="alliance-square" class="rounded-box">
-                <h4>Alliance {i+1}</h4>
+                <strong><h4>Alliance {i+1}</h4></strong>
                     {#each alliance as team} 
                         <div id="team-square" class="rounded-box">
                             <h6>{team.name} {team.display_id}</h6>
                         </div>
+
                     {/each}
             </div>
         {:else}
-            <div id="alliance-square" class="rounded-box">
-                <h4>Alliance {i+1}</h4>
+            <div id="alliance-square2" class="rounded-box">
+                <strong><h4>Alliance {i+1}</h4></strong>
                 {#each alliance as team}
                     <div id="team-square" class="rounded-box">
                         <h6>{team.name} {team.display_id}</h6>
@@ -34,15 +35,15 @@
             </div>
         {/if}
     {/each}
-    <h1 id="alliances-header">Alliances</h1>
+    <strong><h1 id="alliances-header">Alliances</h1></strong>
 </div>
 
 <div id="team-display">
     <div>
         <h1>Teams</h1>
-        {#each $teams as team} 
+        {#each $teams as team, i} 
             <div class="team-box">
-                <h3>{team.display_id} {team.name}</h3>
+                <h4>{i+1}.){team.display_id} {team.name}</h4>
             </div>
         {/each}
     </div>
@@ -51,17 +52,17 @@
 
 <style>
     .team-box{
-        border-radius: 25px;
         padding: 20px;
         width: 40%;
         display: flex;
         position: relative;
-        background-color: #99f7cd;
-        border-radius: 5px;
+        border-radius: 25px;
         justify-content: center;
         height: 22%;
         margin: 2%;
-
+        margin-left: auto;
+        margin-right: auto;
+        
     }
 
     #alliance-square{
@@ -69,14 +70,28 @@
         border-radius: 5px;
         padding: 20px;
         border-radius: 25px;
-        width: 100%;
+        width: auto;
         background-color: #f7dc99;
         justify-content: center;
         position: relative;
-        height: 50%;
+        height: auto;
         align-items: center;
         vertical-align: middle;
+        flex: 1;
+    }
 
+    #alliance-square2{
+        display: flex;
+        border-radius: 5px;
+        padding: 20px;
+        border-radius: 25px;
+        width: auto;
+        background-color: #f7dc99;
+        justify-content: center;
+        position: relative;
+        height: auto;
+        align-items: center;
+        vertical-align: middle;
     }
 
     #team-square{
@@ -86,7 +101,7 @@
         border-radius: 25px;
         width: 30%;
         height: 10%;
-        background-color: #40a075;
+        background-color: #2cd68a;
         justify-content: center;
         text-justify: center;
         position: relative;
@@ -95,12 +110,14 @@
     #team-display{
         right: 0%;
         margin: 1%;
+        margin-bottom: 1%;
+        height: 94%;
         position: fixed;
         text-justify: auto;
         background-color: #f7dc99;
-        justify-content: center;
+        justify-content:center;
         border-radius: 25px;
-        align-items: center;
+        align-items:center;
         
     }
 
@@ -131,5 +148,21 @@
         vertical-align: top;
         position: relative;
         margin: 1%;
+    }
+
+    h4{
+        color: black;
+    }
+
+    h6{
+        color: black;
+    }
+
+    h4{
+        color:black;
+    }
+
+    h1{
+        color:black;
     }
 </style>

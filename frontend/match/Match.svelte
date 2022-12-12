@@ -113,9 +113,11 @@
 			<button id=match-control class="green" disabled={$matchState == MatchState.POSTED}>Start</button>
 		</div>
 		<h3 id=match-time>0:00</h3>
-		<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl>
-		<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl>
-		<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>
+		<div id="control-buttons">
+			<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl>
+			<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl>
+			<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>
+		</div>
 		<br>
 		<br>
 		<p>Teams</p>
@@ -125,6 +127,9 @@
 </main>
 
 <style lang="scss">
+	#control-buttons{
+		
+	}
 	.sidebar-l {
 		padding:10px;
 	}
