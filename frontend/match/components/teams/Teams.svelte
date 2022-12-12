@@ -24,8 +24,13 @@
 </datalist>
 
 <style>
+    th {
+        font-size:20px;
+        height:30px;
+    }
     table {
         border-collapse: collapse;
+        width:100%
     }
 
 </style>
