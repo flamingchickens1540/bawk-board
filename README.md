@@ -9,9 +9,11 @@ You also need to create a event.json file inside your data foler, containing: {c
 Make a secrests.js file, containing:
 
     export const origin_url = "";
-    export const auth_secret = "";
+    export const auth_secret = "[auth_secret]";
     export const tba_secret_id = "";
     export const tba_secret = "";
+    export const port="[port]"
+    export const backend_url="//localhost:[port]"
 
 
 Make sure to install all dependencies, then run:
