@@ -1,64 +1,51 @@
 <script lang="ts">
-  import type { TeamData } from "../../common/types";
-  import { writable, type Writable } from "svelte/store";
-  import { teams } from "../store";
+    import type { TeamData } from "../../common/types";
+    import { writable, type Writable } from "svelte/store";
+    import { teams } from "../store";
 
     let alliances:Writable<TeamData[][]> = writable([])
     fetch("/api/alliances").then(async (data) => {
         $alliances = await data.json();
-    })
-    //TODO: Debug alliance-display issue: api/alliances typeError
-    
+    })    
 </script>
 
 <header></header>
-<div id="bigdiv">
+<div>
     <strong><h1 id="alliances-header">Alliances</h1></strong>
+</div>
+<div id="bigdiv">
     {#each $alliances as alliance, i}
-        {#if i+1 % 2 != 0}
             <div id="alliance-square" class="rounded-box">
-                <strong><h4>Alliance {i+1}</h4></strong>
-                    {#each alliance as team} 
-                        <div id="team-square" class="rounded-box">
-                            <h6>{team.name} {team.display_id}</h6>
-                        </div>
-
-                    {/each}
-            </div>
-        {:else}
-            <div id="alliance-square" class="rounded-box">
-                <strong><h4>Alliance {i+1}</h4></strong>
-                {#each alliance as team}
+                <strong><h2>Alliance {i+1}</h2></strong>
+                {#each alliance as team} 
                     <div id="team-square" class="rounded-box">
-                        <h6>{team.name} {team.display_id}</h6>
+                        <h4>{team.name} {team.display_id}</h4>
                     </div>
                 {/each}
             </div>
-        {/if}
     {/each}
 </div>
 
 <div id="team-display">
     <div>
-        <h1>Teams</h1>
+        <strong><h1>Teams</h1></strong>
         {#each $teams as team, i} 
             <div class="team-box">
-                <h4>{i+1}.){team.display_id} {team.name}</h4>
+                <h4><strong>{i+1}.)</strong> {team.display_id} {team.name}</h4>
             </div>
         {/each}
     </div>
 </div>
 <footer></footer>
-
 <style>
     .team-box{
         padding: 20px;
-        width: 40%;
-        display: flex;
+        width: auto;
+        display: grid;
         position: relative;
         border-radius: 25px;
         justify-content: center;
-        height: 22%;
+        height: auto;
         margin: 2%;
         margin-left: auto;
         margin-right: auto;
@@ -66,7 +53,7 @@
     }
 
     #alliance-square{
-        display: flex;
+        display: grid;
         border-radius: 5px;
         padding: 20px;
         border-radius: 25px;
@@ -78,30 +65,16 @@
         align-items: center;
         vertical-align: middle;
 
-    }
-
-    #alliance-square{
-        display: flex;
-        border-radius: 5px;
-        padding: 20px;
-        border-radius: 25px;
-        width: auto;
-        background-color: #f7dc99;
-        justify-content: center;
-        position: relative;
-        height: auto;
-        align-items: center;
-        vertical-align: middle;
     }
 
     #team-square{
-        display: flex;
+        display: grid;
         border-radius: 5px;
         padding: 20px;
         border-radius: 25px;
-        width: 30%;
-        height: 10%;
-        background-color: #2cd68a;
+        width: auto;
+        height: auto;
+        background-color: #f7dc99;
         justify-content: center;
         text-justify: center;
         position: relative;
@@ -109,6 +82,7 @@
 
     #team-display{
         right: 0%;
+        top: 0%;
         margin: 1%;
         margin-bottom: 1%;
         height: 94%;
@@ -122,25 +96,25 @@
     }
 
     #bigdiv{
-        left:0%;
-        margin-left: 1%;
-        margin-top: 1%;
-        margin-bottom: 4%;
-        flex-wrap: wrap-reverse;
+        left:1%;
+        top: 0%;
+        bottom: 0%;
+        flex-wrap: wrap;
         justify-content: center;
         flex-direction: column-reverse;
         display: flex;
-        height: auto;
+        height: 84%;
         background-color: #eea19c;
-        width: auto;
+        width: 50%;
         border-radius: 20px;
         position: fixed;
         align-content: space-around;
-        padding: 30px;
-        margin: 2%;
+        padding: 20px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 20px;
+        grid-gap: 15px;
+        margin: 6px;
+        padding-top: 6%;
     }
  
     .rounded-box{
@@ -149,9 +123,11 @@
     }
     #alliances-header{
         vertical-align: top;
-        position: relative;
+        left: 4%;
+        z-index: 99 !important;
+        position: absolute;
         margin: 1%;
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
     }
 
@@ -159,11 +135,7 @@
         color: black;
     }
 
-    h6{
-        color: black;
-    }
-
-    h4{
+    h2{
         color:black;
     }
 
