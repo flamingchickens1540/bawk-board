@@ -6,7 +6,16 @@
     let alliances:Writable<TeamData[][]> = writable([])
     fetch("/api/alliances").then(async (data) => {
         $alliances = await data.json();
-    })    
+    })
+
+    function mergeSortTeams(alliances: TeamData[][]){
+    const teamsList:TeamData[] = [];
+    for(let i = 0; i<alliances.length;i+=2){
+        teamsList.push(alliances[i].concat[i+1]);
+    }
+    return teamsList.sort((a,b) => a.rankingPoints - b.rankingPoints);
+    let teamList:TeamData[] = mergeSortTeams(teams)
+}
 </script>
 
 <header></header>
@@ -17,7 +26,7 @@
     {#each $alliances as alliance, i}
             <div id="alliance-square" class="rounded-box">
                 <strong><h2>Alliance {i+1}</h2></strong>
-                {#each alliance as team} 
+                {#each alliance as team}
                     <div id="team-square" class="rounded-box">
                         <h4>{team.name} {team.display_id}</h4>
                     </div>
@@ -92,6 +101,9 @@
         justify-content:center;
         border-radius: 25px;
         align-items:center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 15px;
         
     }
 
@@ -123,7 +135,8 @@
     }
     #alliances-header{
         vertical-align: top;
-        left: 4%;
+        left: 20%;
+        top: .1px;
         z-index: 99 !important;
         position: absolute;
         margin: 1%;
