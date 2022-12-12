@@ -13,6 +13,7 @@
 
 <header></header>
 <div id="bigdiv">
+    <strong><h1 id="alliances-header">Alliances</h1></strong>
     {#each $alliances as alliance, i}
         {#if i+1 % 2 != 0}
             <div id="alliance-square" class="rounded-box">
@@ -25,7 +26,7 @@
                     {/each}
             </div>
         {:else}
-            <div id="alliance-square2" class="rounded-box">
+            <div id="alliance-square" class="rounded-box">
                 <strong><h4>Alliance {i+1}</h4></strong>
                 {#each alliance as team}
                     <div id="team-square" class="rounded-box">
@@ -35,7 +36,6 @@
             </div>
         {/if}
     {/each}
-    <strong><h1 id="alliances-header">Alliances</h1></strong>
 </div>
 
 <div id="team-display">
@@ -77,10 +77,10 @@
         height: auto;
         align-items: center;
         vertical-align: middle;
-        flex: 1;
+
     }
 
-    #alliance-square2{
+    #alliance-square{
         display: flex;
         border-radius: 5px;
         padding: 20px;
@@ -138,6 +138,9 @@
         align-content: space-around;
         padding: 30px;
         margin: 2%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
     }
  
     .rounded-box{
@@ -148,6 +151,8 @@
         vertical-align: top;
         position: relative;
         margin: 1%;
+        margin-left:auto;
+        margin-right: auto;
     }
 
     h4{
