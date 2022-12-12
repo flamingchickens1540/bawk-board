@@ -20,3 +20,7 @@
 </script>
 
 <button class="green" on:click={setAudienceScreen} disabled={areEqual($audienceScreen, screen)}>{text}</button>
+
+<style>
+  button {width:100%}
+</style>

@@ -102,8 +102,10 @@
 				<button disabled={match.id == $matchID} class="loadButton" on:click={() => loadMatch(match.id)}>Load</button>
 			</div>
 			{/each}
-			<button id=new-match class="green" on:click={newMatch}>Next</button>
+			
 		</div>
+		<button id=new-match class="green" on:click={newMatch}>Next</button>
+		<button id=new-match class="green" on:click={newMatch}>Stage</button>
 	</div>
 	<ScoreSummary/>
 	<CommitButton/>
@@ -114,8 +116,8 @@
 		</div>
 		<h3 id=match-time>0:00</h3>
 		<div id="control-buttons">
-			<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl>
-			<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl>
+			<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl><br>
+			<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>
 		</div>
 		<br>
@@ -132,11 +134,22 @@
 	}
 	.sidebar-l {
 		padding:10px;
+		// direction:rtl
 	}
 	#matchGrid {
 		display:grid;
 		grid-template-columns: 100%;
 		grid-auto-flow: row;
+		overflow-y: scroll;
+		max-height:70vh;
+		.matchEntry:first-child {
+			border-top-left-radius:15px;
+			border-top-right-radius:15px;
+		}
+		.matchEntry:last-child {
+			border-bottom-left-radius:15px;
+			border-bottom-right-radius:15px;
+		}
 		
 	}
 	.matchEntry {
@@ -170,7 +183,7 @@
 	}
 	#new-match {
 		margin-top:20px;
-		
+		width:100%
 	}
 
 	// input {
