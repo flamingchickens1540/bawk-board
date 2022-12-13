@@ -5,7 +5,8 @@ import { tba_secret, tba_secret_id } from "secrets";
 import type Team from "../classes/team";
 import type { TbaEventInfo, TbaMatch, TbaRanking, TbaRankings, TbaTeamNumber } from './types';
 import { TbaAlliance } from './types';
-import { decodeMatchID } from '../../common/calculations';
+import { decodeMatchID, prettyMatchID } from '../../common/calculations';
+import { MatchState, type MatchID } from "common/types";
 
 
 const baseUrl = "https://www.thebluealliance.com"
@@ -30,7 +31,7 @@ interface Endpoints{
     "alliance_selections/update":never;
     "awards/update":never;
     "matches/update":TbaMatch[];
-    "matches/delete":string[];
+    "matches/delete":MatchID[];
     "rankings/update":TbaRankings;
     "team_list/update":TbaTeamNumber[];
     "media/add":never;
@@ -98,9 +99,9 @@ export async function updateRankings(teams:Team[]) {
 
 export async function updateMatches(matches:Match[]) {
     
-    const data:TbaMatch[] = matches.map((match) => ({
+    const data:TbaMatch[] = matches.filter((match) => match.matchState == MatchState.POSTED).map((match) => ({
         comp_level: decodeMatchID(match.id).level,
-        set_number:0,
+        set_number:1,
         match_number: decodeMatchID(match.id).id,
         alliances: {
             red: new TbaAlliance(match.redTeams.map((team) => getTBATeamNumber(team)), match.redScore),
@@ -108,8 +109,18 @@ export async function updateMatches(matches:Match[]) {
         },
         score_breakdown: {red:{}, blue:{}},
         time_string: new Date(match.matchStartTime).toLocaleTimeString("en-us", {hour:"numeric", minute:"2-digit", timeZone:"America/Los_Angeles"}),
-        time_utc: new Date(match.matchStartTime).toISOString(),
-        display_name: "Quals "+match.id
+        // time_utc: new Date(match.matchStartTime).toISOString(),
+        // time_utc:"2008-01-02T10:30:00.000Z",
+        display_name: prettyMatchID(match.id)
     }))
+    
+    // console.log(data)
+    // removeMatches(matches)
     await post("matches/update", data)
+}
+
+export async function removeMatches(matches:Match[]) {
+    
+    
+    await post("matches/delete", matches.map((match) =>match.id))
 }

@@ -10,10 +10,10 @@ export interface TbaMatch {
     set_number: number;
     match_number: number;
     alliances: { [key in "red" | "blue"]: TbaAlliance};
-    score_breakdown: { [key: string]: { [key: string]: any}};
-    time_string: string;
-    time_utc: string;
-    display_name: string;
+    score_breakdown?: { [key: string]: { [key: string]: any}};
+    time_string?: string;
+    time_utc?: string;
+    display_name?: string;
 }
 export class TbaAlliance {
     teams: TbaTeamNumber[];

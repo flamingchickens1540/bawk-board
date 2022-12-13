@@ -50,7 +50,7 @@ export default class Team implements TeamData {
     }
 
     processMatchResults(match:Match) {
-        if (match.redTeams.includes(this.id) || match.blueTeams.includes(this.id) ) {
+        if (match.redTeams.includes(this.id) || match.blueTeams.includes(this.id)) {
             this.matchIDs.push(match.id)
         } else {
             const index = this.matchIDs.indexOf(match.id)
@@ -58,6 +58,7 @@ export default class Team implements TeamData {
                 this.matchIDs.splice(index, 1)
             }
         }
+        this.matchIDs = this.matchIDs.filter((v, i, a) => a.indexOf(v) === i); 
     }
 
     getScore(match:Match) {
