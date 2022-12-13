@@ -129,12 +129,9 @@
 </main>
 
 <style lang="scss">
-	#control-buttons{
-		
-	}
+
 	.sidebar-l {
 		padding:10px;
-		// direction:rtl
 	}
 	#matchGrid {
 		display:grid;
