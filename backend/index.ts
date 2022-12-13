@@ -109,6 +109,7 @@ ws.on("connection", (socket) => {
                 teams[teamIndex].playoffAlliance = value.playoffAlliance
             }
         })
+        teams.sort((a,b) => a.display_id.localeCompare(b.display_id))
         storeTeams(teams)
         updateEventInfo(teams)
         socket.broadcast.emit("teamData", teams)
