@@ -37,9 +37,10 @@
 	team.subscribe((value) => {
 		const teamNumber = realTeamNumber(value);
 		if (teamNumber == 0) {
-			return;
+			$alliance[index] = null
+		} else {
+			$alliance[index] = teamNumber;
 		}
-		$alliance[index] = teamNumber;
 	});
 </script>
 

@@ -1,6 +1,9 @@
 import type { PlayoffAlliance } from "./alliances";
 
 export type CompLevel = "qm" | "qf" | "sf" | "f"
+export function isCompLevel(input:string): input is CompLevel {
+    return ["qm","qf","sf","f"].includes(input)
+}
 export type MatchID = `${CompLevel}${number}`
 export type MatchData = {
     id: MatchID

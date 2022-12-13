@@ -1,5 +1,6 @@
 import type { Server, Socket } from "socket.io";
 import type { AudienceScreen, MatchData, MatchID, TeamData } from "./types";
+import type { PlayoffAlliance } from './alliances';
 
 export interface ServerToClientEvents {
     matchData: (data:MatchData) => void;
@@ -23,6 +24,7 @@ export interface ClientToServerEvents {
     matchAbort: () => void;
     matchCommit: () => void;
     showScreen: (screen:AudienceScreen) => void;
+    getAlliance(alliance:PlayoffAlliance, cb:(teams: number[]) => void)
 }
 
 export type ThisSocket = Socket<ClientToServerEvents, ServerToClientEvents>;

@@ -1,7 +1,14 @@
 <script lang=ts>
-    import { teams } from "../../../store";
+  import { isPlayoffLevel } from "../../../../common/alliances";
+  import { derived } from "svelte/store";
+    import { matchID, teams } from "../../../store";
     import TeamPair from "./TeamPair.svelte";
-
+  import AllianceBox from "./Alliance.svelte";
+  import { Alliance } from "../../../../common/types";
+    const isPlayoff = derived(
+        matchID,
+        $matchID => isPlayoffLevel($matchID)
+    )
 </script>
 
 <table>
@@ -14,7 +21,12 @@
     <TeamPair index={1}/>
     <TeamPair index={2}/>
     <TeamPair index={3}/>
-    
+    {#if $isPlayoff} 
+    <tr>
+        <td class=red><AllianceBox alliance_name={Alliance.RED}/></td>
+        <td class=blue><AllianceBox alliance_name={Alliance.BLUE}/></td>
+    </tr>
+    {/if}
 </table>
 
 <datalist id="teams">

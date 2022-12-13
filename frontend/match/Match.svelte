@@ -3,7 +3,7 @@
 	
 	import { onMount } from "svelte";
 	import { decodeMatchID } from "../../common/calculations";
-	import { AudienceScreenLayout, MatchState, type MatchData } from "../../common/types";
+	import { AudienceScreenLayout, isCompLevel, MatchState, type MatchData } from "../../common/types";
 	import match_end from "../assets/audio/match_end.wav";
 	import match_start from "../assets/audio/match_start.wav";
 	import match_teleop from "../assets/audio/match_teleop.wav";
@@ -70,6 +70,15 @@
 		const decodedID = decodeMatchID($matchID)
 		loadMatch(decodedID.level+(decodedID.id+1))
 	}
+
+	function setStage() {
+		const prefix = prompt("What is the new prefix", "qm")
+		if (isCompLevel(prefix)) {
+			loadMatch(prefix+"1")
+		} else {
+			setStage()
+		}
+	}
 	
 	function setButtonStart() {
 		document.getElementById("match-control").innerText = "Start"
@@ -105,7 +114,7 @@
 			
 		</div>
 		<button id=new-match class="green" on:click={newMatch}>Next</button>
-		<button id=new-match class="green" on:click={newMatch}>Stage</button>
+		<button id=new-match class="green" on:click={setStage}>Stage</button>
 	</div>
 	<ScoreSummary/>
 	<CommitButton/>

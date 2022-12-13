@@ -11,6 +11,7 @@ import { updateEventInfo, updateMatches } from "./tba"
 import { type AudienceScreen, AudienceScreenLayout } from '../common/types';
 import type { Socket } from "socket.io-client"
 import type { DefaultEventsMap } from "socket.io/dist/typed-events"
+import { getAlliances } from "./alliances"
 
 
 
@@ -149,6 +150,11 @@ ws.on("connection", (socket) => {
 
     socket.on("showScreen", (screen) => {
         updateAudienceScreen(screen)
+    })
+    socket.on("getAlliance", (alliance, cb) => {
+        const alliances = getAlliances()
+        cb((alliances[alliance-1]??[]).map((team) => team.id).slice(0,4))
+
     })
 
     updateAudienceScreen(currentScreen, socket)
