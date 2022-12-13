@@ -2,25 +2,33 @@
 	import type { TeamData } from "../../common/types";
 	import { derived, type Readable } from "svelte/store";
 	import { teams } from "../store";
-	import * as animateScroll from "svelte-scrollto";
-  import { onMount } from "svelte";
+	import jQuery from "jquery";
+	import { onMount } from "svelte";
+
 	const sortFunction = (a, b) => b.rankingPoints - a.rankingPoints;
 	let teamsSorted: Readable<TeamData[]> = derived(teams, ($teams) =>
 		$teams.sort(sortFunction)
 	);
-	animateScroll.setGlobalOptions({container:".tableContainer"})
-	function resetScroll() {
-		animateScroll.scrollToTop({onDone:() => {
-			animateScroll.scrollToBottom({duration:($teamsSorted.length-15)*2000, onDone:resetScroll})
-		}})
+	onMount(() => {
 		
-	}
-	onMount(resetScroll)
+		const scrollElement = jQuery(".tableContainer");
+		function anim() {
+			var sb = scrollElement.prop("scrollHeight") - scrollElement.innerHeight();
+			scrollElement.animate({ scrollTop:  sb }, $teamsSorted.length*750, () => {
+				scrollElement.animate({ scrollTop: 0 }, 500, anim);
+			});
+		}
+		function stop() {
+			scrollElement.stop();
+		}
+		anim();
+		scrollElement.hover(stop, anim);
+	});
 </script>
 
 <main>
 	<h1 class="Title">Team Rankings</h1>
-	<div class="tableContainer">
+	<div id="test" class="tableContainer">
 		<table>
 			<thead>
 				<tr>
@@ -31,7 +39,7 @@
 					<th>W-L-T</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="tablebody">
 				{#each $teamsSorted as team, i}
 					<tr>
 						<td>{i + 1}</td>
@@ -50,7 +58,8 @@
 	.tableContainer {
 		height: 80vh;
 		overflow-y: auto;
-		scrollbar-width:none;
+		scrollbar-width: none;
+		transition: linear 1s;
 	}
 	main {
 		position: absolute;
@@ -79,8 +88,11 @@
 	td,
 	th {
 		/* border: 1px solid #989898; */
-		text-align: center;
-		padding: 8px;
+		text-align: left;
+
+		padding: 25px;
+		padding-left: 25px;
+		font-size: 35px;
 	}
 	tbody {
 		tr:nth-child(0) {
@@ -98,5 +110,4 @@
 		position: sticky;
 		top: 0;
 	}
-
 </style>
