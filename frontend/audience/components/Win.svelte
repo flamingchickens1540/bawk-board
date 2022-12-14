@@ -14,15 +14,15 @@
     let colors = []
     switch ($winningAlliance) {
         case Alliance.RED: 
-            displayWinner = "Red Alliance";
+            displayWinner = "Red Alliance Won!";
             colors = ['var(--red)']
             break;
         case Alliance.BLUE:
-            displayWinner = "Blue Alliance";
+            displayWinner = "Blue Alliance Won!";
             colors = ['var(--blue)'];
             break;
         case Alliance.NONE:
-            displayWinner = "It's a Tie"
+            displayWinner = "It's a Tie!"
             colors = ['var(--red)', 'var(--blue)'];
             break;
     }

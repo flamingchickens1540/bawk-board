@@ -70,9 +70,8 @@
 		const decodedID = decodeMatchID($matchID)
 		loadMatch(decodedID.level+(decodedID.id+1))
 	}
-
 	function setStage() {
-		const prefix = prompt("What is the new prefix", "qm")
+		const prefix = prompt("What kind of match is this? Options are: qm, qf, sf, f", "qm")
 		if (isCompLevel(prefix)) {
 			loadMatch(prefix+"1")
 		} else {
@@ -132,7 +131,7 @@
 		<br>
 		<br>
 		<p>Teams</p>
-		<Teams />
+		<Teams/>
 	</div>
 	
 </main>
