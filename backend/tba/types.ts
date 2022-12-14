@@ -30,7 +30,6 @@ export class TbaAlliance {
 export interface TbaRanking {
     team_key: TbaTeamNumber;
     rank: number;
-    RP: number;
     wins: number;
     losses: number;
     ties: number;

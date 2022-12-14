@@ -1,4 +1,4 @@
-import { calculateScore } from "../../common/calculations";
+import { calculateScore, getHybridScore } from '../../common/calculations';
 import { Alliance, MatchResult, MatchState, type MatchData, type MatchID, type MatchScoreBreakdown } from "../../common/types";
 
 
@@ -26,6 +26,9 @@ export default class Match implements MatchData{
 
     get redScore() {return calculateScore(this.redScoreBreakdown)}
     get blueScore() {return calculateScore(this.blueScoreBreakdown)}
+
+    get _redHybridScore() {return getHybridScore(this.redScoreBreakdown)}
+    get _blueHybridScore() {return getHybridScore(this.blueScoreBreakdown)}
 
     constructor(
         public id:MatchID,
@@ -57,6 +60,9 @@ export default class Match implements MatchData{
     getTeamScore(team:number):number {
         return this.getAllianceScore(this.getTeamAlliance(team));
     }
+    getTeamHybridScore(team:number):number {
+        return this.getAllianceHybridScore(this.getTeamAlliance(team));
+    }
 
     getAllianceScore(alliance:Alliance) {
         switch (alliance) {
@@ -64,6 +70,17 @@ export default class Match implements MatchData{
                 return this.redScore
             case Alliance.BLUE:
                 return this.blueScore
+            default:
+                return 0
+        }
+    }
+
+    getAllianceHybridScore(alliance:Alliance) {
+        switch (alliance) {
+            case Alliance.RED:
+                return this._redHybridScore
+            case Alliance.BLUE:
+                return this._blueHybridScore
             default:
                 return 0
         }

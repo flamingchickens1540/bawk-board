@@ -78,7 +78,7 @@ async function updateEventTeams(teams: Team[]) {
 }
 
 export async function updateRankings(teams:Team[]) {
-    teams.sort((a, b) => a.rankingPoints - b.rankingPoints)
+    teams.sort((a, b) => b.rankingPoints - a.rankingPoints)
     const rankings:TbaRanking[] = teams.map((team, index) => ({
         team_key: getTBATeamNumber(team.id),
         rank:index+1,
@@ -86,14 +86,24 @@ export async function updateRankings(teams:Team[]) {
         losses: team.matchLosses,
         ties: team.matchTies,
         played: team.matchCount,
+        qual_average:0,
         dqs:0,
-        RP: team.rankingPoints
+        "Ranking Score":team.rankingPoints/team.matchCount,
+        "Avg Match": team.matchAvg,
+        "Avg Hangar": 0,
+        "Avg Taxi + Auto Cargo": team.hybridAvg
     }))
 
     const body:TbaRankings = {
-        breakdowns: ["RP"],
+        "breakdowns": [
+            "Ranking Score",
+            "Avg Match",
+            "Avg Hangar",
+            "Avg Taxi + Auto Cargo"
+          ],
         rankings
     }
+    console.log(body)
     await post("rankings/update", body)
 }
 
@@ -115,12 +125,17 @@ export async function updateMatches(matches:Match[]) {
     }))
     
     // console.log(data)
-    // removeMatches(matches)
-    await post("matches/update", data)
+    resetMatches(matches)
+    // await post("matches/update", data)
 }
+export async function resetRankings() {
+    const body:TbaRankings = {
+        breakdowns: [],
+        rankings:[]
+    }
+    await post("rankings/update", body)
+}
+export async function resetMatches(matches:Match[]) {
 
-export async function removeMatches(matches:Match[]) {
-    
-    
     await post("matches/delete", matches.map((match) =>match.id))
 }

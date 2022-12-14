@@ -7,7 +7,12 @@ export function calculateScore(breakdown:MatchScoreBreakdown) {
 
     return getHybridScore(breakdown)+getTeleopScore(breakdown)+getFoulPoints(breakdown)
 }
-export const getHybridScore = (breakdown:MatchScoreBreakdown) => breakdown.autoTubes*10
+export const getHybridScore = (breakdown:MatchScoreBreakdown) => {
+    if (breakdown == null) {
+        return 0
+    }
+    return breakdown.autoTubes*10
+}
 export const getTeleopScore = (breakdown:MatchScoreBreakdown) => {
     let zoneSum:number = 0
     breakdown.zones.forEach((zone) => {

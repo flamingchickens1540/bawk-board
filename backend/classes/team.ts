@@ -16,6 +16,20 @@ export default class Team implements TeamData {
     get matchLosses() { return this._matches.filter((match) => match.getMatchResult(this.id) == MatchResult.LOSS).length}
     get matchTies() { return this._matches.filter((match) => match.getMatchResult(this.id) == MatchResult.DRAW).length}
     get matchCount() {return this._matches.length}
+    get matchAvg() {
+        let sum = 0
+        this._matches.forEach((match ) => {
+            sum += match.getTeamScore(this.id)
+        })
+        return sum/this.matchCount
+    }
+    get hybridAvg() {
+        let sum = 0
+        this._matches.forEach((match ) => {
+            sum += match.getTeamHybridScore(this.id)
+        })
+        return sum/this.matchCount
+    }
     get rankingPoints() {
         let rankingPoints = 0;
         this._matches.forEach((match) => {

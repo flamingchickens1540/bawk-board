@@ -7,7 +7,7 @@ import Match from "./classes/match"
 import Team from "./classes/team"
 import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
 import { startHttpServer, getHttpServer } from './router';
-import { updateEventInfo, updateMatches } from "./tba"
+import { updateEventInfo, updateMatches, updateRankings } from "./tba"
 import { type AudienceScreen, AudienceScreenLayout } from '../common/types';
 import type { Socket } from "socket.io-client"
 import type { DefaultEventsMap } from "socket.io/dist/typed-events"
@@ -140,6 +140,7 @@ ws.on("connection", (socket) => {
         ws.emit("matchData", currentMatch)
         teams.forEach((team) => team.processMatchResults(currentMatch))
         updateMatches(matches)
+        updateRankings(teams)
         storeTeams(teams)
         storeMatches(matches)
         ws.emit("teamData", teams)
