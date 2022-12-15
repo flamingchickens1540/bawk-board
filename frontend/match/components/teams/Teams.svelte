@@ -1,10 +1,10 @@
 <script lang=ts>
-  import { isPlayoffLevel } from "../../../../common/alliances";
-  import { derived } from "svelte/store";
+    import { isPlayoffLevel } from "../../../../common/alliances";
+    import { derived } from "svelte/store";
     import { matchID, teams } from "../../../store";
     import TeamPair from "./TeamPair.svelte";
-  import AllianceBox from "./Alliance.svelte";
-  import { Alliance } from "../../../../common/types";
+    import AllianceBox from "./Alliance.svelte";
+    import { Alliance } from "../../../../common/types";
     const isPlayoff = derived(
         matchID,
         $matchID => isPlayoffLevel($matchID)
@@ -42,7 +42,8 @@
     }
     table {
         border-collapse: collapse;
-        width:100%
+        width:100%;
+        position: relative;
     }
 
 </style>

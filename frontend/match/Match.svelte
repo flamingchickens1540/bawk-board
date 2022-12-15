@@ -128,15 +128,22 @@
 			<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>
 		</div>
+		<p id="teams-header">Teams</p>
 		<br>
 		<br>
-		<p>Teams</p>
+		
 		<Teams/>
 	</div>
 	
 </main>
 
 <style lang="scss">
+	#teams-header{
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+
 
 	.sidebar-l {
 		padding:10px;

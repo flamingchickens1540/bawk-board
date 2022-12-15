@@ -1,8 +1,8 @@
 <script lang=ts>
-  import { Alliance } from "../../../../common/types";
-  import Team from "./Team.svelte";
+    import { Alliance } from "../../../../common/types";
+    import Team from "./Team.svelte";
 
-    export let index:number;
+    export let index: number;
 </script>
 
 <tr>
@@ -14,5 +14,4 @@
     td {
         padding:5px;
     }
-
 </style>

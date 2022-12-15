@@ -12,7 +12,7 @@
 <table cellspacing=0 cellpadding=10px>
     <thead>
         <tr>
-            <th></th>
+            <th>Type</th>
             <th>Red</th>
             <th>Blue</th>
         </tr>
