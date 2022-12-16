@@ -2,10 +2,17 @@
   import { prettyMatchID } from "../../../common/calculations";
   import { onDestroy } from "svelte";
   import { prettyTeamNumber, blueAlliance, redAlliance, timer, matchID } from "../../store";
+  import { Period } from "../../../common/timer";
 
     const test = setInterval(() => {
+		console.log("width:",document.getElementById("progress-bar").style.width)
         document.getElementById("match-time").innerText = timer.remainingTimeFormatted
-        document.getElementById("progress-bar").style.width = ((timer.remainingTimePercent)*100)+"%"
+		if (timer.stage == Period.POST) {
+			document.getElementById("progress-bar").style.width = "0px"
+		} else {
+    		document.getElementById("progress-bar").style.width = ((timer.remainingTimePercent)*100)+"%"
+		}
+		
     }, 10)
 	
 	onDestroy(() => {

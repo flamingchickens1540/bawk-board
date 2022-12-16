@@ -18,7 +18,7 @@ export class NotifyTimer {
     
     public start() {
         this.timer.start()
-        this.callbackCaller = setInterval(() => this.runCallbacks(), 100)
+        this.callbackCaller = setInterval(() => this.runCallbacks(), 50)
     }
 
     public cancel() {
@@ -70,7 +70,7 @@ class Range {
         return value < this.end && value >= this.start;
     }
 }
-enum Period {
+export enum Period {
     PRE = "PRE",
     HYBRID = "HYBRID",
     TELEOP = "TELEOP",

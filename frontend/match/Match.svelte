@@ -13,6 +13,9 @@
   import AudienceControl from "./components/AudienceControl.svelte";
   import CommitButton from "./components/CommitButton.svelte";
 	
+  const match_end_sound = new Audio(match_end);
+	const match_start_sound = new Audio(match_start);
+	const match_teleop_sound = new Audio(match_teleop);
 	
 	onMount(() => {
 		isDoneLoading.then(() => {
@@ -28,14 +31,14 @@
 		})
 	})
 	socket.on("matchTeleop", () => {
-		new Audio(match_teleop).play()
+		match_teleop_sound.play()
 	})
 	socket.on("matchStart", (data) => {
-		new Audio(match_start).play()
+		match_start_sound.play()
 		setButtonStop()
 	})
 	socket.on("matchEnd", (data) => {
-		new Audio(match_end).play()
+		match_end_sound.play()
 		timer.reset()
 		setButtonStart()
 	})
