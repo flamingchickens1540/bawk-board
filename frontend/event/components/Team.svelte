@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PlayoffAlliance } from "../../../common/alliances";
 	import type { TeamData } from "../../../common/types";
-	import { socket } from "../../socket";
+	import { socket, updateTeams } from "../../socket";
 	export let team: TeamData;
 </script>
 
@@ -21,7 +21,7 @@
 		<input type="string" bind:value={team.name} />
 	</td>
 	<td class="namewidth">
-		<select bind:value={team.playoffAlliance}>
+		<select bind:value={team.playoffAlliance} on:change={updateTeams}>
 			<option value={PlayoffAlliance.NONE}>None</option>
 			<option value={PlayoffAlliance.ALLIANCE_1}>Alliance 1</option>
 			<option value={PlayoffAlliance.ALLIANCE_2}>Alliance 2</option>
