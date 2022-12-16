@@ -4,13 +4,23 @@ import { MatchResult, type MatchID, type TeamData } from "../../common/types"
 import type Match from "./match"
 
 
+
 export default class Team implements TeamData {
     public matchIDs:MatchID[] = []
     
 
     get _matches() {
         const matches = getMatches()
-        return this.matchIDs.map((id) => matches.find((match) => match.id == id))
+        const myMatches:Match[] = [];
+        this.matchIDs.forEach((id, i) => {
+            const match = matches.find((match) => match.id == id)
+            if (match != null) {
+                myMatches.push(match)
+            } else {
+                this.matchIDs.splice(i, 1)
+            }
+        })
+        return myMatches
     }
     get matchWins() { return this._matches.filter((match) =>match.getMatchResult(this.id) == MatchResult.WIN).length}
     get matchLosses() { return this._matches.filter((match) => match.getMatchResult(this.id) == MatchResult.LOSS).length}
