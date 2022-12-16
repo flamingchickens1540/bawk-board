@@ -7,6 +7,7 @@ import type { TbaEventInfo, TbaMatch, TbaRanking, TbaRankings, TbaTeamNumber } f
 import { TbaAlliance } from './types';
 import { decodeMatchID, prettyMatchID } from '../../common/calculations';
 import { MatchState, type MatchID } from "common/types";
+import { map } from "jquery";
 
 
 const baseUrl = "https://www.thebluealliance.com"
@@ -108,21 +109,22 @@ export async function updateRankings(teams:Team[]) {
 }
 
 export async function updateMatches(matches:Match[]) {
-    
-    const data:TbaMatch[] = matches.filter((match) => match.matchState == MatchState.POSTED).map((match) => ({
-        comp_level: decodeMatchID(match.id).level,
-        set_number:1,
-        match_number: decodeMatchID(match.id).id,
-        alliances: {
-            red: new TbaAlliance(match.redTeams.map((team) => getTBATeamNumber(team)), match.redScore),
-            blue: new TbaAlliance(match.blueTeams.map((team) => getTBATeamNumber(team)), match.blueScore)
-        },
-        score_breakdown: {red:{}, blue:{}},
-        time_string: new Date(match.matchStartTime).toLocaleTimeString("en-us", {hour:"numeric", minute:"2-digit", timeZone:"America/Los_Angeles"}),
-        // time_utc: new Date(match.matchStartTime).toISOString(),
-        // time_utc:"2008-01-02T10:30:00.000Z",
-        display_name: prettyMatchID(match.id)
-    }))
+    const data:TbaMatch[] = matches
+        .filter((match) => match.matchState == MatchState.POSTED && decodeMatchID(match.id).level != "p")
+        .map((match) => ({
+            comp_level: decodeMatchID(match.id).level as "qf"|"sf"|"f"|"qm",
+            set_number:1,
+            match_number: decodeMatchID(match.id).id,
+            alliances: {
+                red: new TbaAlliance(match.redTeams.map((team) => getTBATeamNumber(team)), match.redScore),
+                blue: new TbaAlliance(match.blueTeams.map((team) => getTBATeamNumber(team)), match.blueScore)
+            },
+            score_breakdown: {red:{}, blue:{}},
+            time_string: new Date(match.matchStartTime).toLocaleTimeString("en-us", {hour:"numeric", minute:"2-digit", timeZone:"America/Los_Angeles"}),
+            // time_utc: new Date(match.matchStartTime).toISOString(),
+            // time_utc:"2008-01-02T10:30:00.000Z",
+            display_name: prettyMatchID(match.id)
+        }))
     
     // console.log(data)
     resetMatches(matches)

@@ -9,6 +9,7 @@ import { getCurrentMatchID, getMatches, getTeams } from "."
 import { origin_url } from "../secrets"
 import Match from "./classes/match"
 import Team from "./classes/team"
+import { decodeMatchID } from '../common/calculations';
 
 
 process.on("exit", (code) => {
@@ -94,7 +95,7 @@ export function loadMatchesFromData(data:MatchData[]):Match[] {
 }
 
 export const storeTeams = (teams:TeamData[]) => {storeFile(DataFile.TEAMS, teams)}
-export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES, matches)}
+export const storeMatches = (matches:MatchData[]) => {storeFile(DataFile.MATCHES, matches.filter((match) => decodeMatchID(match.id).level != "p"))}
 export const storeEventData = (data:EventData) => {storeFile(DataFile.EVENT, data)}
 
 

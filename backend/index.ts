@@ -12,6 +12,7 @@ import { type AudienceScreen, AudienceScreenLayout } from '../common/types';
 import type { Socket } from "socket.io-client"
 import type { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { getAlliances } from "./alliances"
+import { decodeMatchID } from '../common/calculations';
 
 
 
@@ -138,9 +139,14 @@ ws.on("connection", (socket) => {
         currentMatch.matchState = MatchState.POSTED
         
         ws.emit("matchData", currentMatch)
-        teams.forEach((team) => team.processMatchResults(currentMatch))
-        updateMatches(matches)
-        updateRankings(teams)
+        const decodedID = decodeMatchID(currentMatch.id)
+        if (decodedID.level != "p") {
+            teams.forEach((team) => team.processMatchResults(currentMatch))
+            updateMatches(matches)
+            updateRankings(teams)
+        }
+        
+        
         storeTeams(teams)
         storeMatches(matches)
         ws.emit("teamData", teams)

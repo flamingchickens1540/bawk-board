@@ -36,7 +36,8 @@ export const prettyMatchID = (id:MatchID) => {
         qm: "Quals",
         qf:"Quarter-Finals",
         sf:"Semi-Finals",
-        f:"Finals"
+        f:"Finals",
+        p: "Practice"
     }
     return text[decoded.level]+" "+decoded.id
 }
