@@ -54,7 +54,6 @@
 </td>
 
 <style>
-
 	input[type="checkbox"] {
 		height: 100%;
 		transform: scale(1.5);
