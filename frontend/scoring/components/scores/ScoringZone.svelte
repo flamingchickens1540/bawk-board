@@ -61,4 +61,7 @@
 		border: none;
 		outline: none;
 	}
+	button {
+		touch-action: manipulation;
+	}
 </style>
