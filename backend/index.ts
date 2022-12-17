@@ -25,7 +25,8 @@ let currentScreen:AudienceScreen = {
     match: currentMatchID
 }
 startHttpServer()
-
+updateRankings(teams);
+updateMatches(matches);
 export function getTeams():Team[] {
     return teams
 }

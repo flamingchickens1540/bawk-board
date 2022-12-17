@@ -109,6 +109,7 @@ export async function updateRankings(teams:Team[]) {
 }
 
 export async function updateMatches(matches:Match[]) {
+    
     const data:TbaMatch[] = matches
         .filter((match) => match.matchState == MatchState.POSTED && decodeMatchID(match.id).level != "p")
         .map((match) => ({
@@ -127,8 +128,8 @@ export async function updateMatches(matches:Match[]) {
         }))
     
     // console.log(data)
-    resetMatches(matches)
-    // await post("matches/update", data)
+    // resetMatches(matches)
+    await post("matches/update", data)
 }
 export async function resetRankings() {
     const body:TbaRankings = {
