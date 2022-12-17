@@ -13,7 +13,7 @@
     <table>
         <tr>
             <input placeholder="Auth Key" type=string bind:value={$key}>
-            <button on:click={() => window.location.assign("/")} id=submit class=green>Submit</button>
+            <button on:click={() => window.location.assign(document.referrer)} id=submit class=green>Submit</button>
         </tr>
     </table>
     
