@@ -96,9 +96,5 @@
 		margin-top: auto;
 		margin-bottom: auto;
 	}
-	:global {
-		* {
-			touch-action: none;
-		}
-	}
+
 </style>
