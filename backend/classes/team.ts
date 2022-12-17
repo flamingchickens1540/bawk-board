@@ -45,11 +45,14 @@ export default class Team implements TeamData {
         this._matches.forEach((match) => {
             switch (match.getMatchResult(this.id)) {
                 case MatchResult.WIN:
-                    rankingPoints += match.redScore + match.blueScore
+                    rankingPoints += match.redScore + match.blueScore;
+                    break;
                 case MatchResult.LOSS:
                     rankingPoints += match.getTeamScore(this.id)
+                    break;
                 case MatchResult.DRAW:
                     rankingPoints += match.getTeamScore(this.id)
+                    break;
             }
         })
         return rankingPoints
