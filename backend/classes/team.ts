@@ -14,7 +14,7 @@ export default class Team implements TeamData {
         const myMatches:Match[] = [];
         this.matchIDs.forEach((id, i) => {
             const match = matches.find((match) => match.id == id)
-            if (match != null) {
+            if (match != null && (match.redTeams.includes(this.id) || match.blueTeams.includes(this.id))) {
                 myMatches.push(match)
             } else {
                 this.matchIDs.splice(i, 1)
