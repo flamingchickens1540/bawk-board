@@ -47,9 +47,9 @@
 <td><input type="checkbox" title="Bunny" bind:checked={$hasBunny} /></td>
 <td>
 	<div class=inputgroup>
-		<button on:click={() => $tubeCount++}>+</button>
-		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min=0 max="100" />
 		<button on:click={() => $tubeCount--}>-</button>
+		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min=0 max="100" />
+		<button on:click={() => $tubeCount++}>+</button>
 	</div>
 </td>
 
