@@ -125,7 +125,7 @@ input[type=number] {
 }
 
 input[type="number"].number-input {
-  max-width: 50px;
+  max-width: 30px;
   height:35px;
   font-size:20px;
   text-align:center;
