@@ -37,4 +37,7 @@ Match control communication is done via sockets.
 ## Scoring
 
 When judges count scores for both alliances, the scores for each alliance are stored in a MatchScoreBreakdown data structure.
+
+Svelte is really cool and allows real-time updates of scores as they are being counted.
+
 The match data is commited by whoever is running Match Control, to the internal database when the commit button is pushed. This is done with a simple socket emission by the frontend.

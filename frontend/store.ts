@@ -7,7 +7,7 @@ import { backend_url } from '../secrets';
 import type { AudienceScreen } from '../common/types';
 
 
-export const  redScore:Writable<MatchScoreBreakdown> = writable();
+export const redScore:Writable<MatchScoreBreakdown> = writable();
 export const blueScore:Writable<MatchScoreBreakdown> = writable();
 export const redAlliance:Writable<number[]> = writable([])
 export const blueAlliance:Writable<number[]> = writable([])
