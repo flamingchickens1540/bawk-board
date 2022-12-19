@@ -6,7 +6,7 @@
 
 	export let isUpper: boolean;
 	export let alliance: Alliance;
-	export let index:number
+	export let index:number;
 	let allianceScores: Writable<MatchScoreBreakdown>;
 
 	switch (alliance) {
@@ -48,7 +48,7 @@
 <td>
 	<div class=inputgroup>
 		<button on:click={() => $tubeCount--}>-</button>
-		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min=0 max="100" />
+		<input class=number-input type="number" title="Tubes" bind:value={$tubeCount} min=0 max="100"/>
 		<button on:click={() => $tubeCount++}>+</button>
 	</div>
 </td>

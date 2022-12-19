@@ -14,9 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
 
-
-
-
 app.get("/api/teams", (req, res) => {
     res.send(Object.values(getTeams()))
 })

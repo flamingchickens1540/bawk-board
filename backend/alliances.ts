@@ -27,7 +27,7 @@ function categorizeTeams(teams: Team[] ){
     return alliances;
 }
 
-
+//Unused code, potentially important later
 function mergeSortTeams(alliances: Team[][]){
     const teamsList:Team[] = [];
     for(let i = 0; i<alliances.length;i+=2){
