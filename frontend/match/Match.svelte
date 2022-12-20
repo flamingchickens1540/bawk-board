@@ -2,7 +2,7 @@
 	import Teams from "./components/teams/Teams.svelte";
 	
 	import { onMount } from "svelte";
-	import { decodeMatchID } from "../../common/calculations";
+	import { decodeMatchID, nextMatchID, prettyMatchID } from "../../common/calculations";
 	import { AudienceScreenLayout, isCompLevel, MatchState, type MatchData } from "../../common/types";
 	import match_end from "../assets/audio/match_end.wav";
 	import match_start from "../assets/audio/match_start.wav";
@@ -70,11 +70,10 @@
 	}
 	
 	function newMatch() {
-		const decodedID = decodeMatchID($matchID)
-		loadMatch(decodedID.level+(decodedID.id+1))
+		loadMatch(nextMatchID($matchID))
 	}
 	function setStage() {
-		const prefix = prompt("What kind of match is this? Options are: qm, qf, sf, f", "qm")
+		const prefix = prompt("What kind of match is this? Options are: qm, sf, f", "qm")
 		if (isCompLevel(prefix)) {
 			loadMatch(prefix+"1")
 		} else {
@@ -109,7 +108,7 @@
 				<svg height="16px" width=16px class="statusicon">
 					<circle cx="8" cy="08" r="8"  stroke-width="0" fill="{getColorClass(match, i)}" />
 				</svg> 
-				<span>Match {match.id.toUpperCase()}</span>
+				<span>{prettyMatchID(match.id)}</span>
 				<button disabled={match.id == $matchID} class="loadButton" on:click={() => loadMatch(match.id)}>Load</button>
 			</div>
 			{/each}
@@ -127,6 +126,7 @@
 		</div>
 		<h3 id=match-time>0:00</h3>
 		<div id="control-buttons">
+			<AudienceControl screen={{layout:AudienceScreenLayout.BLANK, match:$matchID}} text="Show Blank"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.SCORES, match:$matchID}} text="Show Scores"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.WIN, match:$matchID}} text="Show Win Screen"></AudienceControl>

@@ -1,4 +1,4 @@
-import { PlayoffAlliance } from "common/alliances"
+import { isPlayoffLevel, PlayoffAlliance } from "common/alliances"
 import { getMatches } from ".."
 import { MatchResult, type MatchID, type TeamData } from "../../common/types"
 import type Match from "./match"
@@ -43,6 +43,9 @@ export default class Team implements TeamData {
     get rankingPoints() {
         let rankingPoints = 0;
         this._matches.forEach((match) => {
+            if (isPlayoffLevel(match.id)) {
+                return;
+            }
             switch (match.getMatchResult(this.id)) {
                 case MatchResult.WIN:
                     rankingPoints += match.redScore + match.blueScore;

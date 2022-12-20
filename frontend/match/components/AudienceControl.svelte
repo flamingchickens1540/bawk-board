@@ -1,6 +1,6 @@
 <script lang="ts">
   import { socket } from "../../socket";
-  import type { AudienceScreen } from "../../../common/types";
+  import { AudienceScreenLayout, type AudienceScreen } from "../../../common/types";
   import {audienceScreen} from "../../store"
 
     function setAudienceScreen() {
@@ -13,7 +13,7 @@
     function areEqual(a:AudienceScreen, b:AudienceScreen) {
         if (a == undefined || b== undefined) {return false}
 
-        return a.layout == b.layout && a.match == b.match
+        return a.layout == b.layout && (a.match == b.match || a.layout == AudienceScreenLayout.BLANK)
     }
     export let screen:AudienceScreen
     export let text:string

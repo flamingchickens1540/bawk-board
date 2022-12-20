@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors())
 
 app.get("/api/teams", (req, res) => {
-    res.send(Object.values(getTeams()))
+    res.send(getTeams().sort((a, b) => a.display_id.localeCompare(b.display_id)))
 })
 
 app.get("/api/matches", (req, res) => {

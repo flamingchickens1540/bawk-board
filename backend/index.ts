@@ -7,18 +7,19 @@ import Match from "./classes/match"
 import Team from "./classes/team"
 import { loadEventData, loadMatches, loadTeams, storeEventData, storeMatches, storeTeams } from "./data"
 import { startHttpServer, getHttpServer } from './router';
-import { updateEventInfo, updateMatches, updateRankings } from "./tba"
+import { updateAlliances, updateEventInfo, updateMatches, updateRankings } from "./tba"
 import { type AudienceScreen, AudienceScreenLayout } from '../common/types';
 import type { Socket } from "socket.io-client"
 import type { DefaultEventsMap } from "socket.io/dist/typed-events"
 import { getAlliances } from "./alliances"
 import { decodeMatchID } from '../common/calculations';
+import { PlayoffAlliance } from "common/alliances"
 
 
 
 let teams:Team[] = loadTeams()
 const matches:Match[] = loadMatches()
-let currentMatchID=loadEventData().currentMatchID ?? "qm1"
+let currentMatchID=loadEventData().currentMatchID ?? "qm1m1"
 let matchTimer:NotifyTimer;
 let currentScreen:AudienceScreen = {
     layout: AudienceScreenLayout.BLANK,
@@ -27,6 +28,7 @@ let currentScreen:AudienceScreen = {
 startHttpServer()
 updateRankings(teams);
 updateMatches(matches);
+updateAlliances(teams)
 export function getTeams():Team[] {
     return teams
 }
@@ -76,7 +78,7 @@ ws.on("connection", (socket) => {
             latestMatch.redTeams = data.redTeams ?? latestMatch.redTeams
         } else {
             console.warn("wrong ID")
-            socket.emit("matchData", getCurrentMatch())
+            socket.emit("loadMatch", getCurrentMatch())
             return
         }
         socket.broadcast.emit("matchData", getCurrentMatch())
@@ -115,6 +117,7 @@ ws.on("connection", (socket) => {
         teams.sort((a,b) => a.display_id.localeCompare(b.display_id))
         storeTeams(teams)
         updateEventInfo(teams)
+        updateAlliances(teams)
         socket.broadcast.emit("teamData", teams)
     })
     socket.on("teamRemove", (id) => {
@@ -163,6 +166,19 @@ ws.on("connection", (socket) => {
         const alliances = getAlliances()
         cb((alliances[alliance-1]??[]).map((team) => team.id).slice(0,4))
 
+    })
+    socket.on("getAllianceForTeams", (inputTeams, cb) => {
+        let alliance:PlayoffAlliance = null
+        teams.forEach((team) => {
+            if (inputTeams.includes(team.id)) {
+                if (alliance == null) {
+                    alliance = team.playoffAlliance;
+                } else if (alliance != team.playoffAlliance) {
+                    alliance = PlayoffAlliance.NONE;
+                }
+            }
+        })
+        cb(alliance)
     })
 
     updateAudienceScreen(currentScreen, socket)

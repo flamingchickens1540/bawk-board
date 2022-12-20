@@ -25,6 +25,7 @@ export interface ClientToServerEvents {
     matchCommit: () => void;
     showScreen: (screen:AudienceScreen) => void;
     getAlliance(alliance:PlayoffAlliance, cb:(teams: number[]) => void)
+    getAllianceForTeams(teams:number[], cb:(alliance:PlayoffAlliance) => void)
 }
 
 export type ThisSocket = Socket<ClientToServerEvents, ServerToClientEvents>;

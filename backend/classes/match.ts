@@ -118,7 +118,7 @@ export default class Match implements MatchData{
         return jsonObj;
       }
       static createFrom(data:MatchData):Match {
-        const match = new Match("qf0",[],[],null,null)
+        const match = new Match("p0m0",[],[],null,null)
         match.id = data.id;
         match.redTeams = data.redTeams;
         match.blueTeams=data.blueTeams;

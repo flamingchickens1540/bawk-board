@@ -81,7 +81,7 @@ export function loadTeamsFromData(data:TeamData[]):Team[] {
 export function loadMatches():Match[] {
     const data = Object.values(loadFile(DataFile.MATCHES))
     if (data.length == 0) {
-        data.push(Match.new("qm1"))
+        data.push(Match.new("qm1m1"))
     }
     return loadMatchesFromData(data)
 

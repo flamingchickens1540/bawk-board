@@ -26,7 +26,7 @@ export class TbaAlliance {
         this.score = score;
     }
 }
-
+export type TbaPlayoffAlliances = TbaTeamNumber[][]
 export interface TbaRanking {
     team_key: TbaTeamNumber;
     rank: number;
@@ -36,6 +36,7 @@ export interface TbaRanking {
     dqs: number;
     played: number;
 }
+
 export interface TbaRankings {
     breakdowns: string[];
     rankings: TbaRanking[];

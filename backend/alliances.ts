@@ -1,7 +1,7 @@
 import type Team from "./classes/team";
 import { getTeams } from '.';
 
-function categorizeTeams(teams: Team[] ){
+export function categorizeTeams(teams: Team[] ){
     const alliances:Team[][] = [[],[],[],[]];
     for(let i = 0; i<teams.length;i++){
         switch(teams[i].playoffAlliance){

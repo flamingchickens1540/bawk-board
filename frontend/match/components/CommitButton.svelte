@@ -1,27 +1,36 @@
 <script lang="ts">
-  import { socket } from "../../socket";
-  import { MatchState } from "../../../common/types";
-  import { matchState } from "../../store";
-  import { onDestroy, onMount } from "svelte";
+	import { socket } from "../../socket";
 
-  function commitMatch() {
-    socket.emit("matchCommit")
-  }
-  onMount(() => {
-    const unsubscribe = matchState.subscribe(() => {
-      if($matchState == MatchState.POSTED) {
-        document.getElementById("commit").innerText = "Recommit"
-        document.getElementById("commit").classList.remove("green")
-      document.getElementById("commit").classList.add("yellow")
-      } else {
-        document.getElementById("commit").innerText = "Commit"
-        document.getElementById("commit").classList.remove("yellow")
-        document.getElementById("commit").classList.add("green")
-      }
+	import { MatchState } from "../../../common/types";
+	import { matchState } from "../../store";
+	import { onDestroy, onMount } from "svelte";
+    import type { Unsubscriber } from "svelte/store";
+	function commitMatch() {
+		socket.emit("matchCommit");
+	}
+    let unsubscribe:Unsubscriber;
+	onMount(() => {
+		unsubscribe = matchState.subscribe(() => {
+			if ($matchState == MatchState.POSTED) {
+				document.getElementById("commit").innerText = "Recommit";
+				document.getElementById("commit").classList.remove("green");
+				document.getElementById("commit").classList.add("yellow");
+			} else {
+				document.getElementById("commit").innerText = "Commit";
+				document.getElementById("commit").classList.remove("yellow");
+				document.getElementById("commit").classList.add("green");
+			}
+		});
+	});
+    onDestroy(() => {
+        unsubscribe()
     })
-    onDestroy(unsubscribe)
-  })
 </script>
 
-
-<button id=commit disabled={$matchState == MatchState.IN_PROGRESS || $matchState == MatchState.PENDING} on:click={commitMatch} class="green">Commit</button>
+<button
+	id="commit"
+	disabled={$matchState == MatchState.IN_PROGRESS ||
+		$matchState == MatchState.PENDING}
+	on:click={commitMatch}
+	class="green">Commit</button
+>
