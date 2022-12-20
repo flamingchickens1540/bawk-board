@@ -6,7 +6,7 @@
 <script lang="ts">
     
     import {confetti} from '@neoconfetti/svelte';
-  import { fade } from 'svelte/transition';
+    import { fade } from 'svelte/transition';
     import { Alliance } from '../../../common/types';
     import {winningAlliance} from "../../store"
     import woosh from "../../assets/audio/woosh.wav"

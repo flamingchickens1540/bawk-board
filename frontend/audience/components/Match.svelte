@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { prettyMatchID } from "../../../common/calculations";
-  import { onDestroy } from "svelte";
-  import { prettyTeamNumber, blueAlliance, redAlliance, timer, matchID } from "../../store";
-  import { Period } from "../../../common/timer";
-
+	import { prettyMatchID } from "../../../common/calculations";
+	import { onDestroy } from "svelte";
+	import { prettyTeamNumber, blueAlliance, redAlliance, timer, matchID } from "../../store";
+	import { Period } from "../../../common/timer";
+	//Sets the current length of the progress bar based on the time remaining in the match
     const test = setInterval(() => {
-		console.log("width:",document.getElementById("progress-bar").style.width)
+		console.log("width:", document.getElementById("progress-bar").style.width)
         document.getElementById("match-time").innerText = timer.remainingTimeFormatted
 		if (timer.stage == Period.POST) {
 			document.getElementById("progress-bar").style.width = "0px"

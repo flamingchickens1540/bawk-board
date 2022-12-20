@@ -27,6 +27,7 @@
 			ready++;
 		}
 	);
+	
 	setTimeout(() => sound.play(), 1500);
 	function showBanners(element: HTMLElement) {
 		console.log("SHOW BANNERS");
