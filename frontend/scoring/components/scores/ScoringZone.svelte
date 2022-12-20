@@ -3,6 +3,7 @@
 	import { redScore, blueScore, isDoneLoading } from "../../../store";
 	import { writable, type Writable } from "svelte/store";
     import type { MatchScoreBreakdown } from "common/types";
+  import { socket } from "../../../socket";
 
 	export let isUpper: boolean;
 	export let alliance: Alliance;
@@ -19,7 +20,7 @@
 	}
 	let hasBunny: Writable<boolean> = writable();
 	let tubeCount: Writable<number> = writable(0);
-	isDoneLoading.then(() => {
+	const updateZone = () => {
 		if ($allianceScores.zones[index] == null) {
 			$allianceScores.zones[index] = new MatchScoreZone(isUpper, $hasBunny, $tubeCount)
 		} else {
@@ -40,7 +41,9 @@
 			hasBunny.set(value.zones[index].hasBunny)
 			tubeCount.set(value.zones[index].tubeCount)
 		})
-	})
+	}
+	isDoneLoading.then(updateZone)
+	socket.on("loadMatch", updateZone)
 </script>
 
 

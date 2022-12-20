@@ -16,16 +16,22 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-    matchData: (data:Partial<MatchData>) => void;
-    teamData: (data:TeamData[]) => void;
     loadMatch: (id:MatchID) => void;
-    teamRemove: (id:number) => void;
+    matchData: (data:Partial<MatchData>) => void;
     matchStart: () => void;
     matchAbort: () => void;
     matchCommit: () => void;
+    
+    teamData: (data:TeamData[]) => void;
+    teamRemove: (id:number) => void;
+    
     showScreen: (screen:AudienceScreen) => void;
-    getAlliance(alliance:PlayoffAlliance, cb:(teams: number[]) => void)
-    getAllianceForTeams(teams:number[], cb:(alliance:PlayoffAlliance) => void)
+
+    getAlliance:(alliance:PlayoffAlliance, cb:(teams: number[]) => void) => void
+    getAllianceForTeams:(teams:number[], cb:(alliance:PlayoffAlliance) => void) => void
+    getTeams: (cb:(teams:TeamData[]) => void) => void
+    getMatches: (cb:(matches:MatchData[]) => void) => void
+    getMatch: (cb:(match:MatchData) => void) => void
 }
 
 export type ThisSocket = Socket<ClientToServerEvents, ServerToClientEvents>;

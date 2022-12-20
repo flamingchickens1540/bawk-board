@@ -4,6 +4,7 @@ import { get } from "svelte/store";
 import { getCookie } from 'typescript-cookie';
 import type { ClientToServerEvents, ServerToClientEvents } from "../common/ws_types";
 import { backend_url, port } from "../secrets";
+import { socketStore } from "./socketStore";
 import { areUpdatesBlocked, blueAlliance, blueScore, matchID, redAlliance, redScore, teams, timer, updateMatchData } from './store';
 
 
@@ -59,3 +60,8 @@ export function updateTeams() {
     socket.emit("teamData", get(teams))
 }
 
+const matchDataStore = socketStore("matchData", (data) => data,"matchData", (data) => data, "getMatch", (data) => data)
+matchDataStore.subscribe((value) => {
+    console.log("NEW MATCH DATA", value)
+})
+window["getData"] = () => get(matchDataStore)

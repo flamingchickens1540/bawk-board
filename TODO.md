@@ -14,3 +14,5 @@ Features:
 - [ ] Customizable lower thirds with timers for things like lunch
 - [ ] More structured team and match storage to avoid iterative searching
 - [ ] Team icons on the scores screen
+- [ ] Allow putting in teams without transitioning to match
+- [ ] Add red card conditions

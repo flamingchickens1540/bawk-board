@@ -5,6 +5,7 @@ import { addMatchDataPublishers, socket } from './socket'
 import { SimpleTimer } from '../common/timer';
 import { backend_url } from '../secrets';
 import type { AudienceScreen } from '../common/types';
+import { socketReadableStore, socketStore } from './socketStore';
 
 
 export const redScore:Writable<MatchScoreBreakdown> = writable();
@@ -17,6 +18,9 @@ export const winningAlliance:Writable<Alliance> = writable(null)
 export const timer:SimpleTimer = new SimpleTimer();
 
 export const areUpdatesBlocked = writable(false)
+
+
+
 
 const matchResponse:Promise<any> = fetch(backend_url+"/api/match").then((res) => res.json())
 export const matches:Readable<MatchData[]> = readable([], (set) => {
@@ -86,7 +90,6 @@ export function blockSubscribers(callback: ()=> void): void {
 
 export function updateMatchData(data:MatchData) {
     areUpdatesBlocked.set(true)
-    console.log("blocking")
     matchID.set(data.id)
     redScore.set(data.redScoreBreakdown)
     blueScore.set(data.blueScoreBreakdown)
@@ -94,7 +97,6 @@ export function updateMatchData(data:MatchData) {
     blueAlliance.set(data.blueTeams)
     timer.startWithTime(data.matchStartTime)
     winningAlliance.set(data.winningAlliance)
-    console.log("unblocking")
     areUpdatesBlocked.set(false)
 }
 

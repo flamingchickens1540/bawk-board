@@ -180,6 +180,15 @@ ws.on("connection", (socket) => {
         })
         cb(alliance)
     })
+    socket.on("getMatch", (cb) => {
+        cb(getCurrentMatch())
+    })
+    socket.on("getMatches", (cb) => {
+        cb(matches)
+    })
+    socket.on("getTeams", (cb) => {
+        cb(teams)
+    })
 
     updateAudienceScreen(currentScreen, socket)
 })
