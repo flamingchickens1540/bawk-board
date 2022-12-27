@@ -1,12 +1,13 @@
 import { writable, type Readable, type Writable, readable, type Subscriber } from 'svelte/store';
 
 import type { ServerToClientEvents } from '../common/ws_types';
+
 import { socket } from './socket';
-import {Mutex} from "async-mutex"
 import type { ClientToServerEvents } from '../common/ws_types';
-import { listen } from 'svelte/internal';
+
 type ListenCallback<ListenEvent extends keyof ServerToClientEvents, F> =(input:Parameters<ServerToClientEvents[ListenEvent]>) => F
 type EmitCallback<EmitEvent extends keyof ClientToServerEvents, F> = (input:F) => Parameters<ClientToServerEvents[EmitEvent]>
+
 export interface SocketStore<T> extends Readable<T> {
     set: (data:T) => void
 }
@@ -14,33 +15,19 @@ export function socketStore<ListenEvent extends keyof ServerToClientEvents, Emit
     listenEvent:ListenEvent,   listen_cb:ListenCallback<ListenEvent, F>, 
     emitEvent:EmitEvent,       emit_cb :EmitCallback<EmitEvent, F>, 
     initialEvent:InitialEvent, initialCB:(data) => F):SocketStore<F> {
-        let writableStore:Writable<F> = writable(null)
         
+        let store = callbackSocketStore(emitEvent, emit_cb)        
         const initialCallback = [(data) => {
             const formattedData = initialCB(data)
-            writableStore.set(formattedData)
+            store.set(formattedData)
         }]
-        let isBlocking = false;
         socket.emit(initialEvent, ...initialCallback as any)
         const listenCallback = (data: Parameters<ServerToClientEvents[ListenEvent]>) => {
-            isBlocking = true;
             console.debug("RECIEVING", listenEvent.toLocaleUpperCase(), ...data)
-            writableStore.set(listen_cb(data))
-            isBlocking = false;
+            store.setSilent(listen_cb(data))
         }
         socket.on(listenEvent, listenCallback as any)
-        writableStore.subscribe((value) => {
-            
-            if (!isBlocking&&value!= null) {
-                
-                const formattedValue= [emit_cb(value)]
-                console.debug("EMITTING", emitEvent.toLocaleUpperCase(), ...formattedValue)
-                socket.emit(emitEvent, ...(formattedValue as any))
-            } else {
-                console.debug("IGNORING VALUE CHANGE", value)
-            }
-        })
-        return writableStore
+        return store
     }
     
     export function socketReadableStore<ListenEvent extends keyof ServerToClientEvents,InitialEvent extends keyof ClientToServerEvents,F>(listenEvent:ListenEvent, listen_cb:ListenCallback<ListenEvent, F>, initialEvent:InitialEvent,initialCB:(data) => F):Readable<F> {
@@ -61,15 +48,15 @@ export function socketStore<ListenEvent extends keyof ServerToClientEvents, Emit
         })
     }
     
-    export function callbackSocketStore<T, InputData, EmitEvent extends keyof ClientToServerEvents,>(event:EmitEvent, emitCallback:EmitCallback<EmitEvent, T>, initialCallback: () => T, dataCallback: (data:InputData) => T) {
+    export function callbackSocketStore<T, EmitEvent extends keyof ClientToServerEvents,>(event:EmitEvent, emitCallback:EmitCallback<EmitEvent, T>) {
         let writableStore:Writable<T> = writable(null)
         
         let isBlocking = false;
-        writableStore.set(initialCallback())
         
-        const setSilent = (data:InputData)=> {
+        
+        const setSilent = (data:T)=> {
             isBlocking = true;
-            writableStore.set(dataCallback(data))
+            writableStore.set(data)
             isBlocking = false;
         }
         writableStore.subscribe((value) => {

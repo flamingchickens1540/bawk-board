@@ -71,6 +71,10 @@ ws.on("connection", (socket) => {
     })
     socket.on("matchData", (data) => {
         const latestMatch = getCurrentMatch()
+        if (data == null) {
+            console.warn("Empty match payload")
+            return;
+        }
         if (latestMatch.id == data.id) {
             latestMatch.blueScoreBreakdown = data.blueScoreBreakdown ?? latestMatch.blueScoreBreakdown
             latestMatch.redScoreBreakdown = data.redScoreBreakdown ?? latestMatch.redScoreBreakdown

@@ -8,6 +8,7 @@ import type { AudienceScreen } from '../common/types';
 import { socketReadableStore, socketStore } from './socketStore';
 
 
+
 export const redScore:Writable<MatchScoreBreakdown> = writable();
 export const blueScore:Writable<MatchScoreBreakdown> = writable();
 export const redAlliance:Writable<number[]> = writable([])
@@ -45,13 +46,9 @@ export const matches:Readable<MatchData[]> = readable([], (set) => {
     return () => socket.off("newMatch", newMatchCallbackWrapper)
 })
 
-export const matchState:Readable<MatchState> = readable(undefined, (set) => {
-    matchResponse.then(async (data:MatchData) => {
-        set(data.matchState)
-    })
-    const callbackWrapper = (data:MatchData) => set(data.matchState)
-    socket.on("matchData", callbackWrapper)
-    return () => socket.off("matchData", callbackWrapper)
+export const matchState:Readable<MatchState> = socketReadableStore("matchData", (data) => {console.warn(data); return data[0].matchState}, "matchData", (data) => data.matchState)
+matchState.subscribe((data) => {
+    console.warn("DATA", data)
 })
 
 export const audienceScreen:Readable<AudienceScreen> = readable(undefined, (set) => {
