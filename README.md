@@ -32,12 +32,19 @@ The frontend is written in Svelte and TypeScript, while the backend is vite and 
 
 ## Match Control
 
+When a match is created, an 
+
 Match control communication is done via sockets.
+
+The match data is commited by whoever is running Match Control, to the internal database when the commit button is pushed. This is done with a simple socket emission by the frontend.
+
 
 ## Scoring
 
 When judges count scores for both alliances, the scores for each alliance are stored in a MatchScoreBreakdown data structure.
 
-Svelte is really cool and allows real-time updates of scores as they are being counted.
+Svelte stores are how we save the each score value during the match. Which allows for real-time update on match control screen while the judges are counting score.
 
-The match data is commited by whoever is running Match Control, to the internal database when the commit button is pushed. This is done with a simple socket emission by the frontend.
+## Data storing and access
+
+All data for teams, alliances, and matches is stored in the data folder, containing event, teams, and matches.json files.
