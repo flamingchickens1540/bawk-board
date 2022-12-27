@@ -8,7 +8,7 @@ THe same basic infrastructue will be inn place for future BunnyBots competitions
 
 Make a data folder, containing an teams.json and matches.json files with: [] in them.
 
-You also need to create a event.json file inside your data foler, containing: {currentMatchID:"qm1"}.
+You also need to create a event.json file inside your data foler, containing: {currentMatchID:"qm1"}. This indicates that the first match will be the first qualifying match.
 
 Make a secrests.js file, containing:
 
