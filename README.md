@@ -28,7 +28,7 @@ or
     
     npm run prod
 
-The frontend is written in Svelte and TypeScript, while the backend is vite and TypeScript.
+The frontend is written in Svelte and TypeScript.
 
 ## Match Control
 
