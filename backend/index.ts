@@ -194,6 +194,8 @@ ws.on("connection", (socket) => {
         cb(teams)
     })
 
+    socket.emit("matchData", getCurrentMatch())
+    socket.emit("teamData", teams)
     updateAudienceScreen(currentScreen, socket)
 })
 

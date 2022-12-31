@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { towers } from "../store";
+	import { matchID, towers } from "../store";
 	import type { TowerName } from "../types";
 	const currentTowerName = new URL(window.location.href).searchParams.get(
 		"tower"
@@ -21,11 +21,12 @@
 			window.location.search = "tower=far";
 		} else [(window.location.search = "tower=near")];
 	}
+	const matchIDStore = matchID.asReadable
 </script>
 
 <main class="grid-container">
 	<div class="header">
-		<h1>{currentTower.name}</h1>
+		<h1>{currentTower.name} - {$matchIDStore}</h1>
 		<button on:click={switchTower}>Switch Tower</button>
 	</div>
 	<AllianceList style="red red-banner" alliance={Alliance.RED} />
