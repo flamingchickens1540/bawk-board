@@ -5,7 +5,7 @@
     const key = writable(getCookie("auth"))
 
     key.subscribe((value) => {setCookie("auth", value)})
-
+    console.log(document.referrer,  document.location.href)
 </script>
 <main>
     <h1>Authorization</h1>
@@ -13,7 +13,7 @@
     <table>
         <tr>
             <input placeholder="Auth Key" type=string bind:value={$key}>
-            <button on:click={() => window.location.assign(document.referrer)} id=submit class=green>Submit</button>
+            <button on:click={() => window.location.assign(document.referrer == document.location.href ? "/" : document.referrer)} id=submit class=green>Submit</button>
         </tr>
     </table>
     

@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [svelte({configFile:"../svelte.config.js"})],
   root: './frontend',
   // logLevel: "warn",
-  publicDir:false,
+  publicDir:"public",
   build: {
     minify:false,
     rollupOptions: {

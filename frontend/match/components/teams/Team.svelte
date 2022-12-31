@@ -4,7 +4,7 @@
 	import {
 		redAlliance,
 		blueAlliance,
-		isDoneLoading,
+		initializer,
 		prettyTeamNumber,
 		realTeamNumber,
 		blockSubscribers,
@@ -15,15 +15,15 @@
 	let alliance: Writable<number[]>;
 	switch (alliance_name) {
 		case Alliance.RED:
-			alliance = redAlliance;
+			alliance = redAlliance.asWritable();
 			break;
 		case Alliance.BLUE:
-			alliance = blueAlliance;
+			alliance = blueAlliance.asWritable();
 			break;
 		default:
 			console.error(alliance);
 	}
-	isDoneLoading.then(() => {
+	initializer.then(() => {
 		blockSubscribers(() => {
 			team.set(prettyTeamNumber($alliance[index]));
 		})

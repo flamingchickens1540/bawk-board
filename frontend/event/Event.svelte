@@ -1,11 +1,12 @@
 <script lang="ts">
     import {teams} from "../store"
-    import {updateTeams} from "../socket"
+    import {updateTeamData} from "../store"
     import Team from "./components/Team.svelte";
     import { PlayoffAlliance } from "../../common/alliances";
 
+    const teamsWritable = teams.asWritable();
     function addTeam() {
-        teams.update((items) => [...items, {display_id:null, id:null, name:null, playoffAlliance:PlayoffAlliance.NONE, matchIDs: [], matchLosses:0, matchTies:0, matchWins:0, rankingPoints:0}])
+        teamsWritable.update((items) => [...items, {display_id:null, id:null, name:null, playoffAlliance:PlayoffAlliance.NONE, matchIDs: [], matchLosses:0, matchTies:0, matchWins:0, rankingPoints:0}])
     }
 </script>
 
@@ -31,7 +32,7 @@
     <table id=buttons>
         <tr>
             <button on:click={addTeam}>Add Team</button>
-            <button on:click={updateTeams}>Save</button>
+            <button on:click={() => updateTeamData($teams)}>Save</button>
         </tr>
     </table>
 </main>

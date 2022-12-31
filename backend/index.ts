@@ -71,6 +71,10 @@ ws.on("connection", (socket) => {
     })
     socket.on("matchData", (data) => {
         const latestMatch = getCurrentMatch()
+        if (data == null) {
+            console.warn("Empty match payload")
+            return;
+        }
         if (latestMatch.id == data.id) {
             latestMatch.blueScoreBreakdown = data.blueScoreBreakdown ?? latestMatch.blueScoreBreakdown
             latestMatch.redScoreBreakdown = data.redScoreBreakdown ?? latestMatch.redScoreBreakdown
@@ -180,7 +184,18 @@ ws.on("connection", (socket) => {
         })
         cb(alliance)
     })
+    socket.on("getMatch", (cb) => {
+        cb(getCurrentMatch())
+    })
+    socket.on("getMatches", (cb) => {
+        cb(matches)
+    })
+    socket.on("getTeams", (cb) => {
+        cb(teams)
+    })
 
+    socket.emit("matchData", getCurrentMatch())
+    socket.emit("teamData", teams)
     updateAudienceScreen(currentScreen, socket)
 })
 

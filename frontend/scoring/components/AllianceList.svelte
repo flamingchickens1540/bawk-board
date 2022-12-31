@@ -1,48 +1,45 @@
 <script lang="ts">
-	import {
-		blueAlliance,
-		blueScore,
-		isDoneLoading,
-		prettyTeamNumber,
-		redAlliance,
-		redScore,
-	} from "../../store";
+	import {initializer as init,prettyTeamNumber, redScore, redAlliance, blueAlliance, blueScore} from "../../store";
 	import { Alliance, type MatchScoreBreakdown } from "../../../common/types";
-	import { writable, type Writable } from "svelte/store";
+	import { writable, type Readable, type Writable } from "svelte/store";
 	import { calculateScore } from "../../../common/calculations";
-
+	
 	export let alliance: Alliance;
 	export let style: string;
 	let headerName = alliance == Alliance.RED ? "Red" : "Blue";
 
-	let teams: Writable<number[]>;
-	let allianceScores: Writable<MatchScoreBreakdown>;
+	let teams: Readable<number[]>;
+	
+	let allianceScores: Readable<MatchScoreBreakdown>;
 
 	switch (alliance) {
 		case Alliance.RED:
-			allianceScores = redScore;
+			allianceScores = redScore.asWritable();
 			teams = redAlliance;
 			break;
 		case Alliance.BLUE:
-			allianceScores = blueScore;
+			allianceScores = blueScore.asWritable();
 			teams = blueAlliance;
 			break;
 	}
 	let penalty = writable(0)
 	let autoTubes = writable(0)
-	isDoneLoading.then(() => {
+	init.then(() => {
+		
 		$penalty = $allianceScores.foulPoints;
-		penalty.subscribe((value) => ($allianceScores.foulPoints = value));
+		penalty.subscribe((value) => $allianceScores.foulPoints = value ?? 0);
 
 		$autoTubes = $allianceScores.autoTubes;
-		autoTubes.subscribe((value) => ($allianceScores.autoTubes = value));
+		autoTubes.subscribe((value) => $allianceScores.autoTubes = value ?? 0);
+		
 	});
+	console.log("TEAMS", $teams)
 </script>
 
 <div class={style}>
 	<h2>{headerName}: {calculateScore($allianceScores)}</h2>
 	<div id="teams" class="pad">
-		{#each $teams as team}
+		{#each $teams ?? [] as team}
 			<span>{prettyTeamNumber(team)}</span>
 		{/each}
 	</div>

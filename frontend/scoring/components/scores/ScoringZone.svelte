@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Alliance, MatchScoreZone } from "../../../../common/types";
-	import { redScore, blueScore, isDoneLoading } from "../../../store";
+	import { Alliance, MatchScoreZone, type MatchData } from "../../../../common/types";
+	import { redScore, blueScore, initializer as init } from "../../../store";
 	import { writable, type Writable } from "svelte/store";
     import type { MatchScoreBreakdown } from "common/types";
+	import { socket } from "../../../socket";
 
 	export let isUpper: boolean;
 	export let alliance: Alliance;
@@ -11,15 +12,15 @@
 
 	switch (alliance) {
 		case Alliance.RED:
-			allianceScores = redScore;
+			allianceScores = redScore.asWritable()
 			break;
 		case Alliance.BLUE:
-			allianceScores = blueScore;
+			allianceScores = blueScore.asWritable()
 			break;
 	}
-	let hasBunny: Writable<boolean> = writable();
+	let hasBunny: Writable<boolean> = writable(false);
 	let tubeCount: Writable<number> = writable(0);
-	isDoneLoading.then(() => {
+	const initZone = () => {
 		if ($allianceScores.zones[index] == null) {
 			$allianceScores.zones[index] = new MatchScoreZone(isUpper, $hasBunny, $tubeCount)
 		} else {
@@ -40,7 +41,9 @@
 			hasBunny.set(value.zones[index].hasBunny)
 			tubeCount.set(value.zones[index].tubeCount)
 		})
-	})
+	}
+	init.then(initZone)
+	socket.on("loadMatch", initZone)
 </script>
 
 
