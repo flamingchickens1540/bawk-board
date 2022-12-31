@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {isDoneLoading,prettyTeamNumber, redScore, redAlliance, blueAlliance, blueScore} from "../../store";
+	import {initializer as init,prettyTeamNumber, redScore, redAlliance, blueAlliance, blueScore} from "../../store";
 	import { Alliance, type MatchScoreBreakdown } from "../../../common/types";
 	import { writable, type Readable, type Writable } from "svelte/store";
 	import { calculateScore } from "../../../common/calculations";
@@ -15,16 +15,16 @@
 	switch (alliance) {
 		case Alliance.RED:
 			allianceScores = redScore.asWritable();
-			teams = redAlliance.asReadable;
+			teams = redAlliance;
 			break;
 		case Alliance.BLUE:
 			allianceScores = blueScore.asWritable();
-			teams = blueAlliance.asReadable;
+			teams = blueAlliance;
 			break;
 	}
 	let penalty = writable(0)
 	let autoTubes = writable(0)
-	isDoneLoading.then(() => {
+	init.then(() => {
 		
 		$penalty = $allianceScores.foulPoints;
 		penalty.subscribe((value) => $allianceScores.foulPoints = value ?? 0);

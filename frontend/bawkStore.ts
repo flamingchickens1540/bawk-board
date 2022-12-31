@@ -7,8 +7,7 @@ import { socket } from "./socket";
 import { matchID } from "./store";
 import isEqual from "lodash.isequal"
 
-export interface BawkReadable<T, I> {
-    asReadable:Readable<T>
+export interface BawkReadable<T, I> extends Readable<T> {
     /**
      * Sets the value of the store, updates subscribers, does not send the value to the server
      * @param data The value to set the store to. Will be passed into the converter to get the result
@@ -33,7 +32,7 @@ export interface BawkDataStore<T, I> extends BawkReadable<T, I>{
 }
 
 export function dedupe<T>(store: Readable<T>): Readable<T> {
-    let previous: T = {} as any
+    let previous: T
     return derived(store, ($value, set) => {
       if (!isEqual($value, previous)) {
         previous = structuredClone($value) // Avoid copy by reference, otherwise they will always be equal
@@ -48,7 +47,7 @@ export function bawkMatchStore<T extends keyof MatchData>(property: T):BawkMatch
     let ignoreUpdates = false;
     let hasBeenMadeWritable = false;
     return {
-        asReadable: readableStore,
+        subscribe:readableStore.subscribe,
         updateLocal: (data) => {
             ignoreUpdates = true
             store.set(data[property])
@@ -67,7 +66,7 @@ export function bawkMatchStore<T extends keyof MatchData>(property: T):BawkMatch
                         console.debug("SENDING", property)
                         socket.emit("matchData", { 
                             [property]: value,
-                            id: get(matchID.asReadable)
+                            id: get(matchID)
                         })
                     }
                 })
@@ -88,9 +87,7 @@ export function bawkDataStore<T, Input, EmitEvent extends keyof ClientToServerEv
     let hasBeenMadeWritable = false;
     let ignoreUpdates = false;
     return {
-        asReadable: {
-            subscribe:store.subscribe,
-        },
+        subscribe:store.subscribe,
         updateLocal: (data) => {
             ignoreUpdates = true
             store.set(converter(data))
@@ -122,13 +119,3 @@ export function bawkDataStore<T, Input, EmitEvent extends keyof ClientToServerEv
 
     }
 }
-
-// export function makeWritable<T,I,EmitEvent extends keyof ClientToServerEvents>(store:BawkReadable<T,I>,event:EmitEvent, emitCallback:(input:T) => Parameters<ClientToServerEvents[EmitEvent]>):Writable<T> {
-//     const socketStore = writableSocketStore(get(store.store), event, emitCallback)
-//     return {
-//         set: socketStore.set,
-//         subscribe:socketStore.subscribe,
-//         update: socketStore.update,
-//     }
-// }
-

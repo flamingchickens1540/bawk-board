@@ -91,13 +91,15 @@ export function updateTeamData(data: TeamData[]) {
 }
 
 
-export const isDoneLoading = init()
+export const initializer = init()
+export let isDoneLoading = false
+initializer.then(() => isDoneLoading = true)
 
 export function prettyTeamNumber(number: number) {
-    return (get(teams.asReadable).find((team) => team.id == number) ?? { display_id: "" }).display_id
+    return (get(teams).find((team) => team.id == number) ?? { display_id: "" }).display_id
 }
 export function realTeamNumber(prettyNumber: string) {
-    return (get(teams.asReadable).find((team) => team.display_id == prettyNumber) ?? { id: 0 }).id
+    return (get(teams).find((team) => team.display_id == prettyNumber) ?? { id: 0 }).id
 }
 
 

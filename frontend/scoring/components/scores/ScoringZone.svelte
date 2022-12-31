@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Alliance, MatchScoreZone, type MatchData } from "../../../../common/types";
-	import { redScore, blueScore, isDoneLoading } from "../../../store";
+	import { redScore, blueScore, initializer as init } from "../../../store";
 	import { writable, type Writable } from "svelte/store";
     import type { MatchScoreBreakdown } from "common/types";
 	import { socket } from "../../../socket";
@@ -42,7 +42,7 @@
 			tubeCount.set(value.zones[index].tubeCount)
 		})
 	}
-	isDoneLoading.then(initZone)
+	init.then(initZone)
 	socket.on("loadMatch", initZone)
 </script>
 

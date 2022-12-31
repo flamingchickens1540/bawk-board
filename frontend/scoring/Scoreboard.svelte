@@ -13,6 +13,7 @@
 	import tower_img from "../assets/field.png";
 	import ScoringCorner from "./components/scores/ScoringCorner.svelte";
 	import { Alliance } from "../../common/types";
+  import { prettyMatchID } from "../../common/calculations";
 
 	const index = currentTower.index * 2;
 
@@ -21,12 +22,12 @@
 			window.location.search = "tower=far";
 		} else [(window.location.search = "tower=near")];
 	}
-	const matchIDStore = matchID.asReadable
+	
 </script>
 
 <main class="grid-container">
 	<div class="header">
-		<h1>{currentTower.name} - {$matchIDStore}</h1>
+		<h1>{currentTower.name} - {prettyMatchID($matchID ?? "qm0m0")}</h1>
 		<button on:click={switchTower}>Switch Tower</button>
 	</div>
 	<AllianceList style="red red-banner" alliance={Alliance.RED} />

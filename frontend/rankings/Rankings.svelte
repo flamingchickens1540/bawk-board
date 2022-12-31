@@ -6,7 +6,7 @@
 	import { onMount } from "svelte";
 
 	const sortFunction = (a, b) => b.rankingPoints - a.rankingPoints;
-	let teamsSorted: Readable<TeamData[]> = derived(teams.asReadable, ($teams) =>
+	let teamsSorted: Readable<TeamData[]> = derived(teams, ($teams) =>
 		($teams ?? []).sort(sortFunction)
 	);
 	onMount(() => {

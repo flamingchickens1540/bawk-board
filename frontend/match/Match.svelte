@@ -2,25 +2,41 @@
 	import Teams from "./components/teams/Teams.svelte";
 	
 	import { onMount } from "svelte";
-	import { decodeMatchID, nextMatchID, prettyMatchID } from "../../common/calculations";
+	import { nextMatchID, prettyMatchID } from "../../common/calculations";
 	import { AudienceScreenLayout, isCompLevel, MatchState, type MatchData } from "../../common/types";
 	import match_end from "../assets/audio/match_end.wav";
 	import match_start from "../assets/audio/match_start.wav";
 	import match_teleop from "../assets/audio/match_teleop.wav";
 	import { socket } from "../socket";
-	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer, audienceScreen } from "../store";
+	import { isDoneLoading, matches, matchID, matchStartTime, matchState, timer, audienceScreen, initializer } from "../store";
 	import ScoreSummary from "./components/ScoreSummary.svelte";
   import AudienceControl from "./components/AudienceControl.svelte";
   import CommitButton from "./components/CommitButton.svelte";
+  import { writable } from "svelte/store";
 	
   const match_end_sound = new Audio(match_end);
 	const match_start_sound = new Audio(match_start);
 	const match_teleop_sound = new Audio(match_teleop);
 	
+
+	const matchStateText = writable("")
+	let matchTextInterval:NodeJS.Timer = null;
+	matchState.subscribe((value => {
+		clearInterval(matchTextInterval)
+		switch (value) {
+			case MatchState.POSTED: matchStateText.set("Posted"); break
+			case MatchState.COMPLETED: matchStateText.set("Completed"); break
+			case MatchState.IN_PROGRESS: 
+				matchStateText.set(timer.remainingTimeFormatted); 
+				matchTextInterval = setInterval(() => matchStateText.set(timer.remainingTimeFormatted), 100)
+				break
+			case MatchState.PENDING: matchStateText.set("Pending"); break
+		}
+		
+	}))
 	onMount(() => {
-		isDoneLoading.then(() => {
+		initializer.then(() => {
 			console.log($matchState)
-			setInterval(() => document.getElementById("match-time").innerText = $matchState == MatchState.COMPLETED ? "Complete" : timer.remainingTimeFormatted, 100)
 			if ($matchState == MatchState.IN_PROGRESS) {
 				setButtonStop()
 				timer.startWithTime($matchStartTime)
@@ -80,22 +96,18 @@
 			setStage()
 		}
 	}
-	
+	const matchButtonState = writable({text: "Start", color: "green", onclick: startMatch})
 	function setButtonStart() {
-		document.getElementById("match-control").innerText = "Start"
-		document.getElementById("match-control").classList.remove("red")
-		document.getElementById("match-control").classList.add("green")
-		document.getElementById("match-control").onclick = startMatch
+		matchButtonState.set({text: "Start", color: "green", onclick: startMatch})
 	}
 	function setButtonStop() {
-		document.getElementById("match-control").innerText = "Abort"
-		document.getElementById("match-control").classList.remove("green")
-		document.getElementById("match-control").classList.add("red")
-		document.getElementById("match-control").onclick = abortMatch
+		matchButtonState.set({text: "Stop", color: "red", onclick: abortMatch})
 	}
+
 </script>
 
 <main>
+	
 	<div id="header">
 		<p>Bunnybots Scoreboard</p>
 	</div>
@@ -117,14 +129,15 @@
 		<button id=new-match class="green" on:click={newMatch}>Next</button>
 		<button id=new-match class="green" on:click={setStage}>Stage</button>
 	</div>
+	{#await initializer then}
 	<ScoreSummary/>
 	<CommitButton/>
 	<div class="sidebar-r">
-		<h2>Match {$matchID.toUpperCase()} Controls</h2>
+		<h2>Match {($matchID ?? "").toUpperCase()} Controls</h2>
 		<div class=row>
-			<button id=match-control class="green" disabled={$matchState == MatchState.POSTED}>Start</button>
+			<button id=match-control class="{$matchButtonState.color}" on:click={$matchButtonState.onclick} disabled={$matchState == MatchState.POSTED}>{$matchButtonState.text}</button>
 		</div>
-		<h3 id=match-time>0:00</h3>
+		<h3 id=match-time>{$matchStateText}</h3>
 		<div id="control-buttons">
 			<AudienceControl screen={{layout:AudienceScreenLayout.BLANK, match:$matchID}} text="Show Blank"></AudienceControl><br>
 			<AudienceControl screen={{layout:AudienceScreenLayout.MATCH, match:$matchID}} text="Show Match Screen"></AudienceControl><br>
@@ -137,7 +150,7 @@
 		
 		<Teams/>
 	</div>
-	
+	{/await}
 </main>
 
 <style lang="scss">
