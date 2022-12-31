@@ -20,7 +20,7 @@ export const matchState = bawkMatchStore("matchState")
 export const matchStartTime = bawkMatchStore("matchStartTime")
 
 
-const storeTeams = bawkDataStore(null, (data: TeamData[]) => data, "teamData", (data) => [data])
+export const teams = bawkDataStore(null, (data: TeamData[]) => data, "teamData", (data) => [data])
 
 export const timer: SimpleTimer = new SimpleTimer();
 
@@ -63,7 +63,7 @@ export const audienceScreen: Readable<AudienceScreen> = readable(undefined, (set
 
 async function init() {
     await fetch(backend_url + "/api/teams").then(async (res) => {
-        storeTeams.updateLocal(await res.json())
+        teams.updateLocal(await res.json())
     })
     await fetch(backend_url + "/api/match").then(async (res) => {
         const data = await res.json() as MatchData
@@ -87,17 +87,17 @@ export function updateMatchData(data: MatchData) {
 }
 
 export function updateTeamData(data: TeamData[]) {
-    storeTeams.updateLocal(data)
+    teams.updateLocal(data)
 }
 
 
 export const isDoneLoading = init()
 
 export function prettyTeamNumber(number: number) {
-    return (get(storeTeams.asReadable).find((team) => team.id == number) ?? { display_id: "" }).display_id
+    return (get(teams.asReadable).find((team) => team.id == number) ?? { display_id: "" }).display_id
 }
 export function realTeamNumber(prettyNumber: string) {
-    return (get(storeTeams.asReadable).find((team) => team.display_id == prettyNumber) ?? { id: 0 }).id
+    return (get(teams.asReadable).find((team) => team.display_id == prettyNumber) ?? { id: 0 }).id
 }
 
 

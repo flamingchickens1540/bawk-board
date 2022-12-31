@@ -6,11 +6,10 @@
 	import { onMount } from "svelte";
 
 	const sortFunction = (a, b) => b.rankingPoints - a.rankingPoints;
-	let teamsSorted: Readable<TeamData[]> = derived(teams, ($teams) =>
-		$teams.sort(sortFunction)
+	let teamsSorted: Readable<TeamData[]> = derived(teams.asReadable, ($teams) =>
+		($teams ?? []).sort(sortFunction)
 	);
 	onMount(() => {
-		
 		const scrollElement = jQuery(".tableContainer");
 		function anim() {
 			var sb = scrollElement.prop("scrollHeight") - scrollElement.innerHeight();
